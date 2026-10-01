@@ -1,0 +1,2463 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc72d69b5a74d142af1a263af118083, type: 3}
+  m_Name: UIText
+  m_EditorClassIdentifier: Assembly-CSharp::Mawang.UITextSettings
+  entries:
+  - ko: "\uC0C8 \uAC8C\uC784\uC744 \uC2DC\uC791\uD588\uC2B5\uB2C8\uB2E4."
+    en: Started a new game.
+    where: Game.cs:118
+    args: 
+    origKo: "\uC0C8 \uAC8C\uC784\uC744 \uC2DC\uC791\uD588\uC2B5\uB2C8\uB2E4."
+    origEn: Started a new game.
+  - ko: "\uBCF4\uC11D\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    en: Not enough Gems.
+    where: Game.cs:152
+    args: 
+    origKo: "\uBCF4\uC11D\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    origEn: Not enough Gems.
+  - ko: "\uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    en: Not enough resources.
+    where: "Game.cs:152 \uC678 2\uACF3"
+    args: 
+    origKo: "\uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    origEn: Not enough resources.
+  - ko: "\uAD50\uD658\uD560 \uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    en: Not enough to exchange.
+    where: Game.cs:171
+    args: 
+    origKo: "\uAD50\uD658\uD560 \uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    origEn: Not enough to exchange.
+  - ko: "[\uD734\uAC8C\uC2E4] \uC77C\uC77C \uC9C0\uC6D0\uAE08 {0}\uACE8\uB4DC\uB97C
+      \uBC1B\uC558\uC2B5\uB2C8\uB2E4."
+    en: '[Lounge] Received a daily bonus of {0} Gold.'
+    where: Game.cs:198
+    args: '{0} = gold:N0'
+    origKo: "[\uD734\uAC8C\uC2E4] \uC77C\uC77C \uC9C0\uC6D0\uAE08 {0}\uACE8\uB4DC\uB97C
+      \uBC1B\uC558\uC2B5\uB2C8\uB2E4."
+    origEn: '[Lounge] Received a daily bonus of {0} Gold.'
+  - ko: "\uACE8\uB4DC"
+    en: Gold
+    where: Loc.cs:39
+    args: 
+    origKo: "\uACE8\uB4DC"
+    origEn: Gold
+  - ko: "\uC790\uC7AC"
+    en: Materials
+    where: Loc.cs:40
+    args: 
+    origKo: "\uC790\uC7AC"
+    origEn: Materials
+  - ko: "\uBCF4\uC11D"
+    en: Gems
+    where: "Loc.cs:41 \uC678 1\uACF3"
+    args: 
+    origKo: "\uBCF4\uC11D"
+    origEn: Gems
+  - ko: "\uD3EC\uD68D \uC8FC\uAE30 -{0}%"
+    en: Hunt cycle -{0}%
+    where: GameData.cs:354
+    args: '{0} = n * 4'
+    origKo: "\uD3EC\uD68D \uC8FC\uAE30 -{0}%"
+    origEn: Hunt cycle -{0}%
+  - ko: "\uD3EC\uD68D\uB300\uC6D0 \uCCB4\uB825 +{0}"
+    en: Hunter stamina +{0}
+    where: GameData.cs:355
+    args: '{0} = n * 3'
+    origKo: "\uD3EC\uD68D\uB300\uC6D0 \uCCB4\uB825 +{0}"
+    origEn: Hunter stamina +{0}
+  - ko: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08 \u2192 {1}\uCD08"
+    en: "Recovery {0}s \u2192 {1}s"
+    where: GameData.cs:356
+    args: "{0} = HunterRestTime:0  \xB7  {1} = RestTimeAt(n):0"
+    origKo: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08 \u2192 {1}\uCD08"
+    origEn: "Recovery {0}s \u2192 {1}s"
+  - ko: "\uAD00\uB78C\uB8CC +{0}%"
+    en: Admission +{0}%
+    where: GameData.cs:357
+    args: '{0} = n * 10'
+    origKo: "\uAD00\uB78C\uB8CC +{0}%"
+    origEn: Admission +{0}%
+  - ko: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 +{0}%"
+    en: Fee storage +{0}%
+    where: GameData.cs:358
+    args: '{0} = n * 15'
+    origKo: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 +{0}%"
+    origEn: Fee storage +{0}%
+  - ko: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uB9C8\uAE30 +{0}"
+    en: Miasma +{0} per cage size
+    where: GameData.cs:359
+    args: '{0} = n'
+    origKo: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uB9C8\uAE30 +{0}"
+    origEn: Miasma +{0} per cage size
+  - ko: "\uC190\uB2D8 \uBC29\uBB38 \uBE48\uB3C4 +{0}% \xB7 \uCD5C\uB300 \uC190\uB2D8
+      +{1}\uBA85"
+    en: "Guest rate +{0}% \xB7 Max guests +{1}"
+    where: GameData.cs:360
+    args: "{0} = n * 12  \xB7  {1} = n * VisitorMaxPerLevel"
+    origKo: "\uC190\uB2D8 \uBC29\uBB38 \uBE48\uB3C4 +{0}% \xB7 \uCD5C\uB300 \uC190\uB2D8
+      +{1}\uBA85"
+    origEn: "Guest rate +{0}% \xB7 Max guests +{1}"
+  - ko: "\uC6A9\uC0AC \uC18C\uC9C0\uAE08 +{0}%"
+    en: Hero wallets +{0}%
+    where: GameData.cs:361
+    args: '{0} = n * 20'
+    origKo: "\uC6A9\uC0AC \uC18C\uC9C0\uAE08 +{0}%"
+    origEn: Hero wallets +{0}%
+  - ko: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 +{0}\uCD08"
+    en: Guest patience +{0}s
+    where: GameData.cs:362
+    args: '{0} = n * 1.5f:0.#'
+    origKo: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 +{0}\uCD08"
+    origEn: Guest patience +{0}s
+  - ko: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uD310\uB9E4\uAC00 +{0}%"
+    en: Food & gift prices +{0}%
+    where: GameData.cs:363
+    args: '{0} = n * 5'
+    origKo: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uD310\uB9E4\uAC00 +{0}%"
+    origEn: Food & gift prices +{0}%
+  - ko: "\uBCF4\uC11D \uC0DD\uC0B0 \uC18D\uB3C4 +{0}% \xB7 \uBCF4\uAD00 \uD55C\uB3C4
+      +{1}"
+    en: "Gem output +{0}% \xB7 Storage +{1}"
+    where: GameData.cs:364
+    args: "{0} = n * 8  \xB7  {1} = n * 2"
+    origKo: "\uBCF4\uC11D \uC0DD\uC0B0 \uC18D\uB3C4 +{0}% \xB7 \uBCF4\uAD00 \uD55C\uB3C4
+      +{1}"
+    origEn: "Gem output +{0}% \xB7 Storage +{1}"
+  - ko: "\uC4F0\uB808\uAE30 \uC218\uAC70 \uBCF4\uC0C1 +{0}%"
+    en: Trash rewards +{0}%
+    where: GameData.cs:365
+    args: '{0} = n * 50'
+    origKo: "\uC4F0\uB808\uAE30 \uC218\uAC70 \uBCF4\uC0C1 +{0}%"
+    origEn: Trash rewards +{0}%
+  - ko: "+{0} \uBCF4\uC11D"
+    en: +{0} Gems
+    where: "CastleSim.cs:412 \uC678 1\uACF3"
+    args: '{0} = rp'
+    origKo: "+{0} \uBCF4\uC11D"
+    origEn: +{0} Gems
+  - ko: "{0}\uC740(\uB294) \uCD5C\uB300 {1}\uAC1C\uAE4C\uC9C0 \uC9C0\uC744 \uC218
+      \uC788\uC2B5\uB2C8\uB2E4."
+    en: You can build up to {1} {0}.
+    where: Game.Buildings.cs:50
+    args: "{0} = def.Name  \xB7  {1} = def.maxCount"
+    origKo: "{0}\uC740(\uB294) \uCD5C\uB300 {1}\uAC1C\uAE4C\uC9C0 \uC9C0\uC744 \uC218
+      \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: You can build up to {1} {0}.
+  - ko: "\uADF8 \uC790\uB9AC\uC5D0\uB294 \uC9C0\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: Can't build there.
+    where: Game.Buildings.cs:51
+    args: 
+    origKo: "\uADF8 \uC790\uB9AC\uC5D0\uB294 \uC9C0\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: Can't build there.
+  - ko: "{0} {1}\xD7{2} \uAC74\uC124 \uC644\uB8CC"
+    en: "Built a {1}\xD7{2} {0}"
+    where: Game.Buildings.cs:69
+    args: "{0} = GameData.Buildings[type].Name  \xB7  {1} = w  \xB7  {2} = h"
+    origKo: "{0} {1}\xD7{2} \uAC74\uC124 \uC644\uB8CC"
+    origEn: "Built a {1}\xD7{2} {0}"
+  - ko: "{0} \uAC74\uC124 \uC644\uB8CC"
+    en: Built {0}
+    where: Game.Buildings.cs:69
+    args: '{0} = GameData.Buildings[type].Name'
+    origKo: "{0} \uAC74\uC124 \uC644\uB8CC"
+    origEn: Built {0}
+  - ko: "\uCD5C\uB300 \uB808\uBCA8"
+    en: Max level
+    where: "Game.Buildings.cs:79 \uC678 1\uACF3"
+    args: 
+    origKo: "\uCD5C\uB300 \uB808\uBCA8"
+    origEn: Max level
+  - ko: "{0} \uCCA0\uAC70 (\uD22C\uC790\uAE08 {1}G / {2}\uC790\uC7AC \uD658\uAE09)"
+    en: Demolished {0} (refunded {1}G / {2} Mat)
+    where: Game.Buildings.cs:113
+    args: "{0} = GameData.Buildings[b.type].Name  \xB7  {1} = b.investedGold:N0 
+      \xB7  {2} = b.investedMat:N0"
+    origKo: "{0} \uCCA0\uAC70 (\uD22C\uC790\uAE08 {1}G / {2}\uC790\uC7AC \uD658\uAE09)"
+    origEn: Demolished {0} (refunded {1}G / {2} Mat)
+  - ko: "\uCD5C\uB300 \uCE35"
+    en: Max floor
+    where: Game.Buildings.cs:131
+    args: 
+    origKo: "\uCD5C\uB300 \uCE35"
+    origEn: Max floor
+  - ko: "\uBCF4\uC11D \uBD80\uC871"
+    en: Not enough Gems
+    where: "Game.Buildings.cs:132 \uC678 2\uACF3"
+    args: 
+    origKo: "\uBCF4\uC11D \uBD80\uC871"
+    origEn: Not enough Gems
+  - ko: "\uC7AC\uD654 \uBD80\uC871"
+    en: Not enough resources
+    where: Game.Buildings.cs:133
+    args: 
+    origKo: "\uC7AC\uD654 \uBD80\uC871"
+    origEn: Not enough resources
+  - ko: "[\uC131 \uC99D\uCD95] {0} {1}\uCE35 \uAC1C\uBC29!"
+    en: '[Expansion] {2} wing floor {1} opened!'
+    where: Game.Buildings.cs:145
+    args: "{0} = (wing == 0 ? \"\uC67C\uCABD\" : \"\uC624\uB978\uCABD\")  \xB7  {1}
+      = n  \xB7  {2} = (wing == 0 ? \"Left\" : \"Right\")"
+    origKo: "[\uC131 \uC99D\uCD95] {0} {1}\uCE35 \uAC1C\uBC29!"
+    origEn: '[Expansion] {2} wing floor {1} opened!'
+  - ko: "\uBCF4\uAD00\uD568\uC5D0 \uC5C6\uC74C"
+    en: None in storage
+    where: Game.Buildings.cs:181
+    args: 
+    origKo: "\uBCF4\uAD00\uD568\uC5D0 \uC5C6\uC74C"
+    origEn: None in storage
+  - ko: "\uACF5\uAC04 \uBD80\uC871"
+    en: Not enough space
+    where: Game.Buildings.cs:182
+    args: 
+    origKo: "\uACF5\uAC04 \uBD80\uC871"
+    origEn: Not enough space
+  - ko: "\uB9C8\uAE30 \uBD80\uC871 (\uB9C8\uCD08\uB97C \uB123\uC73C\uC138\uC694)"
+    en: Not enough miasma (add plants)
+    where: Game.Buildings.cs:183
+    args: 
+    origKo: "\uB9C8\uAE30 \uBD80\uC871 (\uB9C8\uCD08\uB97C \uB123\uC73C\uC138\uC694)"
+    origEn: Not enough miasma (add plants)
+  - ko: "\uB9C8\uCD08\uB97C \uBE7C\uBA74 \uB9C8\uAE30\uAC00 \uBD80\uC871\uD574\uC9D1\uB2C8\uB2E4."
+    en: Removing this plant would drop miasma below zero.
+    where: Game.Buildings.cs:203
+    args: 
+    origKo: "\uB9C8\uCD08\uB97C \uBE7C\uBA74 \uB9C8\uAE30\uAC00 \uBD80\uC871\uD574\uC9D1\uB2C8\uB2E4."
+    origEn: Removing this plant would drop miasma below zero.
+  - ko: "\uBCF5\uADC0 \uB300\uAE30 {0}\uCD08"
+    en: Returning {0}s
+    where: Game.Fishing.cs:29
+    args: '{0} = h.restTimer:0'
+    origKo: "\uBCF5\uADC0 \uB300\uAE30 {0}\uCD08"
+    origEn: Returning {0}s
+  - ko: "\uCCB4\uB825 \uD68C\uBCF5 \uC911 {0}\uCD08"
+    en: Resting {0}s
+    where: Game.Fishing.cs:29
+    args: '{0} = h.restTimer:0'
+    origKo: "\uCCB4\uB825 \uD68C\uBCF5 \uC911 {0}\uCD08"
+    origEn: Resting {0}s
+  - ko: "\uB300\uAE30 \uC911 (\uBBF8\uB07C \uC5C6\uC74C)"
+    en: Idle (no bait)
+    where: Game.Fishing.cs:30
+    args: 
+    origKo: "\uB300\uAE30 \uC911 (\uBBF8\uB07C \uC5C6\uC74C)"
+    origEn: Idle (no bait)
+  - ko: "\uB300\uAE30 \uC911"
+    en: Idle
+    where: Game.Fishing.cs:30
+    args: 
+    origKo: "\uB300\uAE30 \uC911"
+    origEn: Idle
+  - ko: "\uD3EC\uD68D \uC911 ({0}%)"
+    en: Hunting ({0}%)
+    where: Game.Fishing.cs:31
+    args: '{0} = h.timer / HuntInterval(h) * 100f:0'
+    origKo: "\uD3EC\uD68D \uC911 ({0}%)"
+    origEn: Hunting ({0}%)
+  - ko: "\uC544\uC9C1 \uD30C\uACAC\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: Can't dispatch yet.
+    where: Game.Fishing.cs:44
+    args: 
+    origKo: "\uC544\uC9C1 \uD30C\uACAC\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: Can't dispatch yet.
+  - ko: "\uC7A0\uAE34 \uC2A4\uD14C\uC774\uC9C0\uC785\uB2C8\uB2E4."
+    en: This stage is locked.
+    where: Game.Fishing.cs:46
+    args: 
+    origKo: "\uC7A0\uAE34 \uC2A4\uD14C\uC774\uC9C0\uC785\uB2C8\uB2E4."
+    origEn: This stage is locked.
+  - ko: "\uBBF8\uB07C\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0C1\uC810\uC5D0\uC11C \uAD6C\uC785\uD558\uC138\uC694."
+    en: No bait. Buy some in the Shop.
+    where: Game.Fishing.cs:49
+    args: 
+    origKo: "\uBBF8\uB07C\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0C1\uC810\uC5D0\uC11C
+      \uAD6C\uC785\uD558\uC138\uC694."
+    origEn: No bait. Buy some in the Shop.
+  - ko: "[{0}] \uD68C\uBCF5 \uC644\uB8CC, \uB2E4\uC2DC \uCD9C\uBC1C\uD569\uB2C8\uB2E4."
+    en: '[{0}] Recovered and heading out again.'
+    where: Game.Fishing.cs:105
+    args: '{0} = Def(h).Name'
+    origKo: "[{0}] \uD68C\uBCF5 \uC644\uB8CC, \uB2E4\uC2DC \uCD9C\uBC1C\uD569\uB2C8\uB2E4."
+    origEn: '[{0}] Recovered and heading out again.'
+  - ko: "[{0}] \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC838 \uD3EC\uD68D\uC744 \uBA48\uCDC4\uC2B5\uB2C8\uB2E4."
+    en: '[{0}] Out of bait, stopped hunting.'
+    where: Game.Fishing.cs:132
+    args: '{0} = def.Name'
+    origKo: "[{0}] \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC838 \uD3EC\uD68D\uC744 \uBA48\uCDC4\uC2B5\uB2C8\uB2E4."
+    origEn: '[{0}] Out of bait, stopped hunting.'
+  - ko: "[{0}] \uBBF8\uB07C\uB97C {1}(\uC73C)\uB85C \uC790\uB3D9 \uAD50\uCCB4"
+    en: '[{0}] Switched bait to {1}'
+    where: Game.Fishing.cs:137
+    args: "{0} = def.Name  \xB7  {1} = GameData.Baits[next].Name"
+    origKo: "[{0}] \uBBF8\uB07C\uB97C {1}(\uC73C)\uB85C \uC790\uB3D9 \uAD50\uCCB4"
+    origEn: '[{0}] Switched bait to {1}'
+  - ko: "[{0}] \uCCB4\uB825\uC774 \uB2E4\uD574 \uADC0\uD658\uD588\uC2B5\uB2C8\uB2E4.
+      ({1}\uCD08 \uD68C\uBCF5)"
+    en: '[{0}] Exhausted, resting for {1}s.'
+    where: Game.Fishing.cs:163
+    args: "{0} = def.Name  \xB7  {1} = Mods.restTime:0"
+    origKo: "[{0}] \uCCB4\uB825\uC774 \uB2E4\uD574 \uADC0\uD658\uD588\uC2B5\uB2C8\uB2E4.
+      ({1}\uCD08 \uD68C\uBCF5)"
+    origEn: '[{0}] Exhausted, resting for {1}s.'
+  - ko: "[\uD788\uB4E0 \uBC1C\uACAC!] {0}"
+    en: '[Hidden found!] {0}'
+    where: Game.Fishing.cs:184
+    args: '{0} = m.Name'
+    origKo: "[\uD788\uB4E0 \uBC1C\uACAC!] {0}"
+    origEn: '[Hidden found!] {0}'
+  - ko: "[\uC2E0\uADDC \uD3EC\uD68D] {0}"
+    en: '[New catch] {0}'
+    where: Game.Fishing.cs:184
+    args: '{0} = m.Name'
+    origKo: "[\uC2E0\uADDC \uD3EC\uD68D] {0}"
+    origEn: '[New catch] {0}'
+  - ko: "[\uB3C4\uAC10 \uB4F1\uB85D] {0} (+{1}\uACE8\uB4DC, \uBCF4\uC11D +{2})"
+    en: '[Collection] {0} (+{1} Gold, +{2} Gems)'
+    where: Game.Fishing.cs:260
+    args: "{0} = m.Name  \xB7  {1} = gold:N0  \xB7  {2} = gems"
+    origKo: "[\uB3C4\uAC10 \uB4F1\uB85D] {0} (+{1}\uACE8\uB4DC, \uBCF4\uC11D +{2})"
+    origEn: '[Collection] {0} (+{1} Gold, +{2} Gems)'
+  - ko: "\uC644\uB8CC"
+    en: Done
+    where: "Game.Progress.cs:12 \uC678 1\uACF3"
+    args: 
+    origKo: "\uC644\uB8CC"
+    origEn: Done
+  - ko: "\uC120\uD589: {0}"
+    en: 'Requires: {0}'
+    where: Game.Progress.cs:14
+    args: '{0} = GameData.ResearchById(r.requires).Name'
+    origKo: "\uC120\uD589: {0}"
+    origEn: 'Requires: {0}'
+  - ko: "\uACE8\uB4DC \uBD80\uC871"
+    en: Not enough Gold
+    where: "Game.Progress.cs:16 \uC678 2\uACF3"
+    args: 
+    origKo: "\uACE8\uB4DC \uBD80\uC871"
+    origEn: Not enough Gold
+  - ko: "[\uC5F0\uAD6C \uC644\uB8CC] {0}: {1}"
+    en: '[Research] {0}: {1}'
+    where: Game.Progress.cs:29
+    args: "{0} = r.Name  \xB7  {1} = r.Desc"
+    origKo: "[\uC5F0\uAD6C \uC644\uB8CC] {0}: {1}"
+    origEn: '[Research] {0}: {1}'
+  - ko: "\uCD5C\uB300 \uB2E8\uACC4"
+    en: Maxed
+    where: "Game.Progress.cs:39 \uC678 1\uACF3"
+    args: 
+    origKo: "\uCD5C\uB300 \uB2E8\uACC4"
+    origEn: Maxed
+  - ko: "[\uC5C5\uADF8\uB808\uC774\uB4DC] {0} {1}\uB2E8\uACC4: {2}"
+    en: '[Upgrade] {0} Lv.{1}: {2}'
+    where: Game.Progress.cs:55
+    args: "{0} = u.Name  \xB7  {1} = next  \xB7  {2} = u.effect(next)"
+    origKo: "[\uC5C5\uADF8\uB808\uC774\uB4DC] {0} {1}\uB2E8\uACC4: {2}"
+    origEn: '[Upgrade] {0} Lv.{1}: {2}'
+  - ko: "\uC9C1\uC6D0 \uC219\uC18C\uB97C \uC9D3\uAC70\uB098 \uC5C5\uADF8\uB808\uC774\uB4DC\uD574\uC57C
+      \uB354 \uACE0\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: Build or upgrade a Staff Dorm to hire more.
+    where: Game.Progress.cs:83
+    args: 
+    origKo: "\uC9C1\uC6D0 \uC219\uC18C\uB97C \uC9D3\uAC70\uB098 \uC5C5\uADF8\uB808\uC774\uB4DC\uD574\uC57C
+      \uB354 \uACE0\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: Build or upgrade a Staff Dorm to hire more.
+  - ko: "{0} \uACE0\uC6A9!"
+    en: Hired {0}!
+    where: Game.Progress.cs:95
+    args: '{0} = d.Name'
+    origKo: "{0} \uACE0\uC6A9!"
+    origEn: Hired {0}!
+  - ko: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: Requires a {0} Lv.{1}+.
+    where: Game.Progress.cs:140
+    args: "{0} = GameData.Buildings[item.shop].Name  \xB7  {1} = item.tier"
+    origKo: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: Requires a {0} Lv.{1}+.
+  - ko: "\uB9C8\uC655\uC131\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!
+      \uBE48 \uCE78\uC744 \uD0ED\uD574 \uAC74\uBB3C\uC744 \uC9C0\uC5B4 \uBCF4\uC138\uC694."
+    en: Welcome to the Demon Castle! Tap an empty cell to build.
+    where: GameUI.cs:65
+    args: 
+    origKo: "\uB9C8\uC655\uC131\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!
+      \uBE48 \uCE78\uC744 \uD0ED\uD574 \uAC74\uBB3C\uC744 \uC9C0\uC5B4 \uBCF4\uC138\uC694."
+    origEn: Welcome to the Demon Castle! Tap an empty cell to build.
+  - ko: "\uCD95\uC18C (\uB9C8\uC6B0\uC2A4 \uD720)"
+    en: Zoom out (mouse wheel)
+    where: GameUI.cs:140
+    args: 
+    origKo: "\uCD95\uC18C (\uB9C8\uC6B0\uC2A4 \uD720)"
+    origEn: Zoom out (mouse wheel)
+  - ko: "\uD655\uB300 (\uB9C8\uC6B0\uC2A4 \uD720)\n\uB04C\uC5B4\uC11C \uC774\uB3D9\uD569\uB2C8\uB2E4."
+    en: 'Zoom in (mouse wheel)
+
+      Drag to pan.'
+    where: GameUI.cs:142
+    args: 
+    origKo: "\uD655\uB300 (\uB9C8\uC6B0\uC2A4 \uD720)\n\uB04C\uC5B4\uC11C \uC774\uB3D9\uD569\uB2C8\uB2E4."
+    origEn: 'Zoom in (mouse wheel)
+
+      Drag to pan.'
+  - ko: "\uAC74\uC124"
+    en: Build
+    where: "GameUI.cs:149 \uC678 2\uACF3"
+    args: 
+    origKo: "\uAC74\uC124"
+    origEn: Build
+  - ko: "\uAC74\uBB3C\uC744 \uACE0\uB978 \uB4A4 \uC131\uC758 \uBE48 \uCE78\uC744
+      \uB204\uB974\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4.\n\uBE48
+      \uCE78\uC744 \uBC14\uB85C \uD0ED\uD574\uB3C4 \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: 'Pick a building, then tap or drag over empty cells.
+
+      You can also
+      tap an empty cell directly.'
+    where: GameUI.cs:150
+    args: 
+    origKo: "\uAC74\uBB3C\uC744 \uACE0\uB978 \uB4A4 \uC131\uC758 \uBE48 \uCE78\uC744
+      \uB204\uB974\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4.\n\uBE48
+      \uCE78\uC744 \uBC14\uB85C \uD0ED\uD574\uB3C4 \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: 'Pick a building, then tap or drag over empty cells.
+
+      You can also
+      tap an empty cell directly.'
+  - ko: "\uC9C1\uC6D0"
+    en: Staff
+    where: GameUI.cs:151
+    args: 
+    origKo: "\uC9C1\uC6D0"
+    origEn: Staff
+  - ko: "\uC9C1\uC6D0 \uAD00\uB9AC"
+    en: Staff
+    where: GameUI.cs:151
+    args: 
+    origKo: "\uC9C1\uC6D0 \uAD00\uB9AC"
+    origEn: Staff
+  - ko: "\uC131 \uAD00\uB9AC\uC790\uB97C \uD30C\uACAC\uD558\uACE0 \uB2F4\uB2F9 \uAD6C\uC5ED\uC744
+      \uC815\uD569\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790 = \uB300\uAE30 \uC911\uC778
+      \uC131 \uAD00\uB9AC\uC790"
+    en: 'Dispatch castle staff and assign areas.
+
+      Red number = idle staff'
+    where: GameUI.cs:153
+    args: 
+    origKo: "\uC131 \uAD00\uB9AC\uC790\uB97C \uD30C\uACAC\uD558\uACE0 \uB2F4\uB2F9
+      \uAD6C\uC5ED\uC744 \uC815\uD569\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790 = \uB300\uAE30
+      \uC911\uC778 \uC131 \uAD00\uB9AC\uC790"
+    origEn: 'Dispatch castle staff and assign areas.
+
+      Red number = idle staff'
+  - ko: "\uC0C1\uC810"
+    en: Shop
+    where: "GameUI.cs:154 \uC678 1\uACF3"
+    args: 
+    origKo: "\uC0C1\uC810"
+    origEn: Shop
+  - ko: "\uBBF8\uB07C, \uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uC7AC\uACE0\uB97C \uC0AC\uACE0
+      \uAD34\uBB3C\uC744 \uD31D\uB2C8\uB2E4."
+    en: Buy bait and goods, sell monsters.
+    where: GameUI.cs:155
+    args: 
+    origKo: "\uBBF8\uB07C, \uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uC7AC\uACE0\uB97C
+      \uC0AC\uACE0 \uAD34\uBB3C\uC744 \uD31D\uB2C8\uB2E4."
+    origEn: Buy bait and goods, sell monsters.
+  - ko: "\uBCF4\uAD00\uD568"
+    en: Storage
+    where: GameUI.cs:156
+    args: 
+    origKo: "\uBCF4\uAD00\uD568"
+    origEn: Storage
+  - ko: "\uAC00\uC9C4 \uAD34\uBB3C\xB7\uBBF8\uB07C\xB7\uC0C1\uD488\uC744 \uD55C\uB208\uC5D0
+      \uBD05\uB2C8\uB2E4."
+    en: See your monsters, bait and goods.
+    where: GameUI.cs:157
+    args: 
+    origKo: "\uAC00\uC9C4 \uAD34\uBB3C\xB7\uBBF8\uB07C\xB7\uC0C1\uD488\uC744 \uD55C\uB208\uC5D0
+      \uBD05\uB2C8\uB2E4."
+    origEn: See your monsters, bait and goods.
+  - ko: "\uD751\uB9C8\uBC95 \uC5F0\uAD6C \xB7 \uC99D\uCD95"
+    en: Research & Expansion
+    where: GameUI.cs:158
+    args: 
+    origKo: "\uD751\uB9C8\uBC95 \uC5F0\uAD6C \xB7 \uC99D\uCD95"
+    origEn: Research & Expansion
+  - ko: "\uBCF4\uC11D\uACFC \uACE8\uB4DC\uB85C \uC131\uC744 \uC99D\uCD95\uD558\uACE0
+      \uC5C5\uADF8\uB808\uC774\uB4DC\uD569\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790
+      = \uC9C0\uAE08 \uD560 \uC218 \uC788\uB294 \uC5F0\uAD6C"
+    en: 'Spend Gems and Gold on expansions and upgrades.
+
+      Red number = affordable
+      now'
+    where: GameUI.cs:160
+    args: 
+    origKo: "\uBCF4\uC11D\uACFC \uACE8\uB4DC\uB85C \uC131\uC744 \uC99D\uCD95\uD558\uACE0
+      \uC5C5\uADF8\uB808\uC774\uB4DC\uD569\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790
+      = \uC9C0\uAE08 \uD560 \uC218 \uC788\uB294 \uC5F0\uAD6C"
+    origEn: 'Spend Gems and Gold on expansions and upgrades.
+
+      Red number =
+      affordable now'
+  - ko: "\uB3C4\uAC10"
+    en: Book
+    where: GameUI.cs:161
+    args: 
+    origKo: "\uB3C4\uAC10"
+    origEn: Book
+  - ko: "\uAD34\uBB3C \uB3C4\uAC10"
+    en: Monster Book
+    where: GameUI.cs:161
+    args: 
+    origKo: "\uAD34\uBB3C \uB3C4\uAC10"
+    origEn: Monster Book
+  - ko: "\uC7A1\uC740 \uAD34\uBB3C\uC744 \uB4F1\uB85D\uD558\uACE0 \uBCF4\uC0C1(\uBCF4\uC11D
+      \uD3EC\uD568)\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790 =
+      \uB4F1\uB85D \uAC00\uB2A5\uD55C \uAD34\uBB3C"
+    en: 'Register monsters for rewards (including Gems).
+
+      Red number = ready
+      to register'
+    where: GameUI.cs:163
+    args: 
+    origKo: "\uC7A1\uC740 \uAD34\uBB3C\uC744 \uB4F1\uB85D\uD558\uACE0 \uBCF4\uC0C1(\uBCF4\uC11D
+      \uD3EC\uD568)\uC744 \uBC1B\uC2B5\uB2C8\uB2E4.\n\uBE68\uAC04 \uC22B\uC790 =
+      \uB4F1\uB85D \uAC00\uB2A5\uD55C \uAD34\uBB3C"
+    origEn: 'Register monsters for rewards (including Gems).
+
+      Red number =
+      ready to register'
+  - ko: "\uB9C8\uC655\uC131"
+    en: Castle
+    where: GameUI.cs:190
+    args: 
+    origKo: "\uB9C8\uC655\uC131"
+    origEn: Castle
+  - ko: "\uB9C8\uC655\uC131\n\uAC74\uBB3C\uC744 \uC9D3\uACE0 \uC190\uB2D8\uC744 \uB9DE\uC2B5\uB2C8\uB2E4. 
+      [Tab]"
+    en: 'Castle
+
+      Build rooms and welcome guests.  [Tab]'
+    where: GameUI.cs:191
+    args: 
+    origKo: "\uB9C8\uC655\uC131\n\uAC74\uBB3C\uC744 \uC9D3\uACE0 \uC190\uB2D8\uC744
+      \uB9DE\uC2B5\uB2C8\uB2E4.  [Tab]"
+    origEn: 'Castle
+
+      Build rooms and welcome guests.  [Tab]'
+  - ko: "\uD3EC\uD68D"
+    en: Hunt
+    where: GameUI.cs:192
+    args: 
+    origKo: "\uD3EC\uD68D\uC7A5"
+    origEn: Hunt
+  - ko: "\uD3EC\uD68D\n\uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD574 \uAD34\uBB3C\uC744
+      \uC7A1\uACE0, \uC4F0\uB808\uAE30\uB97C \uC90D\uC2B5\uB2C8\uB2E4.  [Tab]\n\uBE68\uAC04
+      \uC22B\uC790 = \uC26C\uACE0 \uC788\uB294 \uD3EC\uD68D\uB300\uC6D0"
+    en: 'Hunting
+
+      Send hunters to catch monsters and pick up trash.  [Tab]
+
+      Red
+      number = idle hunters'
+    where: GameUI.cs:193
+    args: 
+    origKo: "\uD3EC\uD68D\uC7A5\n\uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD574
+      \uAD34\uBB3C\uC744 \uC7A1\uACE0, \uC4F0\uB808\uAE30\uB97C \uC90D\uC2B5\uB2C8\uB2E4. 
+      [Tab]\n\uBE68\uAC04 \uC22B\uC790 = \uC26C\uACE0 \uC788\uB294 \uD3EC\uD68D\uB300\uC6D0"
+    origEn: 'Hunting Grounds
+
+      Send hunters to catch monsters and pick up trash. 
+      [Tab]
+
+      Red number = idle hunters'
+  - ko: "\uACE8\uB4DC\n\uAC74\uC124\xB7\uAD6C\uB9E4\xB7\uC5F0\uAD6C\uC5D0 \uC501\uB2C8\uB2E4."
+    en: 'Gold
+
+      For building, buying and research.'
+    where: GameUI.cs:197
+    args: 
+    origKo: "\uACE8\uB4DC\n\uAC74\uC124\xB7\uAD6C\uB9E4\xB7\uC5F0\uAD6C\uC5D0 \uC501\uB2C8\uB2E4."
+    origEn: 'Gold
+
+      For building, buying and research.'
+  - ko: "\uAC74\uC124 \uC790\uC7AC\n\uAC74\uC124\xB7\uC5C5\uADF8\uB808\uC774\uB4DC\uC5D0
+      \uC501\uB2C8\uB2E4.\n\uC0C1\uC810\uC5D0\uC11C \uACE8\uB4DC\uC640 1:1 \uAD50\uD658"
+    en: 'Materials
+
+      For building and upgrades.
+
+      Exchange 1:1 with Gold
+      in the Shop.'
+    where: GameUI.cs:198
+    args: 
+    origKo: "\uAC74\uC124 \uC790\uC7AC\n\uAC74\uC124\xB7\uC5C5\uADF8\uB808\uC774\uB4DC\uC5D0
+      \uC501\uB2C8\uB2E4.\n\uC0C1\uC810\uC5D0\uC11C \uACE8\uB4DC\uC640 1:1 \uAD50\uD658"
+    origEn: 'Materials
+
+      For building and upgrades.
+
+      Exchange 1:1 with
+      Gold in the Shop.'
+  - ko: "\uBCF4\uC11D\n\uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uC5D0\uC11C \uC0DD\uC131\uB429\uB2C8\uB2E4.\n\uC99D\uCD95\xB7\uD0D0\uC0AC\xB7\uC5C5\uADF8\uB808\uC774\uB4DC\uC5D0
+      \uC501\uB2C8\uB2E4."
+    en: 'Gems
+
+      Slowly made by the Dark Magic Lab.
+
+      Used for expansions,
+      exploration and upgrades.'
+    where: GameUI.cs:199
+    args: 
+    origKo: "\uBCF4\uC11D \u2014 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC\n\uD751\uB9C8\uBC95
+      \uC5F0\uAD6C\uC18C\uC5D0\uC11C \uC544\uC8FC \uCC9C\uCC9C\uD788 \uB098\uC635\uB2C8\uB2E4.\n\uC99D\uCD95\xB7\uD0D0\uC0AC\xB7\uC5C5\uADF8\uB808\uC774\uB4DC\uC5D0
+      \uC501\uB2C8\uB2E4."
+    origEn: "Gems \u2014 the rarest resource\nSlowly made by the Dark Magic Lab.\nUsed
+      for expansions, exploration and upgrades."
+  - ko: "\uC6A9\uC0AC \uC190\uB2D8 {0}\uBA85 (\uCD5C\uB300 {1}\uBA85)\n\uD310\uB9E4
+      {2}\uD68C \xB7 \uBD88\uB9CC \uC774\uD0C8 {3}\uBA85\n\n\uCE35\uC744 \uB298\uB9AC\uAC70\uB098
+      [\uC5F0\uAD6C > \uC190\uB2D8 \uC720\uCE58]\uB85C \uC190\uB2D8\uC744 \uB298\uB9B4
+      \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: "Hero guests {0} (max {1})\nSales {2} \xB7 Left unhappy {3}\n\nMore floors
+      or [Research > Advertising] bring more guests."
+    where: GameUI.cs:211
+    args: "{0} = g.Sim.visitors.Count  \xB7  {1} = g.Sim.VisitorMax  \xB7  {2} =
+      g.Sim.visitorsServed  \xB7  {3} = g.Sim.visitorsLeftUnhappy"
+    origKo: "\uC6A9\uC0AC \uC190\uB2D8 {0}\uBA85 (\uCD5C\uB300 {1}\uBA85)\n\uD310\uB9E4
+      {2}\uD68C \xB7 \uBD88\uB9CC \uC774\uD0C8 {3}\uBA85\n\n\uCE35\uC744 \uB298\uB9AC\uAC70\uB098
+      [\uC5F0\uAD6C > \uC190\uB2D8 \uC720\uCE58]\uB85C \uC190\uB2D8\uC744 \uB298\uB9B4
+      \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: "Hero guests {0} (max {1})\nSales {2} \xB7 Left unhappy {3}\n\nMore floors
+      or [Research > Advertising] bring more guests."
+  - ko: "\uD604\uC7AC \uC2DC\uAC01\n\uD734\uAC8C\uC2E4 \uC9C0\uC6D0\uAE08\uC740 \uB9E4\uC77C
+      06\uC2DC\uC5D0 \uC9C0\uAE09\uB429\uB2C8\uB2E4."
+    en: 'Current time
+
+      Lounge bonus is paid daily at 06:00.'
+    where: GameUI.cs:217
+    args: 
+    origKo: "\uD604\uC7AC \uC2DC\uAC01\n\uD734\uAC8C\uC2E4 \uC9C0\uC6D0\uAE08\uC740
+      \uB9E4\uC77C 06\uC2DC\uC5D0 \uC9C0\uAE09\uB429\uB2C8\uB2E4."
+    origEn: 'Current time
+
+      Lounge bonus is paid daily at 06:00.'
+  - ko: "\uC800\uC7A5\uD588\uC2B5\uB2C8\uB2E4."
+    en: Saved.
+    where: GameUI.cs:218
+    args: 
+    origKo: "\uC800\uC7A5\uD588\uC2B5\uB2C8\uB2E4."
+    origEn: Saved.
+  - ko: "\uC800\uC7A5 (30\uCD08\uB9C8\uB2E4 \uC790\uB3D9 \uC800\uC7A5)"
+    en: Save (auto-saves every 30s)
+    where: GameUI.cs:218
+    args: 
+    origKo: "\uC800\uC7A5 (30\uCD08\uB9C8\uB2E4 \uC790\uB3D9 \uC800\uC7A5)"
+    origEn: Save (auto-saves every 30s)
+  - ko: "\uC124\uC815 \u2014 \uC18C\uB9AC \xB7 \uC5B8\uC5B4 \xB7 \uC0C8\uB85C \uC2DC\uC791"
+    en: "Settings \u2014 sound, language, new game"
+    where: GameUI.cs:219
+    args: 
+    origKo: "\uC124\uC815 \u2014 \uC18C\uB9AC \xB7 \uC5B8\uC5B4 \xB7 \uC0C8\uB85C
+      \uC2DC\uC791"
+    origEn: "Settings \u2014 sound, language, new game"
+  - ko: "\uC124\uC815"
+    en: Settings
+    where: GameUI.cs:239
+    args: 
+    origKo: "\uC124\uC815"
+    origEn: Settings
+  - ko: "\uC18C\uB9AC"
+    en: Sound
+    where: GameUI.cs:244
+    args: 
+    origKo: "\uC18C\uB9AC"
+    origEn: Sound
+  - ko: "\uBC30\uACBD\uC74C"
+    en: Music
+    where: GameUI.cs:245
+    args: 
+    origKo: "\uBC30\uACBD\uC74C"
+    origEn: Music
+  - ko: "\uD6A8\uACFC\uC74C"
+    en: Effects
+    where: GameUI.cs:246
+    args: 
+    origKo: "\uD6A8\uACFC\uC74C"
+    origEn: Effects
+  - ko: "\uC5B8\uC5B4 \xB7 Language"
+    en: "Language \xB7 \uC5B8\uC5B4"
+    where: GameUI.cs:248
+    args: 
+    origKo: "\uC5B8\uC5B4 \xB7 Language"
+    origEn: "Language \xB7 \uC5B8\uC5B4"
+  - ko: "\uAC8C\uC784"
+    en: Game
+    where: GameUI.cs:253
+    args: 
+    origKo: "\uAC8C\uC784"
+    origEn: Game
+  - ko: "\uD29C\uD1A0\uB9AC\uC5BC \uB2E4\uC2DC \uBCF4\uAE30"
+    en: Replay tutorial
+    where: GameUI.cs:255
+    args: 
+    origKo: "\uD29C\uD1A0\uB9AC\uC5BC \uB2E4\uC2DC \uBCF4\uAE30"
+    origEn: Replay tutorial
+  - ko: "\uC0C8\uB85C \uC2DC\uC791"
+    en: New game
+    where: GameUI.cs:257
+    args: 
+    origKo: "\uC0C8\uB85C \uC2DC\uC791"
+    origEn: New game
+  - ko: "\uC9C4\uD589 \uC0C1\uD669\uC740 30\uCD08\uB9C8\uB2E4, \uADF8\uB9AC\uACE0
+      \uC571\uC744 \uB0B4\uB9B4 \uB54C \uC790\uB3D9\uC73C\uB85C \uC800\uC7A5\uB429\uB2C8\uB2E4."
+    en: Progress auto-saves every 30 seconds and when the app is closed.
+    where: GameUI.cs:258
+    args: 
+    origKo: "\uC9C4\uD589 \uC0C1\uD669\uC740 30\uCD08\uB9C8\uB2E4, \uADF8\uB9AC\uACE0
+      \uC571\uC744 \uB0B4\uB9B4 \uB54C \uC790\uB3D9\uC73C\uB85C \uC800\uC7A5\uB429\uB2C8\uB2E4."
+    origEn: Progress auto-saves every 30 seconds and when the app is closed.
+  - ko: "\uC0C8 \uAC8C\uC784"
+    en: New game
+    where: GameUI.cs:281
+    args: 
+    origKo: "\uC0C8 \uAC8C\uC784"
+    origEn: New game
+  - ko: "\uBAA8\uB4E0 \uC9C4\uD589 \uC0C1\uD669\uC774 \uC0AD\uC81C\uB429\uB2C8\uB2E4.
+      \uC815\uB9D0 \uC0C8\uB85C \uC2DC\uC791\uD560\uAE4C\uC694?"
+    en: All progress will be deleted. Start over?
+    where: GameUI.cs:284
+    args: 
+    origKo: "\uBAA8\uB4E0 \uC9C4\uD589 \uC0C1\uD669\uC774 \uC0AD\uC81C\uB429\uB2C8\uB2E4.
+      \uC815\uB9D0 \uC0C8\uB85C \uC2DC\uC791\uD560\uAE4C\uC694?"
+    origEn: All progress will be deleted. Start over?
+  - ko: "\uC0C8\uB85C \uC2DC\uC791"
+    en: Start over
+    where: GameUI.cs:288
+    args: 
+    origKo: "\uC0C8\uB85C \uC2DC\uC791"
+    origEn: Start over
+  - ko: "\uCDE8\uC18C"
+    en: Cancel
+    where: GameUI.cs:289
+    args: 
+    origKo: "\uCDE8\uC18C"
+    origEn: Cancel
+  - ko: "\uBAA8\uB450 \uC218\uB839"
+    en: Collect all
+    where: GameUI.cs:335
+    args: 
+    origKo: "\uBAA8\uB450 \uC218\uB839"
+    origEn: Collect all
+  - ko: "\uC218\uB839"
+    en: Collect
+    where: "GameUI.cs:344 \uC678 1\uACF3"
+    args: 
+    origKo: "\uC218\uB839"
+    origEn: Collect
+  - ko: "\uBAA8\uB4E0 \uC804\uC2DC \uC6B0\uB9AC\uC758 \uAD00\uB78C\uB8CC\uC640 \uC5F0\uAD6C\uC18C\uC758
+      \uBCF4\uC11D\uC744 \uD55C \uBC88\uC5D0 \uBC1B\uC2B5\uB2C8\uB2E4."
+    en: Collect all cage fees and lab Gems at once.
+    where: GameUI.cs:350
+    args: 
+    origKo: "\uBAA8\uB4E0 \uC804\uC2DC \uC6B0\uB9AC\uC758 \uAD00\uB78C\uB8CC\uC640
+      \uC5F0\uAD6C\uC18C\uC758 \uBCF4\uC11D\uC744 \uD55C \uBC88\uC5D0 \uBC1B\uC2B5\uB2C8\uB2E4."
+    origEn: Collect all cage fees and lab Gems at once.
+  - ko: "\uD0ED\xB7\uB04C\uAE30: \uC9D3\uAE30\n\uAE38\uAC8C: \uCDE8\uC18C"
+    en: 'tap/drag: build
+
+      hold: cancel'
+    where: GameUI.cs:360
+    args: 
+    origKo: "\uD0ED\xB7\uB04C\uAE30: \uC9D3\uAE30\n\uAE38\uAC8C: \uCDE8\uC18C"
+    origEn: 'tap/drag: build
+
+      hold: cancel'
+  - ko: "\uBC30\uCE58 \uC911\n\uBE48 \uCE78 \uD074\uB9AD\xB7\uB04C\uAE30: \uC9D3\uAE30
+      \xB7 \uC6B0\uD074\uB9AD/ESC: \uCDE8\uC18C"
+    en: "placing\nClick/drag empty cells \xB7 Right-click/ESC: cancel"
+    where: GameUI.cs:360
+    args: 
+    origKo: "\uBC30\uCE58 \uC911\n\uBE48 \uCE78 \uD074\uB9AD\xB7\uB04C\uAE30: \uC9D3\uAE30
+      \xB7 \uC6B0\uD074\uB9AD/ESC: \uCDE8\uC18C"
+    origEn: "placing\nClick/drag empty cells \xB7 Right-click/ESC: cancel"
+  - ko: "\uD0ED: \uC218\uB839\xB7\uD310\uB9E4\n\uAE38\uAC8C: \uAD00\uB9AC"
+    en: 'Tap: collect/sell
+
+      Hold: manage'
+    where: GameUI.cs:361
+    args: 
+    origKo: "\uD0ED: \uC218\uB839\xB7\uD310\uB9E4\n\uAE38\uAC8C: \uAD00\uB9AC"
+    origEn: 'Tap: collect/sell
+
+      Hold: manage'
+  - ko: "\uAC74\uBB3C \uC88C\uD074\uB9AD: \uC218\uB839\xB7\uD310\uB9E4 \xB7 \uC6B0\uD074\uB9AD:
+      \uAD00\uB9AC\n\uBE48 \uCE78 \uD074\uB9AD: \uAC74\uC124 \xB7 \uC22B\uC790\uD0A4
+      1~6 \xB7 Tab \xB7 ESC"
+    en: "Left-click: collect/sell \xB7 Right-click: manage\nClick empty cell: build
+      \xB7 Keys 1-6 \xB7 Tab \xB7 ESC"
+    where: GameUI.cs:362
+    args: 
+    origKo: "\uAC74\uBB3C \uC88C\uD074\uB9AD: \uC218\uB839\xB7\uD310\uB9E4 \xB7 \uC6B0\uD074\uB9AD:
+      \uAD00\uB9AC\n\uBE48 \uCE78 \uD074\uB9AD: \uAC74\uC124 \xB7 \uC22B\uC790\uD0A4
+      1~6 \xB7 Tab \xB7 ESC"
+    origEn: "Left-click: collect/sell \xB7 Right-click: manage\nClick empty cell:
+      build \xB7 Keys 1-6 \xB7 Tab \xB7 ESC"
+  - ko: "+{0} \uACE8\uB4DC \xB7 \uBCF4\uC11D +{1}"
+    en: "+{0} Gold \xB7 +{1} Gems"
+    where: GameUI.cs:369
+    args: "{0} = gold:N0  \xB7  {1} = gems"
+    origKo: "+{0} \uACE8\uB4DC \xB7 \uBCF4\uC11D +{1}"
+    origEn: "+{0} Gold \xB7 +{1} Gems"
+  - ko: "+{0} \uACE8\uB4DC"
+    en: +{0} Gold
+    where: GameUI.cs:369
+    args: '{0} = gold:N0'
+    origKo: "+{0} \uACE8\uB4DC"
+    origEn: +{0} Gold
+  - ko: "\uD604\uD669 \xB7 \uC54C\uB9BC \uC5F4\uAE30/\uB2EB\uAE30"
+    en: "Status \xB7 notifications"
+    where: GameUI.cs:388
+    args: 
+    origKo: "\uD604\uD669 \xB7 \uC54C\uB9BC \uC5F4\uAE30/\uB2EB\uAE30"
+    origEn: "Status \xB7 notifications"
+  - ko: "\uC54C\uB9BC"
+    en: Log
+    where: GameUI.cs:412
+    args: 
+    origKo: "\uC54C\uB9BC"
+    origEn: Log
+  - ko: "\uB2E4\uC74C \uBAA9\uD45C"
+    en: Next goal
+    where: GameUI.cs:449
+    args: 
+    origKo: "\uB2E4\uC74C \uBAA9\uD45C"
+    origEn: Next goal
+  - ko: "\uD3EC\uD68D\uB300 \uD604\uD669"
+    en: Hunters
+    where: GameUI.cs:453
+    args: 
+    origKo: "\uD3EC\uD68D\uB300 \uD604\uD669"
+    origEn: Hunters
+  - ko: "{0}\n{1}\n\uBBF8\uB07C: {2} \xB7 \uD798 {3}\n\n\uD074\uB9AD\uD558\uBA74
+      \uD3EC\uD68D\uC7A5\uC5D0\uC11C \uC9C0\uCF1C\uBD05\uB2C8\uB2E4."
+    en: "{0}\n{1}\nBait: {2} \xB7 Power {3}\n\nClick to watch in the hunting grounds."
+    where: GameUI.cs:465
+    args: "{0} = g.Def(hs).Name  \xB7  {1} = g.HunterStatus(hs)  \xB7  {2} = GameData.Baits[hs.bait].Name 
+      \xB7  {3} = GameData.PowerName((int)hs.power)"
+    origKo: "{0}\n{1}\n\uBBF8\uB07C: {2} \xB7 \uD798 {3}\n\n\uD074\uB9AD\uD558\uBA74
+      \uD3EC\uD68D\uC7A5\uC5D0\uC11C \uC9C0\uCF1C\uBD05\uB2C8\uB2E4."
+    origEn: "{0}\n{1}\nBait: {2} \xB7 Power {3}\n\nClick to watch in the hunting
+      grounds."
+  - ko: "\uBE48 \uCE78\uC744 \uD0ED\uD574 \uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uB97C
+      \uC9C0\uC73C\uC138\uC694.\n\uBCF4\uC11D\uC774 \uB098\uC635\uB2C8\uB2E4."
+    en: 'Tap an empty cell and build a Dark Magic Lab.
+
+      It makes Gems.'
+    where: GameUI.cs:487
+    args: 
+    origKo: "\uBE48 \uCE78\uC744 \uD0ED\uD574 \uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uB97C
+      \uC9C0\uC73C\uC138\uC694.\n\uBCF4\uC11D\uC774 \uB098\uC635\uB2C8\uB2E4."
+    origEn: 'Tap an empty cell and build a Dark Magic Lab.
+
+      It makes Gems.'
+  - ko: "\uB9C8\uC871 \uC2DD\uB2F9\uC774\uB098 \uAE30\uB150\uD488\uC810\uC744 \uC9C0\uC73C\uC138\uC694."
+    en: Build a Demon Diner or Gift Shop.
+    where: GameUI.cs:488
+    args: 
+    origKo: "\uB9C8\uC871 \uC2DD\uB2F9\uC774\uB098 \uAE30\uB150\uD488\uC810\uC744
+      \uC9C0\uC73C\uC138\uC694."
+    origEn: Build a Demon Diner or Gift Shop.
+  - ko: "[\uC9C1\uC6D0] \uC131 \uAD00\uB9AC\uC790\uB97C \uD30C\uACAC\uD558\uC138\uC694.\n\uC9C1\uC6D0\uC774
+      \uD310\uB9E4\xB7\uC218\uAC70\uB97C \uB300\uC2E0\uD569\uB2C8\uB2E4."
+    en: '[Staff] Dispatch castle staff.
+
+      They sell and collect for you.'
+    where: GameUI.cs:489
+    args: 
+    origKo: "[\uC9C1\uC6D0] \uC131 \uAD00\uB9AC\uC790\uB97C \uD30C\uACAC\uD558\uC138\uC694.\n\uC9C1\uC6D0\uC774
+      \uD310\uB9E4\xB7\uC218\uAC70\uB97C \uB300\uC2E0\uD569\uB2C8\uB2E4."
+    origEn: '[Staff] Dispatch castle staff.
+
+      They sell and collect for you.'
+  - ko: "[\uC0C1\uC810] \uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uC7AC\uACE0\uB97C \uCC44\uC6B0\uC138\uC694."
+    en: '[Shop] Stock up on food and gifts.'
+    where: GameUI.cs:490
+    args: 
+    origKo: "[\uC0C1\uC810] \uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uC7AC\uACE0\uB97C
+      \uCC44\uC6B0\uC138\uC694."
+    origEn: '[Shop] Stock up on food and gifts.'
+  - ko: "[\uD3EC\uD68D] \uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD574 \uAD34\uBB3C\uC744
+      \uC7A1\uC73C\uC138\uC694."
+    en: '[Hunt] Send a hunter to catch monsters.'
+    where: GameUI.cs:491
+    args: 
+    origKo: "[\uD3EC\uD68D\uC7A5] \uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD574
+      \uAD34\uBB3C\uC744 \uC7A1\uC73C\uC138\uC694."
+    origEn: '[Hunt] Send a hunter to catch monsters.'
+  - ko: "[\uD3EC\uD68D] \uC4F0\uB808\uAE30\uAC00 \uC313\uC600\uC5B4\uC694.\n\uC7A5\uBA74\uC5D0\uC11C
+      \uD0ED\uD574 \uC8FC\uC6B0\uC138\uC694."
+    en: '[Hunt] Trash is piling up.
+
+      Tap it in the scene to collect.'
+    where: GameUI.cs:492
+    args: 
+    origKo: "[\uD3EC\uD68D\uC7A5] \uC4F0\uB808\uAE30\uAC00 \uC313\uC600\uC5B4\uC694.\n\uC7A5\uBA74\uC5D0\uC11C
+      \uD0ED\uD574 \uC8FC\uC6B0\uC138\uC694."
+    origEn: '[Hunt] Trash is piling up.
+
+      Tap it in the scene to collect.'
+  - ko: "[\uAC74\uC124] \uC804\uC2DC \uC6B0\uB9AC\uB97C \uB04C\uC5B4\uC11C \uB113\uAC8C
+      \uC9C0\uC5B4 \uBCF4\uC138\uC694."
+    en: '[Build] Drag to build a big Exhibit Cage.'
+    where: GameUI.cs:493
+    args: 
+    origKo: "[\uAC74\uC124] \uC804\uC2DC \uC6B0\uB9AC\uB97C \uB04C\uC5B4\uC11C \uB113\uAC8C
+      \uC9C0\uC5B4 \uBCF4\uC138\uC694."
+    origEn: '[Build] Drag to build a big Exhibit Cage.'
+  - ko: "\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uAD34\uBB3C\uC744 \uB123\uC73C\uC138\uC694."
+    en: Tap the cage to add monsters.
+    where: GameUI.cs:494
+    args: 
+    origKo: "\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uAD34\uBB3C\uC744 \uB123\uC73C\uC138\uC694."
+    origEn: Tap the cage to add monsters.
+  - ko: "\uC7A0\uAE34 \uC624\uB978\uCABD 1\uCE35\uC744 \uD0ED\uD574 \uC131\uC744
+      \uC99D\uCD95\uD558\uC138\uC694."
+    en: Tap the locked right-wing floor to expand.
+    where: GameUI.cs:495
+    args: 
+    origKo: "\uC7A0\uAE34 \uC624\uB978\uCABD 1\uCE35\uC744 \uD0ED\uD574 \uC131\uC744
+      \uC99D\uCD95\uD558\uC138\uC694."
+    origEn: Tap the locked right-wing floor to expand.
+  - ko: "[\uC5F0\uAD6C] \uBCF4\uC11D\uC73C\uB85C \uCCAB \uC5C5\uADF8\uB808\uC774\uB4DC\uB97C
+      \uC62C\uB824 \uBCF4\uC138\uC694."
+    en: '[Research] Spend Gems on your first upgrade.'
+    where: GameUI.cs:496
+    args: 
+    origKo: "[\uC5F0\uAD6C] \uBCF4\uC11D\uC73C\uB85C \uCCAB \uC5C5\uADF8\uB808\uC774\uB4DC\uB97C
+      \uC62C\uB824 \uBCF4\uC138\uC694."
+    origEn: '[Research] Spend Gems on your first upgrade.'
+  - ko: "[\uC5F0\uAD6C] '\uC6A9\uC554 \uB3D9\uAD74 \uD0D0\uC0AC'\uB85C \uC0C8 \uC9C0\uC5ED\uC744
+      \uC5EC\uC138\uC694."
+    en: '[Research] Explore the Lava Cave.'
+    where: GameUI.cs:497
+    args: 
+    origKo: "[\uC5F0\uAD6C] '\uC6A9\uC554 \uB3D9\uAD74 \uD0D0\uC0AC'\uB85C \uC0C8
+      \uC9C0\uC5ED\uC744 \uC5EC\uC138\uC694."
+    origEn: '[Research] Explore the Lava Cave.'
+  - ko: "\uC5F0\uAD6C\uC18C\uB97C \uD558\uB098 \uB354 \uC9C0\uC5B4 \uBCF4\uC11D\uC744
+      \uB354 \uBAA8\uC73C\uC138\uC694."
+    en: Build another Lab for more Gems.
+    where: GameUI.cs:498
+    args: 
+    origKo: "\uC5F0\uAD6C\uC18C\uB97C \uD558\uB098 \uB354 \uC9C0\uC5B4 \uBCF4\uC11D\uC744
+      \uB354 \uBAA8\uC73C\uC138\uC694."
+    origEn: Build another Lab for more Gems.
+  - ko: "\uC131\uC744 10\uCE35\uAE4C\uC9C0 \uC99D\uCD95\uD558\uACE0 \uB3C4\uAC10\uC744
+      \uCC44\uC6B0\uC138\uC694."
+    en: Expand to 10 floors and complete the book.
+    where: GameUI.cs:499
+    args: 
+    origKo: "\uC131\uC744 10\uCE35\uAE4C\uC9C0 \uC99D\uCD95\uD558\uACE0 \uB3C4\uAC10\uC744
+      \uCC44\uC6B0\uC138\uC694."
+    origEn: Expand to 10 floors and complete the book.
+  - ko: "\uB2EB\uAE30 (ESC)"
+    en: Close (ESC)
+    where: GameUI.cs:606
+    args: 
+    origKo: "\uB2EB\uAE30 (ESC)"
+    origEn: Close (ESC)
+  - ko: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098, \uB04C\uC5B4\uC11C \uC5EC\uB7EC
+      \uCE78\uC744 \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9C0\uC73C\uC138\uC694."
+    en: Tap an empty cell, or drag to make one big cage.
+    where: GameUI.cs:750
+    args: 
+    origKo: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098, \uB04C\uC5B4\uC11C \uC5EC\uB7EC
+      \uCE78\uC744 \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9C0\uC73C\uC138\uC694."
+    origEn: Tap an empty cell, or drag to make one big cage.
+  - ko: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4."
+    en: Tap or drag over empty cells to build.
+    where: GameUI.cs:751
+    args: 
+    origKo: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4."
+    origEn: Tap or drag over empty cells to build.
+  - ko: "\uBA3C\uC800 {0} {1}\uCE35\uC744 \uC99D\uCD95\uD558\uC138\uC694."
+    en: Expand {2} floor {1} first.
+    where: GameUI.cs:759
+    args: "{0} = (wing == 0 ? \"\uC67C\uCABD\" : \"\uC624\uB978\uCABD\")  \xB7  {1}
+      = g.NextFloor(wing)  \xB7  {2} = (wing == 0 ? \"left\" : \"right\")"
+    origKo: "\uBA3C\uC800 {0} {1}\uCE35\uC744 \uC99D\uCD95\uD558\uC138\uC694."
+    origEn: Expand {2} floor {1} first.
+  - ko: "\uD0D0\uC0AC \uAC00\uB2A5"
+    en: Explorable
+    where: GameUI.Hunt.cs:250
+    args: 
+    origKo: "\uD0D0\uC0AC \uAC00\uB2A5"
+    origEn: Explorable
+  - ko: "\uC7A0\uAE40"
+    en: Locked
+    where: "GameUI.Hunt.cs:250 \uC678 1\uACF3"
+    args: 
+    origKo: "\uC7A0\uAE40"
+    origEn: Locked
+  - ko: "{0}\n[\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C \uD0D0\uC0AC\uD558\uBA74
+      \uC5F4\uB9BD\uB2C8\uB2E4."
+    en: '{0}
+
+      Explore it in [Research > Expand].'
+    where: GameUI.Hunt.cs:252
+    args: '{0} = rr.Name'
+    origKo: "{0}\n[\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C \uD0D0\uC0AC\uD558\uBA74
+      \uC5F4\uB9BD\uB2C8\uB2E4."
+    origEn: '{0}
+
+      Explore it in [Research > Expand].'
+  - ko: "\uBAA9\uB85D"
+    en: List
+    where: GameUI.Hunt.cs:265
+    args: 
+    origKo: "\uBAA9\uB85D"
+    origEn: List
+  - ko: "\uC2A4\uD14C\uC774\uC9C0 \uBAA9\uB85D"
+    en: Stage list
+    where: GameUI.Hunt.cs:265
+    args: 
+    origKo: "\uC2A4\uD14C\uC774\uC9C0 \uBAA9\uB85D"
+    origEn: Stage list
+  - ko: "\uC774\uC804 \uC2A4\uD14C\uC774\uC9C0"
+    en: Previous stage
+    where: GameUI.Hunt.cs:266
+    args: 
+    origKo: "\uC774\uC804 \uC2A4\uD14C\uC774\uC9C0"
+    origEn: Previous stage
+  - ko: "\uB2E4\uC74C \uC2A4\uD14C\uC774\uC9C0"
+    en: Next stage
+    where: GameUI.Hunt.cs:267
+    args: 
+    origKo: "\uB2E4\uC74C \uC2A4\uD14C\uC774\uC9C0"
+    origEn: Next stage
+  - ko: "\uC774 \uC2A4\uD14C\uC774\uC9C0\uC5D0\uC11C \uBC1C\uACAC\uD55C \uAD34\uBB3C
+      \uC218"
+    en: Monsters found in this stage
+    where: GameUI.Hunt.cs:276
+    args: 
+    origKo: "\uC774 \uC2A4\uD14C\uC774\uC9C0\uC5D0\uC11C \uBC1C\uACAC\uD55C \uAD34\uBB3C
+      \uC218"
+    origEn: Monsters found in this stage
+  - ko: "\uBC14\uB2E5\uC5D0 \uB5A8\uC5B4\uC9C4 \uC4F0\uB808\uAE30. \uC7A5\uBA74\uC5D0\uC11C
+      \uD0ED\uD574 \uC8FC\uC6B0\uC138\uC694."
+    en: Trash on the ground. Tap it in the scene.
+    where: GameUI.Hunt.cs:277
+    args: 
+    origKo: "\uBC14\uB2E5\uC5D0 \uB5A8\uC5B4\uC9C4 \uC4F0\uB808\uAE30. \uC7A5\uBA74\uC5D0\uC11C
+      \uD0ED\uD574 \uC8FC\uC6B0\uC138\uC694."
+    origEn: Trash on the ground. Tap it in the scene.
+  - ko: "\uC544\uC9C1 \uD0D0\uC0AC\uD558\uC9C0 \uC54A\uC740 \uC2A4\uD14C\uC774\uC9C0"
+    en: Unexplored stage
+    where: GameUI.Hunt.cs:291
+    args: 
+    origKo: "\uC544\uC9C1 \uD0D0\uC0AC\uD558\uC9C0 \uC54A\uC740 \uC2A4\uD14C\uC774\uC9C0"
+    origEn: Unexplored stage
+  - ko: "\uBA3C\uC800 \uC774\uC804 \uC2A4\uD14C\uC774\uC9C0\uB97C \uD0D0\uC0AC\uD558\uC138\uC694.\n({0})"
+    en: 'Explore the previous stage first.
+
+      ({0})'
+    where: GameUI.Hunt.cs:299
+    args: '{0} = block'
+    origKo: "\uBA3C\uC800 \uC774\uC804 \uC2A4\uD14C\uC774\uC9C0\uB97C \uD0D0\uC0AC\uD558\uC138\uC694.\n({0})"
+    origEn: 'Explore the previous stage first.
+
+      ({0})'
+  - ko: "\uBE48 \uC790\uB9AC\n[\uC9C1\uC6D0]\uC5D0\uC11C \uD3EC\uD68D\uB300\uC6D0\uC744
+      \uACE0\uC6A9\uD558\uC138\uC694."
+    en: 'Empty slot
+
+      Hire hunters in [Staff].'
+    where: GameUI.Hunt.cs:311
+    args: 
+    origKo: "\uBE48 \uC790\uB9AC\n[\uC9C1\uC6D0]\uC5D0\uC11C \uD3EC\uD68D\uB300\uC6D0\uC744
+      \uACE0\uC6A9\uD558\uC138\uC694."
+    origEn: 'Empty slot
+
+      Hire hunters in [Staff].'
+  - ko: "\uB9C8\uC655\uC131 \uB300\uAE30"
+    en: At the castle
+    where: GameUI.Hunt.cs:336
+    args: 
+    origKo: "\uB9C8\uC655\uC131 \uB300\uAE30"
+    origEn: At the castle
+  - ko: "\uCCB4\uB825: \uD3EC\uD68D 1\uD68C\uB9C8\uB2E4 1 \uC18C\uBAA8. 0\uC774 \uB418\uBA74
+      \uC26C\uC5C8\uB2E4\uAC00 \uC790\uB3D9\uC73C\uB85C \uB2E4\uC2DC \uB098\uAC11\uB2C8\uB2E4."
+    en: 'Stamina: -1 per catch. At 0 they rest, then head out again.'
+    where: GameUI.Hunt.cs:337
+    args: 
+    origKo: "\uCCB4\uB825: \uD3EC\uD68D 1\uD68C\uB9C8\uB2E4 1 \uC18C\uBAA8. 0\uC774
+      \uB418\uBA74 \uC26C\uC5C8\uB2E4\uAC00 \uC790\uB3D9\uC73C\uB85C \uB2E4\uC2DC
+      \uB098\uAC11\uB2C8\uB2E4."
+    origEn: 'Stamina: -1 per catch. At 0 they rest, then head out again.'
+  - ko: "{0}  (\uBCF4\uC720 {1})\n\uBBF8\uB07C\uC5D0 \uB530\uB77C \uB2E4\uAC00\uC624\uB294
+      \uAD34\uBB3C\uC774 \uB2EC\uB77C\uC9D1\uB2C8\uB2E4."
+    en: '{0}  (own {1})
+
+      Different bait attracts different monsters.'
+    where: GameUI.Hunt.cs:351
+    args: "{0} = bd.Name  \xB7  {1} = CountList.Get(g.S.baits, bd.id)"
+    origKo: "{0}  (\uBCF4\uC720 {1})\n\uBBF8\uB07C\uC5D0 \uB530\uB77C \uB2E4\uAC00\uC624\uB294
+      \uAD34\uBB3C\uC774 \uB2EC\uB77C\uC9D1\uB2C8\uB2E4."
+    origEn: '{0}  (own {1})
+
+      Different bait attracts different monsters.'
+  - ko: "\uC790\uB3D9"
+    en: Auto
+    where: GameUI.Hunt.cs:353
+    args: 
+    origKo: "\uC790\uB3D9"
+    origEn: Auto
+  - ko: "\uC218\uB3D9"
+    en: Man.
+    where: GameUI.Hunt.cs:353
+    args: 
+    origKo: "\uC218\uB3D9"
+    origEn: Man.
+  - ko: "\uC790\uB3D9 \uAD50\uCCB4 ON: \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC9C0\uBA74
+      \uB2E4\uB978 \uBBF8\uB07C\uB97C \uC501\uB2C8\uB2E4."
+    en: 'Auto-switch ON: uses other bait when out.'
+    where: GameUI.Hunt.cs:354
+    args: 
+    origKo: "\uC790\uB3D9 \uAD50\uCCB4 ON: \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC9C0\uBA74
+      \uB2E4\uB978 \uBBF8\uB07C\uB97C \uC501\uB2C8\uB2E4."
+    origEn: 'Auto-switch ON: uses other bait when out.'
+  - ko: "\uC790\uB3D9 \uAD50\uCCB4 OFF: \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC9C0\uBA74
+      \uD3EC\uD68D\uC744 \uBA48\uCDA5\uB2C8\uB2E4."
+    en: 'Auto-switch OFF: stops when out of bait.'
+    where: GameUI.Hunt.cs:354
+    args: 
+    origKo: "\uC790\uB3D9 \uAD50\uCCB4 OFF: \uBBF8\uB07C\uAC00 \uB5A8\uC5B4\uC9C0\uBA74
+      \uD3EC\uD68D\uC744 \uBA48\uCDA5\uB2C8\uB2E4."
+    origEn: 'Auto-switch OFF: stops when out of bait.'
+  - ko: "\uD798"
+    en: Pow
+    where: GameUI.Hunt.cs:358
+    args: 
+    origKo: "\uD798"
+    origEn: Pow
+  - ko: "\uC57D\uD558\uAC8C: \uC791\uC740 \uAD34\uBB3C\uC774 \uC798 \uB098\uC635\uB2C8\uB2E4."
+    en: 'Low: small monsters appear more.'
+    where: GameUI.Hunt.cs:359
+    args: 
+    origKo: "\uC57D\uD558\uAC8C: \uC791\uC740 \uAD34\uBB3C\uC774 \uC798 \uB098\uC635\uB2C8\uB2E4."
+    origEn: 'Low: small monsters appear more.'
+  - ko: "\uBCF4\uD1B5\uC73C\uB85C"
+    en: Medium
+    where: GameUI.Hunt.cs:359
+    args: 
+    origKo: "\uBCF4\uD1B5\uC73C\uB85C"
+    origEn: Medium
+  - ko: "\uAC15\uD558\uAC8C: \uD070 \uAD34\uBB3C\uC774 \uC798 \uB098\uC635\uB2C8\uB2E4."
+    en: 'High: big monsters appear more.'
+    where: GameUI.Hunt.cs:359
+    args: 
+    origKo: "\uAC15\uD558\uAC8C: \uD070 \uAD34\uBB3C\uC774 \uC798 \uB098\uC635\uB2C8\uB2E4."
+    origEn: 'High: big monsters appear more.'
+  - ko: "\n\uBBF8\uB07C \xD7 \uD798 \uC870\uD569\uC774 \uB4F1\uC7A5 \uAD34\uBB3C\uC744
+      \uC815\uD569\uB2C8\uB2E4."
+    en: "\nBait \xD7 power decides which monsters appear."
+    where: GameUI.Hunt.cs:365
+    args: 
+    origKo: "\n\uBBF8\uB07C \xD7 \uD798 \uC870\uD569\uC774 \uB4F1\uC7A5 \uAD34\uBB3C\uC744
+      \uC815\uD569\uB2C8\uB2E4."
+    origEn: "\nBait \xD7 power decides which monsters appear."
+  - ko: "\uB4F1\uC7A5"
+    en: Pool
+    where: GameUI.Hunt.cs:373
+    args: 
+    origKo: "\uB4F1\uC7A5"
+    origEn: Pool
+  - ko: "\uC544\uC9C1 \uC7A1\uC740 \uC801 \uC5C6\uB294 \uAD34\uBB3C"
+    en: Not caught yet
+    where: GameUI.Hunt.cs:385
+    args: 
+    origKo: "\uC544\uC9C1 \uC7A1\uC740 \uC801 \uC5C6\uB294 \uAD34\uBB3C"
+    origEn: Not caught yet
+  - ko: "\uD0D0\uC0AC \uD544\uC694"
+    en: Locked
+    where: GameUI.Hunt.cs:398
+    args: 
+    origKo: "\uD0D0\uC0AC \uD544\uC694"
+    origEn: Locked
+  - ko: "\uBCF5\uADC0"
+    en: Recall
+    where: GameUI.Hunt.cs:402
+    args: 
+    origKo: "\uBCF5\uADC0"
+    origEn: Recall
+  - ko: "\uC218\uB3D9 \uBCF5\uADC0\uD558\uBA74 {0}\uCD08 \uB3D9\uC548 \uB2E4\uC2DC
+      \uBCF4\uB0BC \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.\n\uC4F0\uB358 \uBBF8\uB07C\uB294
+      \uB3CC\uB824\uBC1B\uC2B5\uB2C8\uB2E4."
+    en: 'After a manual recall you cannot dispatch for {0}s.
+
+      The bait in use
+      is refunded.'
+    where: GameUI.Hunt.cs:402
+    args: '{0} = GameData.HunterRecallPenalty:0'
+    origKo: "\uC218\uB3D9 \uBCF5\uADC0\uD558\uBA74 {0}\uCD08 \uB3D9\uC548 \uB2E4\uC2DC
+      \uBCF4\uB0BC \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.\n\uC4F0\uB358 \uBBF8\uB07C\uB294
+      \uB3CC\uB824\uBC1B\uC2B5\uB2C8\uB2E4."
+    origEn: 'After a manual recall you cannot dispatch for {0}s.
+
+      The bait
+      in use is refunded.'
+  - ko: "\uBCF4\uB7EC \uAC00\uAE30"
+    en: Go watch
+    where: GameUI.Hunt.cs:406
+    args: 
+    origKo: "\uBCF4\uB7EC \uAC00\uAE30"
+    origEn: Go watch
+  - ko: "{0}\uC5D0\uC11C \uD3EC\uD68D \uC911\uC785\uB2C8\uB2E4."
+    en: Hunting in {0}.
+    where: GameUI.Hunt.cs:406
+    args: '{0} = other.Name'
+    origKo: "{0}\uC5D0\uC11C \uD3EC\uD68D \uC911\uC785\uB2C8\uB2E4."
+    origEn: Hunting in {0}.
+  - ko: "\uB300\uAE30 {0}\uCD08"
+    en: Wait {0}s
+    where: GameUI.Hunt.cs:412
+    args: '{0} = hs.restTimer:0'
+    origKo: "\uB300\uAE30 {0}\uCD08"
+    origEn: Wait {0}s
+  - ko: "\uD68C\uBCF5 {0}\uCD08"
+    en: Rest {0}s
+    where: GameUI.Hunt.cs:412
+    args: '{0} = hs.restTimer:0'
+    origKo: "\uD68C\uBCF5 {0}\uCD08"
+    origEn: Rest {0}s
+  - ko: "\uC900\uBE44 \uC644\uB8CC"
+    en: Ready
+    where: GameUI.Hunt.cs:412
+    args: 
+    origKo: "\uC900\uBE44 \uC644\uB8CC"
+    origEn: Ready
+  - ko: "\uC218\uB3D9 \uBCF5\uADC0 \uB300\uAE30 \uC911"
+    en: Recall cooldown
+    where: GameUI.Hunt.cs:413
+    args: 
+    origKo: "\uC218\uB3D9 \uBCF5\uADC0 \uB300\uAE30 \uC911"
+    origEn: Recall cooldown
+  - ko: "\uCCB4\uB825 \uD68C\uBCF5 \uC911. \uB05D\uB098\uBA74 \uC790\uB3D9\uC73C\uB85C
+      \uB2E4\uC2DC \uB098\uAC11\uB2C8\uB2E4."
+    en: Resting. Heads out again automatically.
+    where: GameUI.Hunt.cs:413
+    args: 
+    origKo: "\uCCB4\uB825 \uD68C\uBCF5 \uC911. \uB05D\uB098\uBA74 \uC790\uB3D9\uC73C\uB85C
+      \uB2E4\uC2DC \uB098\uAC11\uB2C8\uB2E4."
+    origEn: Resting. Heads out again automatically.
+  - ko: "\uD30C\uACAC"
+    en: Send
+    where: GameUI.Hunt.cs:417
+    args: 
+    origKo: "\uD30C\uACAC"
+    origEn: Send
+  - ko: "{0}\uC744(\uB97C) {1}\uC5D0 \uBCF4\uB0C5\uB2C8\uB2E4.\n\uC8FC\uAE30 {2}\uCD08
+      \xB7 1\uD68C {3}\uB9C8\uB9AC"
+    en: "Send {0} to {1}.\nCycle {2}s \xB7 {3} per catch"
+    where: GameUI.Hunt.cs:418
+    args: "{0} = def.Name  \xB7  {1} = r.Name  \xB7  {2} = g.HuntInterval(h):0.# 
+      \xB7  {3} = def.amount"
+    origKo: "{0}\uC744(\uB97C) {1}\uC5D0 \uBCF4\uB0C5\uB2C8\uB2E4.\n\uC8FC\uAE30
+      {2}\uCD08 \xB7 1\uD68C {3}\uB9C8\uB9AC"
+    origEn: "Send {0} to {1}.\nCycle {2}s \xB7 {3} per catch"
+  - ko: "\uAFB9 \uB204\uB974\uAE30: \uBE60\uB974\uAC8C \uBC18\uBCF5"
+    en: 'Hold: repeat fast'
+    where: GameUI.Panels.cs:14
+    args: 
+    origKo: "\uAFB9 \uB204\uB974\uAE30: \uBE60\uB974\uAC8C \uBC18\uBCF5"
+    origEn: 'Hold: repeat fast'
+  - ko: "\uC6B0\uD074\uB9AD \uB204\uB974\uACE0 \uC788\uAE30: \uBE60\uB974\uAC8C \uBC18\uBCF5"
+    en: 'Hold right-click: repeat fast'
+    where: GameUI.Panels.cs:14
+    args: 
+    origKo: "\uC6B0\uD074\uB9AD \uB204\uB974\uACE0 \uC788\uAE30: \uBE60\uB974\uAC8C
+      \uBC18\uBCF5"
+    origEn: 'Hold right-click: repeat fast'
+  - ko: "{0}  {1}\n\uACF5\uAC04 {2} \xB7 \uB9C8\uAE30 {3}{4}\n\uAD00\uB78C\uB8CC
+      {5}/\uBD84\n\uD310\uB9E4\uAC00 {6} {7}"
+    en: "{0}  {8}\nSpace {2} \xB7 Miasma {3}{4}\nAdmission {5}/min\nSells for {6}
+      {7}"
+    where: GameUI.Panels.cs:63
+    args: "{0} = Hi(m.Name)  \xB7  {1} = Dim(m.isPlant ? \"\uB9C8\uCD08\" : m.hidden
+      ? \"\uD788\uB4E0 \uAD34\uBB3C\" : \"\uAD34\uBB3C\")  \xB7  {2} = m.space  \xB7 
+      {3} = (m.maki > 0 ? \"+\" : \"\")  \xB7  {4} = m.maki  \xB7  {5} = m.admission:N0 
+      \xB7  {6} = m.sellPrice:N0  \xB7  {7} = L.Cur(m.sellCurrency)  \xB7  {8} =
+      Dim(m.isPlant ? \"Plant\" : m.hidden ? \"Hidden\" : \"Monster\")"
+    origKo: "{0}  {1}\n\uACF5\uAC04 {2} \xB7 \uB9C8\uAE30 {3}{4}\n\uAD00\uB78C\uB8CC
+      {5}/\uBD84\n\uD310\uB9E4\uAC00 {6} {7}"
+    origEn: "{0}  {8}\nSpace {2} \xB7 Miasma {3}{4}\nAdmission {5}/min\nSells for
+      {6} {7}"
+  - ko: "\uAC74\uBB3C\uC744 \uACE0\uB978 \uB4A4 \uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098
+      \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4. \uC804\uC2DC \uC6B0\uB9AC\uB294
+      \uB048 \uC601\uC5ED \uC804\uCCB4\uAC00 \uD558\uB098\uC758 \uC6B0\uB9AC\uAC00
+      \uB429\uB2C8\uB2E4. \uCCA0\uAC70\uD558\uBA74 100% \uD658\uAE09."
+    en: Pick a building, then tap or drag over empty cells. A dragged cage becomes
+      one big cage. Demolishing refunds 100%.
+    where: GameUI.Panels.cs:84
+    args: 
+    origKo: "\uAC74\uBB3C\uC744 \uACE0\uB978 \uB4A4 \uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098
+      \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4. \uC804\uC2DC \uC6B0\uB9AC\uB294
+      \uB048 \uC601\uC5ED \uC804\uCCB4\uAC00 \uD558\uB098\uC758 \uC6B0\uB9AC\uAC00
+      \uB429\uB2C8\uB2E4. \uCCA0\uAC70\uD558\uBA74 100% \uD658\uAE09."
+    origEn: Pick a building, then tap or drag over empty cells. A dragged cage becomes
+      one big cage. Demolishing refunds 100%.
+  - ko: "\uCD5C\uB300 {0}\uAC1C\uAE4C\uC9C0 \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: 'Limit: {0}'
+    where: GameUI.Panels.cs:91
+    args: '{0} = d.maxCount'
+    origKo: "\uCD5C\uB300 {0}\uAC1C\uAE4C\uC9C0 \uC9C0\uC744 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: 'Limit: {0}'
+  - ko: "\uB20C\uB7EC\uC11C \uBC30\uCE58\uD560 \uCE78\uC744 \uACE0\uB974\uC138\uC694."
+    en: Then choose where to build.
+    where: GameUI.Panels.cs:91
+    args: 
+    origKo: "\uB20C\uB7EC\uC11C \uBC30\uCE58\uD560 \uCE78\uC744 \uACE0\uB974\uC138\uC694."
+    origEn: Then choose where to build.
+  - ko: "/\uCE78"
+    en: /cell
+    where: GameUI.Panels.cs:112
+    args: 
+    origKo: "/\uCE78"
+    origEn: /cell
+  - ko: "\uC67C\uCABD"
+    en: Left
+    where: "GameUI.Panels.cs:122 \uC678 2\uACF3"
+    args: 
+    origKo: "\uC67C\uCABD"
+    origEn: Left
+  - ko: "\uC624\uB978\uCABD"
+    en: Right
+    where: "GameUI.Panels.cs:122 \uC678 2\uACF3"
+    args: 
+    origKo: "\uC624\uB978\uCABD"
+    origEn: Right
+  - ko: "{0} {1}\uCE35\uC5D0 \uAC74\uC124"
+    en: Build on {0} {1}F
+    where: GameUI.Panels.cs:123
+    args: "{0} = wing  \xB7  {1} = floor + 1"
+    origKo: "{0} {1}\uCE35\uC5D0 \uAC74\uC124"
+    origEn: Build on {0} {1}F
+  - ko: "\uC774 \uCE78\uC5D0 \uBC14\uB85C \uC9D3\uC2B5\uB2C8\uB2E4. \uC804\uC2DC
+      \uC6B0\uB9AC\uB97C \uC5EC\uB7EC \uCE78\uC73C\uB85C \uD06C\uAC8C \uC9C0\uC73C\uB824\uBA74
+      '\uB04C\uC5B4\uC11C \uC9D3\uAE30'\uB97C \uB204\uB974\uC138\uC694."
+    en: Builds right on this cell. For a bigger cage, press 'Drag to build'.
+    where: GameUI.Panels.cs:125
+    args: 
+    origKo: "\uC774 \uCE78\uC5D0 \uBC14\uB85C \uC9D3\uC2B5\uB2C8\uB2E4. \uC804\uC2DC
+      \uC6B0\uB9AC\uB97C \uC5EC\uB7EC \uCE78\uC73C\uB85C \uD06C\uAC8C \uC9C0\uC73C\uB824\uBA74
+      '\uB04C\uC5B4\uC11C \uC9D3\uAE30'\uB97C \uB204\uB974\uC138\uC694."
+    origEn: Builds right on this cell. For a bigger cage, press 'Drag to build'.
+  - ko: "\uC5EC\uAE30\uC5D0 \uAC74\uC124"
+    en: Build here
+    where: GameUI.Panels.cs:132
+    args: 
+    origKo: "\uC5EC\uAE30\uC5D0 \uAC74\uC124"
+    origEn: Build here
+  - ko: "\uC774 \uCE78\uC5D0 \uC9D3\uC2B5\uB2C8\uB2E4."
+    en: Build on this cell.
+    where: GameUI.Panels.cs:134
+    args: 
+    origKo: "\uC774 \uCE78\uC5D0 \uC9D3\uC2B5\uB2C8\uB2E4."
+    origEn: Build on this cell.
+  - ko: "\uB04C\uC5B4\uC11C \uC9D3\uAE30"
+    en: Drag to build
+    where: GameUI.Panels.cs:136
+    args: 
+    origKo: "\uB04C\uC5B4\uC11C \uC9D3\uAE30"
+    origEn: Drag to build
+  - ko: "\uC131\uC5D0\uC11C \uB04C\uC5B4 \uC5EC\uB7EC \uCE78\xB7\uC5EC\uB7EC \uCE35\uC744
+      \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9D3\uC2B5\uB2C8\uB2E4."
+    en: Drag over the castle to make one cage across cells and floors.
+    where: GameUI.Panels.cs:137
+    args: 
+    origKo: "\uC131\uC5D0\uC11C \uB04C\uC5B4 \uC5EC\uB7EC \uCE78\xB7\uC5EC\uB7EC
+      \uCE35\uC744 \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9D3\uC2B5\uB2C8\uB2E4."
+    origEn: Drag over the castle to make one cage across cells and floors.
+  - ko: "\uC131 \uC99D\uCD95"
+    en: Castle Expansion
+    where: GameUI.Panels.cs:145
+    args: 
+    origKo: "\uC131 \uC99D\uCD95"
+    origEn: Castle Expansion
+  - ko: "\uC5D8\uB9AC\uBCA0\uC774\uD130 \uC67C\uCABD\xB7\uC624\uB978\uCABD \uAD6C\uC5ED\uC744
+      \uB530\uB85C \uD55C \uCE35\uC529 \uC62C\uB9BD\uB2C8\uB2E4."
+    en: Raise the left and right wings one floor at a time.
+    where: GameUI.Panels.cs:147
+    args: 
+    origKo: "\uC5D8\uB9AC\uBCA0\uC774\uD130 \uC67C\uCABD\xB7\uC624\uB978\uCABD \uB0A0\uAC1C\uB97C
+      \uB530\uB85C \uD55C \uCE35\uC529 \uC62C\uB9BD\uB2C8\uB2E4. \uCD5C\uB300 10\uCE35.
+      \uCE35\uC774 \uB298\uBA74 \uC190\uB2D8\uB3C4 \uB9CE\uACE0 \uBD80\uC720\uD574\uC9D1\uB2C8\uB2E4."
+    origEn: Raise the left and right wings one floor at a time, up to 10. More floors
+      bring more (and richer) guests.
+  - ko: "\uC67C\uCABD \uAD6C\uC5ED"
+    en: Left area
+    where: GameUI.Panels.cs:166
+    args: 
+    origKo: "\uC67C\uCABD \uB0A0\uAC1C"
+    origEn: Left wing
+  - ko: "\uC624\uB978\uCABD \uAD6C\uC5ED"
+    en: Right area
+    where: GameUI.Panels.cs:166
+    args: 
+    origKo: "\uC624\uB978\uCABD \uB0A0\uAC1C"
+    origEn: Right wing
+  - ko: "\uBAA8\uB4E0 \uCE35\uC744 \uC5F4\uC5C8\uC2B5\uB2C8\uB2E4."
+    en: All floors open.
+    where: GameUI.Panels.cs:170
+    args: 
+    origKo: "\uBAA8\uB4E0 \uCE35\uC744 \uC5F4\uC5C8\uC2B5\uB2C8\uB2E4."
+    origEn: All floors open.
+  - ko: "{0}\uCE35 \uAC1C\uBC29 (\uD604\uC7AC {1}\uCE35)"
+    en: Open floor {0} (now {1})
+    where: GameUI.Panels.cs:170
+    args: "{0} = n  \xB7  {1} = g.FloorsOpen(wing)"
+    origKo: "{0}\uCE35 \uAC1C\uBC29 (\uD604\uC7AC {1}\uCE35)"
+    origEn: Open floor {0} (now {1})
+  - ko: "{0}\uCE35 \uC99D\uCD95"
+    en: Build floor {0}
+    where: GameUI.Panels.cs:175
+    args: '{0} = n'
+    origKo: "{0}\uCE35 \uC99D\uCD95"
+    origEn: Build floor {0}
+  - ko: "\uD655\uC7A5"
+    en: Enlarge
+    where: GameUI.Panels.cs:220
+    args: 
+    origKo: "\uD655\uC7A5"
+    origEn: Enlarge
+  - ko: "\uAC15\uD654"
+    en: Up
+    where: GameUI.Panels.cs:220
+    args: 
+    origKo: "\uAC15\uD654"
+    origEn: Up
+  - ko: "\uC5C5\uADF8\uB808\uC774\uB4DC"
+    en: Upgrade
+    where: GameUI.Panels.cs:220
+    args: 
+    origKo: "\uC5C5\uADF8\uB808\uC774\uB4DC"
+    origEn: Upgrade
+  - ko: "\uC6B0\uB9AC\uB97C \uB113\uD600 \uACF5\uAC04\xB7\uB9C8\uAE30\xB7\uB204\uC801
+      \uD55C\uB3C4\uB97C \uB298\uB9BD\uB2C8\uB2E4. (\uCE78 \uC218\uB9CC\uD07C \uBE44\uC6A9)"
+    en: "Enlarges space, miasma and fee storage. (Cost \xD7 cells)"
+    where: GameUI.Panels.cs:224
+    args: 
+    origKo: "\uC6B0\uB9AC\uB97C \uB113\uD600 \uACF5\uAC04\xB7\uB9C8\uAE30\xB7\uB204\uC801
+      \uD55C\uB3C4\uB97C \uB298\uB9BD\uB2C8\uB2E4. (\uCE78 \uC218\uB9CC\uD07C \uBE44\uC6A9)"
+    origEn: "Enlarges space, miasma and fee storage. (Cost \xD7 cells)"
+  - ko: "\uBCF4\uC11D \uC0DD\uC0B0 \uAC04\uACA9 {0}\uCD08"
+    en: Gem interval {0}s
+    where: GameUI.Panels.cs:225
+    args: '{0} = GameData.LabInterval[Mathf.Min(b.level, GameData.LabInterval.Length
+      - 1)]:0'
+    origKo: "\uBCF4\uC11D \uC0DD\uC0B0 \uAC04\uACA9 {0}\uCD08"
+    origEn: Gem interval {0}s
+  - ko: "\uB808\uBCA8\uC774 \uC624\uB974\uBA74 \uB354 \uBE44\uC2FC \uC0C1\uD488\uC744
+      \uD314\uAC70\uB098 \uD6A8\uC728\uC774 \uC88B\uC544\uC9D1\uB2C8\uB2E4."
+    en: Higher levels sell pricier goods or work better.
+    where: GameUI.Panels.cs:226
+    args: 
+    origKo: "\uB808\uBCA8\uC774 \uC624\uB974\uBA74 \uB354 \uBE44\uC2FC \uC0C1\uD488\uC744
+      \uD314\uAC70\uB098 \uD6A8\uC728\uC774 \uC88B\uC544\uC9D1\uB2C8\uB2E4."
+    origEn: Higher levels sell pricier goods or work better.
+  - ko: "\uCCA0\uAC70"
+    en: Demolish
+    where: GameUI.Panels.cs:230
+    args: 
+    origKo: "\uCCA0\uAC70"
+    origEn: Demolish
+  - ko: "\uCCA0\uAC70\uD558\uACE0 \uD22C\uC790\uD55C \uC7AC\uD654\uB97C \uBAA8\uB450
+      \uB3CC\uB824\uBC1B\uC2B5\uB2C8\uB2E4.\n\uD658\uAE09: {0}"
+    en: 'Demolish and get everything back.
+
+      Refund: {0}'
+    where: GameUI.Panels.cs:231
+    args: '{0} = UIKit.Money(b.investedGold, b.investedMat)'
+    origKo: "\uCCA0\uAC70\uD558\uACE0 \uD22C\uC790\uD55C \uC7AC\uD654\uB97C \uBAA8\uB450
+      \uB3CC\uB824\uBC1B\uC2B5\uB2C8\uB2E4.\n\uD658\uAE09: {0}"
+    origEn: 'Demolish and get everything back.
+
+      Refund: {0}'
+  - ko: "\uC218\uAC70"
+    en: Collect
+    where: GameUI.Panels.cs:245
+    args: 
+    origKo: "\uC218\uAC70"
+    origEn: Collect
+  - ko: "{0}\uCD08\uB9C8\uB2E4 \uBCF4\uC11D 1\uAC1C \xB7 \uB2E4\uC74C\uAE4C\uC9C0
+      {1}\uCD08 \xB7 \uB9C8\uB140 \uC5F0\uAD6C\uC6D0\uC774 \uC218\uAC70\uB97C \uC798\uD569\uB2C8\uB2E4."
+    en: "1 Gem every {0}s \xB7 next in {1}s \xB7 Witch Researchers are lab specialists."
+    where: GameUI.Panels.cs:247
+    args: "{0} = g.LabInterval(b):0  \xB7  {1} = g.LabInterval(b) - b.labTimer:0"
+    origKo: "{0}\uCD08\uB9C8\uB2E4 \uBCF4\uC11D 1\uAC1C \xB7 \uB2E4\uC74C\uAE4C\uC9C0
+      {1}\uCD08 \xB7 \uB9C8\uB140 \uC5F0\uAD6C\uC6D0\uC774 \uC218\uAC70\uB97C \uC798\uD569\uB2C8\uB2E4."
+    origEn: "1 Gem every {0}s \xB7 next in {1}s \xB7 Witch Researchers are lab specialists."
+  - ko: "\uC9C1\uC6D0 \uC219\uC18C"
+    en: Staff Dorm
+    where: GameUI.Panels.cs:252
+    args: 
+    origKo: "\uC9C1\uC6D0 \uC219\uC18C"
+    origEn: Staff Dorm
+  - ko: "\uC9C1\uC6D0 \uD55C\uB3C4 {0}\uBA85 (\uAE30\uBCF8 {1} + \uC219\uC18C \uB808\uBCA8
+      \uD569). \uACE0\uC6A9\uC740 [\uC9C1\uC6D0] \uBA54\uB274\uC5D0\uC11C."
+    en: Staff capacity {0} (base {1} + dorm levels). Hire in [Staff].
+    where: GameUI.Panels.cs:253
+    args: "{0} = g.StaffCapacity()  \xB7  {1} = GameData.BaseStaffCap"
+    origKo: "\uC9C1\uC6D0 \uD55C\uB3C4 {0}\uBA85 (\uAE30\uBCF8 {1} + \uC219\uC18C
+      \uB808\uBCA8 \uD569). \uACE0\uC6A9\uC740 [\uC9C1\uC6D0] \uBA54\uB274\uC5D0\uC11C."
+    origEn: Staff capacity {0} (base {1} + dorm levels). Hire in [Staff].
+  - ko: "\uD734\uAC8C\uC2E4"
+    en: Lounge
+    where: GameUI.Panels.cs:256
+    args: 
+    origKo: "\uD734\uAC8C\uC2E4"
+    origEn: Lounge
+  - ko: "\uB9E4\uC77C 06\uC2DC \uC774\uD6C4 \uCC98\uC74C \uC811\uC18D\uD55C \uC2DC\uC810\uC5D0
+      \uD734\uAC8C\uC2E4 \uAC1C\uC218 \xD7 {0}\uACE8\uB4DC\uB97C \uC9C0\uAE09\uD569\uB2C8\uB2E4."
+    en: "Pays lounges \xD7 {0} Gold on your first visit after 06:00 each day."
+    where: GameUI.Panels.cs:257
+    args: '{0} = GameData.RestDailyGold:N0'
+    origKo: "\uB9E4\uC77C 06\uC2DC \uC774\uD6C4 \uCC98\uC74C \uC811\uC18D\uD55C \uC2DC\uC810\uC5D0
+      \uD734\uAC8C\uC2E4 \uAC1C\uC218 \xD7 {0}\uACE8\uB4DC\uB97C \uC9C0\uAE09\uD569\uB2C8\uB2E4."
+    origEn: "Pays lounges \xD7 {0} Gold on your first visit after 06:00 each day."
+  - ko: "\uACF5\uAC04 {0}/{1}"
+    en: Space {0}/{1}
+    where: GameUI.Panels.cs:265
+    args: "{0} = g.TankSpaceUsed(b)  \xB7  {1} = g.TankSpaceMax(b)"
+    origKo: "\uACF5\uAC04 {0}/{1}"
+    origEn: Space {0}/{1}
+  - ko: "\uAD34\uBB3C\uB9C8\uB2E4 \uCC28\uC9C0\uD558\uB294 \uACF5\uAC04\uC774 \uB2E4\uB985\uB2C8\uB2E4."
+    en: Each monster takes a different amount of space.
+    where: GameUI.Panels.cs:265
+    args: 
+    origKo: "\uAD34\uBB3C\uB9C8\uB2E4 \uCC28\uC9C0\uD558\uB294 \uACF5\uAC04\uC774
+      \uB2E4\uB985\uB2C8\uB2E4."
+    origEn: Each monster takes a different amount of space.
+  - ko: "\uB9C8\uAE30 {0}"
+    en: Miasma {0}
+    where: GameUI.Panels.cs:266
+    args: '{0} = g.TankMaki(b)'
+    origKo: "\uB9C8\uAE30 {0}"
+    origEn: Miasma {0}
+  - ko: "\uB0A8\uC740 \uB9C8\uAE30 {0} (\uAE30\uBCF8 {1})\n\uAD34\uBB3C\uC740 \uB9C8\uAE30\uB97C
+      \uC18C\uBAA8\uD558\uACE0, \uB9C8\uCD08\uB294 \uD68C\uBCF5\uD569\uB2C8\uB2E4.\n\uB9C8\uAE30\uAC00
+      0 \uBBF8\uB9CC\uC774 \uB418\uB294 \uAD34\uBB3C\uC740 \uB123\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: 'Miasma left {0} (base {1})
+
+      Monsters use miasma, plants restore it.
+
+      You
+      can''t add a monster that drops it below 0.'
+    where: GameUI.Panels.cs:267
+    args: "{0} = g.TankMaki(b)  \xB7  {1} = g.TankMakiBase(b)"
+    origKo: "\uB0A8\uC740 \uB9C8\uAE30 {0} (\uAE30\uBCF8 {1})\n\uAD34\uBB3C\uC740
+      \uB9C8\uAE30\uB97C \uC18C\uBAA8\uD558\uACE0, \uB9C8\uCD08\uB294 \uD68C\uBCF5\uD569\uB2C8\uB2E4.\n\uB9C8\uAE30\uAC00
+      0 \uBBF8\uB9CC\uC774 \uB418\uB294 \uAD34\uBB3C\uC740 \uB123\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: 'Miasma left {0} (base {1})
+
+      Monsters use miasma, plants restore
+      it.
+
+      You can''t add a monster that drops it below 0.'
+  - ko: "{0}/\uBD84"
+    en: '{0}/min'
+    where: GameUI.Panels.cs:269
+    args: '{0} = g.TankRatePerMin(b):N0'
+    origKo: "{0}/\uBD84"
+    origEn: '{0}/min'
+  - ko: "\uBD84\uB2F9 \uAD00\uB78C\uB8CC"
+    en: Admission per minute
+    where: GameUI.Panels.cs:269
+    args: 
+    origKo: "\uBD84\uB2F9 \uAD00\uB78C\uB8CC"
+    origEn: Admission per minute
+  - ko: "\uC313\uC778 \uAD00\uB78C\uB8CC. \uD55C\uB3C4\uC5D0 \uB2FF\uC73C\uBA74 \uB354
+      \uC313\uC774\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
+    en: Stored fees. Stops at the cap.
+    where: GameUI.Panels.cs:271
+    args: 
+    origKo: "\uC313\uC778 \uAD00\uB78C\uB8CC. \uD55C\uB3C4\uC5D0 \uB2FF\uC73C\uBA74
+      \uB354 \uC313\uC774\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
+    origEn: Stored fees. Stops at the cap.
+  - ko: "\uC804\uC2DC \uC911  (\uD0ED: \uBE7C\uAE30)"
+    en: 'On display  (tap: remove)'
+    where: GameUI.Panels.cs:275
+    args: 
+    origKo: "\uC804\uC2DC \uC911  (\uD0ED: \uBE7C\uAE30)"
+    origEn: 'On display  (tap: remove)'
+  - ko: "\uBE44\uC5B4 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB798 \uBCF4\uAD00\uD568\uC5D0\uC11C
+      \uAD34\uBB3C\uC744 \uB123\uC73C\uC138\uC694."
+    en: Empty. Add monsters from storage below.
+    where: GameUI.Panels.cs:277
+    args: 
+    origKo: "\uBE44\uC5B4 \uC788\uC2B5\uB2C8\uB2E4. \uC544\uB798 \uBCF4\uAD00\uD568\uC5D0\uC11C
+      \uAD34\uBB3C\uC744 \uB123\uC73C\uC138\uC694."
+    origEn: Empty. Add monsters from storage below.
+  - ko: "\n\n\uD0ED\uD558\uBA74 \uBCF4\uAD00\uD568\uC73C\uB85C \uBE8D\uB2C8\uB2E4.\n"
+    en: '
+
+
+      Tap to move back to storage.
+
+'
+    where: GameUI.Panels.cs:281
+    args: 
+    origKo: "\n\n\uD0ED\uD558\uBA74 \uBCF4\uAD00\uD568\uC73C\uB85C \uBE8D\uB2C8\uB2E4.\n"
+    origEn: '
+
+
+      Tap to move back to storage.
+
+'
+  - ko: "\uBCF4\uAD00\uD568\uC5D0\uC11C \uB123\uAE30  (\uD0ED: \uB123\uAE30)"
+    en: 'Add from storage  (tap: add)'
+    where: GameUI.Panels.cs:284
+    args: 
+    origKo: "\uBCF4\uAD00\uD568\uC5D0\uC11C \uB123\uAE30  (\uD0ED: \uB123\uAE30)"
+    origEn: 'Add from storage  (tap: add)'
+  - ko: "\n\n\uD0ED\uD558\uBA74 \uC6B0\uB9AC\uC5D0 \uB123\uC2B5\uB2C8\uB2E4.\n"
+    en: '
+
+
+      Tap to put in the cage.
+
+'
+    where: GameUI.Panels.cs:295
+    args: 
+    origKo: "\n\n\uD0ED\uD558\uBA74 \uC6B0\uB9AC\uC5D0 \uB123\uC2B5\uB2C8\uB2E4.\n"
+    origEn: '
+
+
+      Tap to put in the cage.
+
+'
+  - ko: "\uBCF4\uAD00\uD568\uC774 \uBE44\uC5C8\uC2B5\uB2C8\uB2E4. [\uD3EC\uD68D\uC7A5]\uC5D0\uC11C
+      \uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD558\uC138\uC694."
+    en: Storage is empty. Send hunters from the [Hunt] tab.
+    where: GameUI.Panels.cs:297
+    args: 
+    origKo: "\uBCF4\uAD00\uD568\uC774 \uBE44\uC5C8\uC2B5\uB2C8\uB2E4. [\uD3EC\uD68D\uC7A5]\uC5D0\uC11C
+      \uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD558\uC138\uC694."
+    origEn: Storage is empty. Send hunters from the [Hunt] tab.
+  - ko: "\uD310\uB9E4 \uC0C1\uD488"
+    en: Menu
+    where: GameUI.Panels.cs:303
+    args: 
+    origKo: "\uD310\uB9E4 \uC0C1\uD488"
+    origEn: Menu
+  - ko: "\uC190\uB2D8\uC740 \uC0B4 \uC218 \uC788\uB294 \uAC00\uC7A5 \uBE44\uC2FC
+      \uC0C1\uD488\uBD80\uD130 \uC0BD\uB2C8\uB2E4. \uAC00\uAC8C\uB97C \uD0ED\uD558\uBA74
+      \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C \uBC14\uB85C \uD31D\uB2C8\uB2E4."
+    en: Guests buy the priciest item they can afford. Tap the shop to sell to waiting
+      guests.
+    where: GameUI.Panels.cs:304
+    args: 
+    origKo: "\uC190\uB2D8\uC740 \uC0B4 \uC218 \uC788\uB294 \uAC00\uC7A5 \uBE44\uC2FC
+      \uC0C1\uD488\uBD80\uD130 \uC0BD\uB2C8\uB2E4. \uAC00\uAC8C\uB97C \uD0ED\uD558\uBA74
+      \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C \uBC14\uB85C \uD31D\uB2C8\uB2E4."
+    origEn: Guests buy the priciest item they can afford. Tap the shop to sell to
+      waiting guests.
+  - ko: '{0} Lv.{1}{2}'
+    en: '{0} Lv.{1}{3}'
+    where: GameUI.Panels.cs:322
+    args: "{0} = GameData.Buildings[it.shop].Name  \xB7  {1} = it.tier  \xB7  {2}
+      = (unlocked ? \"\" : \" \uD544\uC694\")  \xB7  {3} = (unlocked ? \"\" : \"
+      needed\")"
+    origKo: '{0} Lv.{1}{2}'
+    origEn: '{0} Lv.{1}{3}'
+  - ko: "\uB9E4\uC785\uAC00 {0}\uACE8\uB4DC \u2192 \uD310\uB9E4\uAC00 {1}\uACE8\uB4DC\n\uAC1C\uB2F9
+      \uC774\uC775 {2}\uACE8\uB4DC"
+    en: "Buy {0} \u2192 Sell {1} Gold\nProfit {2} each"
+    where: GameUI.Panels.cs:332
+    args: "{0} = it.buyPrice:N0  \xB7  {1} = it.sellPrice:N0  \xB7  {2} = it.sellPrice
+      - it.buyPrice:N0"
+    origKo: "\uB9E4\uC785\uAC00 {0}\uACE8\uB4DC \u2192 \uD310\uB9E4\uAC00 {1}\uACE8\uB4DC\n\uAC1C\uB2F9
+      \uC774\uC775 {2}\uACE8\uB4DC"
+    origEn: "Buy {0} \u2192 Sell {1} Gold\nProfit {2} each"
+  - ko: "\uC7AC\uACE0 {0}"
+    en: Stock {0}
+    where: "GameUI.Panels.cs:334 \uC678 1\uACF3"
+    args: '{0} = Hi(CountList.Get(g.S.goods, item.id).ToString())'
+    origKo: "\uC7AC\uACE0 {0}"
+    origEn: Stock {0}
+  - ko: "\uD310\uB9E4 \uBD88\uAC00"
+    en: Can't sell
+    where: GameUI.Panels.cs:337
+    args: 
+    origKo: "\uD310\uB9E4 \uBD88\uAC00"
+    origEn: Can't sell
+  - ko: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uD314 \uC218 \uC788\uACE0,
+      \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: You need a {0} Lv.{1}+ to sell (and buy) this.
+    where: GameUI.Panels.cs:339
+    args: "{0} = GameData.Buildings[it.shop].Name  \xB7  {1} = it.tier"
+    origKo: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uD314 \uC218 \uC788\uACE0,
+      \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: You need a {0} Lv.{1}+ to sell (and buy) this.
+  - ko: "{0} 10\uAC1C \uAD6C\uC785\n"
+    en: 'Buy 10 {0}
+
+'
+    where: GameUI.Panels.cs:345
+    args: '{0} = it.Name'
+    origKo: "{0} 10\uAC1C \uAD6C\uC785\n"
+    origEn: 'Buy 10 {0}
+
+'
+  - ko: "\uC9C1\uC6D0 {0}/{1}\uBA85"
+    en: Staff {0}/{1}
+    where: GameUI.Panels.cs:355
+    args: "{0} = g.StaffCount  \xB7  {1} = g.StaffCapacity()"
+    origKo: "\uC9C1\uC6D0 {0}/{1}\uBA85"
+    origEn: Staff {0}/{1}
+  - ko: "\uC219\uC18C\uB97C \uC9D3\uAC70\uB098 \uC5C5\uADF8\uB808\uC774\uB4DC\uD558\uBA74
+      \uD55C\uB3C4\uAC00 \uB298\uC5B4\uB0A9\uB2C8\uB2E4."
+    en: Build or upgrade dorms for more.
+    where: GameUI.Panels.cs:357
+    args: 
+    origKo: "\uC219\uC18C\uB97C \uC9D3\uAC70\uB098 \uC5C5\uADF8\uB808\uC774\uB4DC\uD558\uBA74
+      \uD55C\uB3C4\uAC00 \uB298\uC5B4\uB0A9\uB2C8\uB2E4."
+    origEn: Build or upgrade dorms for more.
+  - ko: "\uC131 \uAD00\uB9AC\uC790 \u2014 \uB2F4\uB2F9 \uAD6C\uC5ED\xB7\uCE35\uC744
+      \uC815\uD558\uBA74 \uADF8 \uC548\uC758 \uC77C\uB9CC \uD569\uB2C8\uB2E4"
+    en: "Castle staff \u2014 they only work in their assigned area"
+    where: GameUI.Panels.cs:359
+    args: 
+    origKo: "\uC131 \uAD00\uB9AC\uC790 \u2014 \uB2F4\uB2F9 \uAD6C\uC5ED\xB7\uCE35\uC744
+      \uC815\uD558\uBA74 \uADF8 \uC548\uC758 \uC77C\uB9CC \uD569\uB2C8\uB2E4"
+    origEn: "Castle staff \u2014 they only work in their assigned area"
+  - ko: "\uD2B9\uD654 \uAC74\uBB3C\uB85C \uAC08 \uB54C \uB354 \uBE60\uB974\uACE0
+      \uC77C\uB3C4 \uBE68\uB9AC \uB05D\uB0C5\uB2C8\uB2E4. (\uC2A4\uCF08\uB808\uD1A4=\uC804\uC2DC
+      \uC6B0\uB9AC \xB7 \uC11C\uD050\uBC84\uC2A4=\uC2DD\uB2F9 \xB7 \uAC00\uACE0\uC77C=\uAE30\uB150\uD488\uC810
+      \xB7 \uB9C8\uB140=\uC5F0\uAD6C\uC18C)"
+    en: "They move and work faster at their specialty. (Skeleton=Cages \xB7 Succubus=Diner
+      \xB7 Gargoyle=Gift Shop \xB7 Witch=Lab)"
+    where: GameUI.Panels.cs:360
+    args: 
+    origKo: "\uD2B9\uD654 \uAC74\uBB3C\uB85C \uAC08 \uB54C \uB354 \uBE60\uB974\uACE0
+      \uC77C\uB3C4 \uBE68\uB9AC \uB05D\uB0C5\uB2C8\uB2E4. (\uC2A4\uCF08\uB808\uD1A4=\uC804\uC2DC
+      \uC6B0\uB9AC \xB7 \uC11C\uD050\uBC84\uC2A4=\uC2DD\uB2F9 \xB7 \uAC00\uACE0\uC77C=\uAE30\uB150\uD488\uC810
+      \xB7 \uB9C8\uB140=\uC5F0\uAD6C\uC18C)"
+    origEn: "They move and work faster at their specialty. (Skeleton=Cages \xB7 Succubus=Diner
+      \xB7 Gargoyle=Gift Shop \xB7 Witch=Lab)"
+  - ko: "\uAD6C\uC5ED"
+    en: Area
+    where: GameUI.Panels.cs:371
+    args: 
+    origKo: "\uAD6C\uC5ED"
+    origEn: Area
+  - ko: "\uC804\uCCB4"
+    en: All
+    where: "GameUI.Panels.cs:372 \uC678 1\uACF3"
+    args: 
+    origKo: "\uC804\uCCB4"
+    origEn: All
+  - ko: "\uCE35"
+    en: Floor
+    where: GameUI.Panels.cs:381
+    args: 
+    origKo: "\uCE35"
+    origEn: Floor
+  - ko: "\uBAA8\uB4E0 \uCE35"
+    en: All floors
+    where: GameUI.Panels.cs:383
+    args: 
+    origKo: "\uBAA8\uB4E0 \uCE35"
+    origEn: All floors
+  - ko: "\uADFC\uBB34 \uC911 \xB7 \uBCF5\uADC0"
+    en: "Working \xB7 Recall"
+    where: GameUI.Panels.cs:385
+    args: 
+    origKo: "\uADFC\uBB34 \uC911 \xB7 \uBCF5\uADC0"
+    origEn: "Working \xB7 Recall"
+  - ko: "\uD30C\uACAC"
+    en: Dispatch
+    where: GameUI.Panels.cs:385
+    args: 
+    origKo: "\uD30C\uACAC"
+    origEn: Dispatch
+  - ko: "\uD3EC\uD68D\uB300\uC6D0 \u2014 \uD30C\uACAC\uC740 \uD3EC\uD68D\uC7A5\uC5D0\uC11C"
+    en: "Hunters \u2014 dispatch from the Hunt tab"
+    where: GameUI.Panels.cs:388
+    args: 
+    origKo: "\uD3EC\uD68D\uB300\uC6D0 \u2014 \uD30C\uACAC\uC740 \uD3EC\uD68D\uC7A5\uC5D0\uC11C"
+    origEn: "Hunters \u2014 dispatch from the Hunt tab"
+  - ko: "\uD3EC\uD68D\uC5D0\uC11C \uBCF4\uAE30"
+    en: View in Hunt
+    where: GameUI.Panels.cs:394
+    args: 
+    origKo: "\uD3EC\uD68D\uC7A5\uC5D0\uC11C \uBCF4\uAE30"
+    origEn: View in Hunt
+  - ko: "\uACE0\uC6A9"
+    en: Hire
+    where: "GameUI.Panels.cs:399 \uC678 1\uACF3"
+    args: 
+    origKo: "\uACE0\uC6A9"
+    origEn: Hire
+  - ko: "{0}\uC744(\uB97C) \uACE0\uC6A9\uD569\uB2C8\uB2E4."
+    en: Hire {0}.
+    where: GameUI.Panels.cs:411
+    args: '{0} = dd.Name'
+    origKo: "{0}\uC744(\uB97C) \uACE0\uC6A9\uD569\uB2C8\uB2E4."
+    origEn: Hire {0}.
+  - ko: "\uD3EC\uD68D\uB300\uC6D0"
+    en: Hunter
+    where: GameUI.Panels.cs:426
+    args: 
+    origKo: "\uD3EC\uD68D\uB300\uC6D0"
+    origEn: Hunter
+  - ko: "\uD2B9\uD654: {0}"
+    en: 'Specialty: {0}'
+    where: GameUI.Panels.cs:426
+    args: '{0} = SpecialtyName(d.specialty)'
+    origKo: "\uD2B9\uD654: {0}"
+    origEn: 'Specialty: {0}'
+  - ko: "\uD3EC\uD68D \uC8FC\uAE30 {0}\uCD08"
+    en: Cycle {0}s
+    where: GameUI.Panels.cs:433
+    args: '{0} = d.interval'
+    origKo: "\uD3EC\uD68D \uC8FC\uAE30 {0}\uCD08"
+    origEn: Cycle {0}s
+  - ko: "1\uD68C {0}\uB9C8\uB9AC"
+    en: '{0} per catch'
+    where: GameUI.Panels.cs:434
+    args: '{0} = d.amount'
+    origKo: "1\uD68C {0}\uB9C8\uB9AC"
+    origEn: '{0} per catch'
+  - ko: "\uCCB4\uB825 {0}"
+    en: Stamina {0}
+    where: GameUI.Panels.cs:435
+    args: '{0} = d.durability'
+    origKo: "\uCCB4\uB825 {0}"
+    origEn: Stamina {0}
+  - ko: "\uC774\uB3D9 \xD7{0} (\uD2B9\uD654 \xD7{1})"
+    en: "Speed \xD7{0} (specialty \xD7{1})"
+    where: GameUI.Panels.cs:439
+    args: "{0} = d.moveSpeed:0.00  \xB7  {1} = d.moveSpeed * GameData.SpecialtySpeed:0.00"
+    origKo: "\uC774\uB3D9 \xD7{0} (\uD2B9\uD654 \xD7{1})"
+    origEn: "Speed \xD7{0} (specialty \xD7{1})"
+  - ko: "\uC74C\uC2DD +{0}% \xB7 \uAE30\uB150\uD488 +{1}%"
+    en: "Food +{0}% \xB7 Gifts +{1}%"
+    where: GameUI.Panels.cs:440
+    args: "{0} = d.foodBonus * 100:0  \xB7  {1} = d.souvenirBonus * 100:0"
+    origKo: "\uC74C\uC2DD +{0}% \xB7 \uAE30\uB150\uD488 +{1}%"
+    origEn: "Food +{0}% \xB7 Gifts +{1}%"
+  - ko: "\uAD00\uB78C\uB8CC \uC218\uAC70 +{0}%"
+    en: Fee collection +{0}%
+    where: GameUI.Panels.cs:441
+    args: '{0} = d.admissionBonus * 100:0'
+    origKo: "\uAD00\uB78C\uB8CC \uC218\uAC70 +{0}%"
+    origEn: Fee collection +{0}%
+  - ko: "\uC5F0\uAD6C\uC18C \uC791\uC5C5 \uBE60\uB984"
+    en: Fast lab work
+    where: GameUI.Panels.cs:442
+    args: 
+    origKo: "\uC5F0\uAD6C\uC18C \uC791\uC5C5 \uBE60\uB984"
+    origEn: Fast lab work
+  - ko: "\uBBF8\uB07C"
+    en: Bait
+    where: "GameUI.Panels.cs:450 \uC678 1\uACF3"
+    args: 
+    origKo: "\uBBF8\uB07C"
+    origEn: Bait
+  - ko: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488"
+    en: Food & Gifts
+    where: GameUI.Panels.cs:450
+    args: 
+    origKo: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488"
+    origEn: Food & Gifts
+  - ko: "\uAD34\uBB3C \uD310\uB9E4"
+    en: Sell
+    where: GameUI.Panels.cs:450
+    args: 
+    origKo: "\uAD34\uBB3C \uD310\uB9E4"
+    origEn: Sell
+  - ko: "\uC7AC\uD654 \uAD50\uD658"
+    en: Exchange
+    where: GameUI.Panels.cs:450
+    args: 
+    origKo: "\uC7AC\uD654 \uAD50\uD658"
+    origEn: Exchange
+  - ko: "\uBBF8\uB07C\uB9C8\uB2E4 \uC7A1\uD788\uB294 \uAD34\uBB3C\uC774 \uB2E4\uB985\uB2C8\uB2E4.
+      \uD798(\uC57D\xB7\uC911\xB7\uAC15)\uACFC \uC870\uD569\uD574 \uBCF4\uC138\uC694. "
+    en: 'Each bait attracts different monsters. Combine with power (Low/Mid/High). '
+    where: GameUI.Panels.cs:456
+    args: 
+    origKo: "\uBBF8\uB07C\uB9C8\uB2E4 \uC7A1\uD788\uB294 \uAD34\uBB3C\uC774 \uB2E4\uB985\uB2C8\uB2E4.
+      \uD798(\uC57D\xB7\uC911\xB7\uAC15)\uACFC \uC870\uD569\uD574 \uBCF4\uC138\uC694. "
+    origEn: 'Each bait attracts different monsters. Combine with power (Low/Mid/High). '
+  - ko: "{0}/\uAC1C"
+    en: '{0} each'
+    where: GameUI.Panels.cs:470
+    args: '{0} = bd.price'
+    origKo: "{0}/\uAC1C"
+    origEn: '{0} each'
+  - ko: "\uBCF4\uC720 {0}"
+    en: Own {0}
+    where: GameUI.Panels.cs:471
+    args: '{0} = CountList.Get(g.S.baits, bd.id)'
+    origKo: "\uBCF4\uC720 {0}"
+    origEn: Own {0}
+  - ko: "{0} {1}\uAC1C \uAD6C\uC785\n{2}\uACE8\uB4DC"
+    en: 'Buy {1} {0}
+
+      {2} Gold'
+    where: GameUI.Panels.cs:479
+    args: "{0} = bd.Name  \xB7  {1} = n  \xB7  {2} = bd.price * n:N0"
+    origKo: "{0} {1}\uAC1C \uAD6C\uC785\n{2}\uACE8\uB4DC"
+    origEn: 'Buy {1} {0}
+
+      {2} Gold'
+  - ko: "\uADF8 \uC0C1\uD488\uC744 \uD30C\uB294 \uAC00\uAC8C(\uB808\uBCA8 \uCDA9\uC871)\uAC00
+      \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
+    en: 'You can only buy goods that one of your shops can sell. '
+    where: GameUI.Panels.cs:485
+    args: 
+    origKo: "\uADF8 \uC0C1\uD488\uC744 \uD30C\uB294 \uAC00\uAC8C(\uB808\uBCA8 \uCDA9\uC871)\uAC00
+      \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
+    origEn: 'You can only buy goods that one of your shops can sell. '
+  - ko: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4."
+    en: Gold and Materials exchange 1:1.
+    where: GameUI.Panels.cs:493
+    args: 
+    origKo: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4."
+    origEn: Gold and Materials exchange 1:1.
+  - ko: "\uACE8\uB4DC \u2192 \uC790\uC7AC"
+    en: "Gold \u2192 Materials"
+    where: GameUI.Panels.cs:495
+    args: 
+    origKo: "\uACE8\uB4DC \u2192 \uC790\uC7AC"
+    origEn: "Gold \u2192 Materials"
+  - ko: "\uC790\uC7AC \u2192 \uACE8\uB4DC"
+    en: "Materials \u2192 Gold"
+    where: GameUI.Panels.cs:496
+    args: 
+    origKo: "\uC790\uC7AC \u2192 \uACE8\uB4DC"
+    origEn: "Materials \u2192 Gold"
+  - ko: "\uD310\uB9E4\uB294 \uC989\uC2DC \uC218\uC775, \uC804\uC2DC\uB294 \uB290\uB9AC\uC9C0\uB9CC
+      \uACC4\uC18D \uB4E4\uC5B4\uC624\uB294 \uC218\uC775\uC785\uB2C8\uB2E4. \uD0ED:
+      1\uB9C8\uB9AC \xB7 "
+    en: "Selling pays now; exhibiting pays over time. Tap: sell 1 \xB7 "
+    where: GameUI.Panels.cs:522
+    args: 
+    origKo: "\uD310\uB9E4\uB294 \uC989\uC2DC \uC218\uC775, \uC804\uC2DC\uB294 \uB290\uB9AC\uC9C0\uB9CC
+      \uACC4\uC18D \uB4E4\uC5B4\uC624\uB294 \uC218\uC775\uC785\uB2C8\uB2E4. \uD0ED:
+      1\uB9C8\uB9AC \xB7 "
+    origEn: "Selling pays now; exhibiting pays over time. Tap: sell 1 \xB7 "
+  - ko: "\uD0ED: 1\uB9C8\uB9AC \uD310\uB9E4\n"
+    en: 'Tap: sell 1
+
+'
+    where: GameUI.Panels.cs:534
+    args: 
+    origKo: "\uD0ED: 1\uB9C8\uB9AC \uD310\uB9E4\n"
+    origEn: 'Tap: sell 1
+
+'
+  - ko: "\uD310\uB9E4\uD560 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: No monsters to sell.
+    where: GameUI.Panels.cs:536
+    args: 
+    origKo: "\uD310\uB9E4\uD560 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: No monsters to sell.
+  - ko: "\uAD34\uBB3C \xB7 \uB9C8\uCD08"
+    en: "Monsters \xB7 Plants"
+    where: GameUI.Panels.cs:542
+    args: 
+    origKo: "\uAD34\uBB3C \xB7 \uB9C8\uCD08"
+    origEn: "Monsters \xB7 Plants"
+  - ko: "\n\n\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uB123\uAC70\uB098 [\uC0C1\uC810]\uC5D0\uC11C
+      \uD31D\uB2C8\uB2E4."
+    en: '
+
+
+      Tap a cage to exhibit, or sell in the [Shop].'
+    where: GameUI.Panels.cs:551
+    args: 
+    origKo: "\n\n\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uB123\uAC70\uB098
+      [\uC0C1\uC810]\uC5D0\uC11C \uD31D\uB2C8\uB2E4."
+    origEn: '
+
+
+      Tap a cage to exhibit, or sell in the [Shop].'
+  - ko: "\uC7A1\uC740 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: No monsters yet.
+    where: GameUI.Panels.cs:553
+    args: 
+    origKo: "\uC7A1\uC740 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: No monsters yet.
+  - ko: "{0}\n\uAC1C\uB2F9 {1}\uACE8\uB4DC"
+    en: '{0}
+
+      {1} Gold each'
+    where: GameUI.Panels.cs:560
+    args: "{0} = bd.Name  \xB7  {1} = bd.price"
+    origKo: "{0}\n\uAC1C\uB2F9 {1}\uACE8\uB4DC"
+    origEn: '{0}
+
+      {1} Gold each'
+  - ko: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488 \uC7AC\uACE0"
+    en: Food & gift stock
+    where: GameUI.Panels.cs:563
+    args: 
+    origKo: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488 \uC7AC\uACE0"
+    origEn: Food & gift stock
+  - ko: "{0}\n{1} Lv.{2} \uC0C1\uD488\n\uD310\uB9E4\uAC00 {3}\uACE8\uB4DC"
+    en: '{0}
+
+      {1} Lv.{2}
+
+      Sells for {3} Gold'
+    where: GameUI.Panels.cs:569
+    args: "{0} = it.Name  \xB7  {1} = GameData.Buildings[it.shop].Name  \xB7  {2}
+      = it.tier  \xB7  {3} = it.sellPrice:N0"
+    origKo: "{0}\n{1} Lv.{2} \uC0C1\uD488\n\uD310\uB9E4\uAC00 {3}\uACE8\uB4DC"
+    origEn: '{0}
+
+      {1} Lv.{2}
+
+      Sells for {3} Gold'
+  - ko: "\uC99D\uCD95 \xB7 \uD0D0\uC0AC"
+    en: Expand
+    where: GameUI.Panels.cs:578
+    args: 
+    origKo: "\uC99D\uCD95 \xB7 \uD0D0\uC0AC"
+    origEn: Expand
+  - ko: "\uBCF4\uC11D {0}"
+    en: Gems {0}
+    where: GameUI.Panels.cs:584
+    args: '{0} = g.S.rp:N0'
+    origKo: "\uBCF4\uC11D {0}"
+    origEn: Gems {0}
+  - ko: "\uBCF4\uC11D\uC740 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC\uC785\uB2C8\uB2E4.
+      \uC544\uAEF4 \uC4F0\uC138\uC694!"
+    en: "Gems are precious \u2014 spend them wisely!"
+    where: GameUI.Panels.cs:586
+    args: 
+    origKo: "\uBCF4\uC11D\uC740 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC\uC785\uB2C8\uB2E4.
+      \uC544\uAEF4 \uC4F0\uC138\uC694!"
+    origEn: "Gems are precious \u2014 spend them wisely!"
+  - ko: "\uC131 \uC99D\uCD95"
+    en: Castle expansion
+    where: GameUI.Panels.cs:590
+    args: 
+    origKo: "\uC131 \uC99D\uCD95"
+    origEn: Castle expansion
+  - ko: "\uC2A4\uD14C\uC774\uC9C0 \uD0D0\uC0AC"
+    en: Explore stages
+    where: GameUI.Panels.cs:593
+    args: 
+    origKo: "\uC2A4\uD14C\uC774\uC9C0 \uD0D0\uC0AC"
+    origEn: Explore stages
+  - ko: "\uD6A8\uACFC \uC5C6\uC74C"
+    en: No effect
+    where: GameUI.Panels.cs:631
+    args: 
+    origKo: "\uD6A8\uACFC \uC5C6\uC74C"
+    origEn: No effect
+  - ko: "\uD604\uC7AC: {0}"
+    en: 'Now: {0}'
+    where: GameUI.Panels.cs:632
+    args: '{0} = now'
+    origKo: "\uD604\uC7AC: {0}"
+    origEn: 'Now: {0}'
+  - ko: "\uBAA8\uB4E0 \uB2E8\uACC4\uB97C \uC644\uB8CC\uD588\uC2B5\uB2C8\uB2E4."
+    en: All levels complete.
+    where: GameUI.Panels.cs:633
+    args: 
+    origKo: "\uBAA8\uB4E0 \uB2E8\uACC4\uB97C \uC644\uB8CC\uD588\uC2B5\uB2C8\uB2E4."
+    origEn: All levels complete.
+  - ko: "\uB2E4\uC74C: {0}"
+    en: 'Next: {0}'
+    where: GameUI.Panels.cs:633
+    args: '{0} = UIKit.Col(u.effect(lv + 1), UIKit.GoodText)'
+    origKo: "\uB2E4\uC74C: {0}"
+    origEn: 'Next: {0}'
+  - ko: "{0}\uB2E8\uACC4 \uAC15\uD654"
+    en: Level {0}
+    where: GameUI.Panels.cs:648
+    args: '{0} = lv + 1'
+    origKo: "{0}\uB2E8\uACC4 \uAC15\uD654"
+    origEn: Level {0}
+  - ko: "\uC120\uD589 \uC5F0\uAD6C \uD544\uC694"
+    en: Needs previous
+    where: GameUI.Panels.cs:682
+    args: 
+    origKo: "\uC120\uD589 \uC5F0\uAD6C \uD544\uC694"
+    origEn: Needs previous
+  - ko: "\uD0D0\uC0AC"
+    en: Explore
+    where: GameUI.Panels.cs:682
+    args: 
+    origKo: "\uD0D0\uC0AC"
+    origEn: Explore
+  - ko: "\uAC19\uC740 \uAD34\uBB3C\uC744 {0}\uB9C8\uB9AC \uD3EC\uD68D\uD558\uBA74
+      \uB3C4\uAC10\uC5D0 \uB4F1\uB85D\uD558\uACE0 \uACE8\uB4DC\uC640 \uBCF4\uC11D(\uD788\uB4E0\uC740
+      5\uAC1C)\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+    en: Catch {0} of a monster to register it for Gold and Gems (5 for hidden ones).
+    where: GameUI.Panels.cs:690
+    args: '{0} = GameData.CollectionRegisterCount'
+    origKo: "\uAC19\uC740 \uAD34\uBB3C\uC744 {0}\uB9C8\uB9AC \uD3EC\uD68D\uD558\uBA74
+      \uB3C4\uAC10\uC5D0 \uB4F1\uB85D\uD558\uACE0 \uACE8\uB4DC\uC640 \uBCF4\uC11D(\uD788\uB4E0\uC740
+      5\uAC1C)\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+    origEn: Catch {0} of a monster to register it for Gold and Gems (5 for hidden
+      ones).
+  - ko: "\uBC1C\uACAC {0}/{1}"
+    en: Found {0}/{1}
+    where: GameUI.Panels.cs:701
+    args: "{0} = f  \xB7  {1} = tt"
+    origKo: "\uBC1C\uACAC {0}/{1}"
+    origEn: Found {0}/{1}
+  - ko: "\uC2A4\uD14C\uC774\uC9C0 {0} \u2014 [\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C
+      \uD0D0\uC0AC\uD558\uBA74 \uAD34\uBB3C\uC774 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+    en: "Stage {0} \u2014 explore it in [Research > Expand]."
+    where: GameUI.Panels.cs:703
+    args: '{0} = r.stage'
+    origKo: "\uC2A4\uD14C\uC774\uC9C0 {0} \u2014 [\uC5F0\uAD6C > \uC99D\uCD95 \xB7
+      \uD0D0\uC0AC]\uC5D0\uC11C \uD0D0\uC0AC\uD558\uBA74 \uAD34\uBB3C\uC774 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+    origEn: "Stage {0} \u2014 explore it in [Research > Expand]."
+  - ko: "??? (\uD788\uB4E0)"
+    en: ??? (hidden)
+    where: GameUI.Panels.cs:718
+    args: 
+    origKo: "??? (\uD788\uB4E0)"
+    origEn: ??? (hidden)
+  - ko: "\uB4F1\uB85D \uC644\uB8CC"
+    en: Registered
+    where: GameUI.Panels.cs:728
+    args: 
+    origKo: "\uB4F1\uB85D \uC644\uB8CC"
+    origEn: Registered
+  - ko: "\uB4F1\uB85D (\uBCF4\uC11D +{0})"
+    en: Register (+{0} Gems)
+    where: GameUI.Panels.cs:732
+    args: '{0} = GameData.CollectionGems(m)'
+    origKo: "\uB4F1\uB85D (\uBCF4\uC11D +{0})"
+    origEn: Register (+{0} Gems)
+  - ko: "\uD2B9\uBCC4\uD55C \uBBF8\uB07C\uC640 \uD798 \uC870\uD569\uC5D0\uC11C\uB9CC
+      \uB098\uD0C0\uB09C\uB2E4\uACE0 \uD55C\uB2E4..."
+    en: Said to appear only with a special bait and power...
+    where: GameUI.Panels.cs:737
+    args: 
+    origKo: "\uD2B9\uBCC4\uD55C \uBBF8\uB07C\uC640 \uD798 \uC870\uD569\uC5D0\uC11C\uB9CC
+      \uB098\uD0C0\uB09C\uB2E4\uACE0 \uD55C\uB2E4..."
+    origEn: Said to appear only with a special bait and power...
+  - ko: "\uD78C\uD2B8: {0} + \uD798 {1}"
+    en: 'Hint: {0} + {1} power'
+    where: GameUI.Panels.cs:748
+    args: "{0} = GameData.Baits[b].Name  \xB7  {1} = GameData.PowerName(p)"
+    origKo: "\uD78C\uD2B8: {0} + \uD798 {1}"
+    origEn: 'Hint: {0} + {1} power'
+  - ko: "\uB9C8\uC655\uC131\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!"
+    en: Welcome to the Demon Castle!
+    where: GameUI.Tutorial.cs:18
+    args: 
+    origKo: "\uB9C8\uC655\uC131\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!"
+    origEn: Welcome to the Demon Castle!
+  - ko: "\uAD34\uBB3C\uC744 \uC7A1\uC544 \uC804\uC2DC\uD558\uACE0, \uAD6C\uACBD \uC628
+      \uC6A9\uC0AC\uB4E4\uC5D0\uAC8C\n\uC74C\uC2DD\uACFC \uAE30\uB150\uD488\uC744
+      \uD314\uC544 \uB9C8\uC655\uC131\uC744 \uD0A4\uC6B0\uC138\uC694."
+    en: 'Catch monsters, put them on display,
+
+      and sell food and gifts to visiting
+      heroes.'
+    where: GameUI.Tutorial.cs:19
+    args: 
+    origKo: "\uAD34\uBB3C\uC744 \uC7A1\uC544 \uC804\uC2DC\uD558\uACE0, \uAD6C\uACBD
+      \uC628 \uC6A9\uC0AC\uB4E4\uC5D0\uAC8C\n\uC74C\uC2DD\uACFC \uAE30\uB150\uD488\uC744
+      \uD314\uC544 \uB9C8\uC655\uC131\uC744 \uD0A4\uC6B0\uC138\uC694."
+    origEn: 'Catch monsters, put them on display,
+
+      and sell food and gifts
+      to visiting heroes.'
+  - ko: "\uC9D3\uAE30"
+    en: Building
+    where: GameUI.Tutorial.cs:21
+    args: 
+    origKo: "\uC9D3\uAE30"
+    origEn: Building
+  - ko: "\uBE48 \uCE78(+)\uC744 \uD0ED\uD558\uBA74 \uAC74\uBB3C\uC744 \uC9C0\uC744
+      \uC218 \uC788\uC5B4\uC694.\n\uC804\uC2DC \uC6B0\uB9AC\uB294 [\uAC74\uC124]\uC5D0\uC11C
+      \uACE0\uB978 \uB4A4 \uB04C\uBA74 \uC5EC\uB7EC \uCE78\uC744 \uD558\uB098\uB85C
+      \uC9C0\uC5B4\uC694."
+    en: 'Tap an empty cell (+) to build.
+
+      Pick the Exhibit Cage in [Build]
+      and drag to make one big cage.'
+    where: GameUI.Tutorial.cs:23
+    args: 
+    origKo: "\uBE48 \uCE78(+)\uC744 \uD0ED\uD558\uBA74 \uAC74\uBB3C\uC744 \uC9C0\uC744
+      \uC218 \uC788\uC5B4\uC694.\n\uC804\uC2DC \uC6B0\uB9AC\uB294 [\uAC74\uC124]\uC5D0\uC11C
+      \uACE0\uB978 \uB4A4 \uB04C\uBA74 \uC5EC\uB7EC \uCE78\uC744 \uD558\uB098\uB85C
+      \uC9C0\uC5B4\uC694."
+    origEn: 'Tap an empty cell (+) to build.
+
+      Pick the Exhibit Cage in [Build]
+      and drag to make one big cage.'
+  - ko: "\uBE48 \uCE78(+)\uC744 \uD074\uB9AD\uD558\uBA74 \uAC74\uBB3C\uC744 \uC9C0\uC744
+      \uC218 \uC788\uC5B4\uC694.\n\uC804\uC2DC \uC6B0\uB9AC\uB294 [\uAC74\uC124]\uC5D0\uC11C
+      \uACE0\uB978 \uB4A4 \uB04C\uBA74 \uC5EC\uB7EC \uCE78\uC744 \uD558\uB098\uB85C
+      \uC9C0\uC5B4\uC694."
+    en: 'Click an empty cell (+) to build.
+
+      Pick the Exhibit Cage in [Build]
+      and drag to make one big cage.'
+    where: GameUI.Tutorial.cs:25
+    args: 
+    origKo: "\uBE48 \uCE78(+)\uC744 \uD074\uB9AD\uD558\uBA74 \uAC74\uBB3C\uC744 \uC9C0\uC744
+      \uC218 \uC788\uC5B4\uC694.\n\uC804\uC2DC \uC6B0\uB9AC\uB294 [\uAC74\uC124]\uC5D0\uC11C
+      \uACE0\uB978 \uB4A4 \uB04C\uBA74 \uC5EC\uB7EC \uCE78\uC744 \uD558\uB098\uB85C
+      \uC9C0\uC5B4\uC694."
+    origEn: 'Click an empty cell (+) to build.
+
+      Pick the Exhibit Cage in [Build]
+      and drag to make one big cage.'
+  - ko: "\uC9E7\uAC8C \xB7 \uAE38\uAC8C"
+    en: Tap & Hold
+    where: GameUI.Tutorial.cs:27
+    args: 
+    origKo: "\uC9E7\uAC8C \xB7 \uAE38\uAC8C"
+    origEn: Tap & Hold
+  - ko: "\uC9E7\uAC8C \uD0ED: \uC6B0\uB9AC \uAD00\uB78C\uB8CC \uC218\uB839 \xB7 \uAC00\uAC8C\uC5D0\uC11C
+      \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C \uD310\uB9E4\n\uAFB9 \uB204\uB974\uAE30:
+      \uC5C5\uADF8\uB808\uC774\uB4DC\xB7\uAD00\uB9AC \uCC3D\n\uBAA9\uB85D\uC5D0\uC11C
+      \uAFB9 \uB204\uB974\uBA74 \uBE60\uB974\uAC8C \uC5F0\uC18D\uC73C\uB85C \uC0AC\uACE0\uD31D\uB2C8\uB2E4."
+    en: "Tap: collect cage fees \xB7 sell to waiting shop guests\nHold: upgrade &
+      manage\nHold a list item to buy/sell repeatedly."
+    where: GameUI.Tutorial.cs:29
+    args: 
+    origKo: "\uC9E7\uAC8C \uD0ED: \uC6B0\uB9AC \uAD00\uB78C\uB8CC \uC218\uB839 \xB7
+      \uAC00\uAC8C\uC5D0\uC11C \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C
+      \uD310\uB9E4\n\uAFB9 \uB204\uB974\uAE30: \uC5C5\uADF8\uB808\uC774\uB4DC\xB7\uAD00\uB9AC
+      \uCC3D\n\uBAA9\uB85D\uC5D0\uC11C \uAFB9 \uB204\uB974\uBA74 \uBE60\uB974\uAC8C
+      \uC5F0\uC18D\uC73C\uB85C \uC0AC\uACE0\uD31D\uB2C8\uB2E4."
+    origEn: "Tap: collect cage fees \xB7 sell to waiting shop guests\nHold: upgrade
+      & manage\nHold a list item to buy/sell repeatedly."
+  - ko: "\uC88C\uD074\uB9AD: \uC6B0\uB9AC \uAD00\uB78C\uB8CC \uC218\uB839 \xB7 \uAC00\uAC8C\uC5D0\uC11C
+      \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C \uD310\uB9E4\n\uC6B0\uD074\uB9AD:
+      \uC5C5\uADF8\uB808\uC774\uB4DC\xB7\uAD00\uB9AC \uCC3D\n\uBAA9\uB85D\uC5D0\uC11C
+      \uC6B0\uD074\uB9AD\uC744 \uB204\uB974\uACE0 \uC788\uC73C\uBA74 \uBE60\uB974\uAC8C
+      \uC5F0\uC18D\uC73C\uB85C \uC0AC\uACE0\uD31D\uB2C8\uB2E4."
+    en: "Left-click: collect cage fees \xB7 sell to waiting shop guests\nRight-click:
+      upgrade & manage\nHold right-click on a list item to buy/sell repeatedly."
+    where: GameUI.Tutorial.cs:31
+    args: 
+    origKo: "\uC88C\uD074\uB9AD: \uC6B0\uB9AC \uAD00\uB78C\uB8CC \uC218\uB839 \xB7
+      \uAC00\uAC8C\uC5D0\uC11C \uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8\uC5D0\uAC8C
+      \uD310\uB9E4\n\uC6B0\uD074\uB9AD: \uC5C5\uADF8\uB808\uC774\uB4DC\xB7\uAD00\uB9AC
+      \uCC3D\n\uBAA9\uB85D\uC5D0\uC11C \uC6B0\uD074\uB9AD\uC744 \uB204\uB974\uACE0
+      \uC788\uC73C\uBA74 \uBE60\uB974\uAC8C \uC5F0\uC18D\uC73C\uB85C \uC0AC\uACE0\uD31D\uB2C8\uB2E4."
+    origEn: "Left-click: collect cage fees \xB7 sell to waiting shop guests\nRight-click:
+      upgrade & manage\nHold right-click on a list item to buy/sell repeatedly."
+  - ko: "\uD3EC\uD68D"
+    en: Hunting
+    where: GameUI.Tutorial.cs:33
+    args: 
+    origKo: "\uD3EC\uD68D\uC7A5"
+    origEn: Hunting
+  - ko: "\uC704\uCABD [\uD3EC\uD68D] \uD0ED\uC5D0\uC11C \uD3EC\uD68D\uB300\uC6D0\uC744
+      \uD30C\uACAC\uD558\uC138\uC694.\n\uBBF8\uB07C \xD7 \uD798 \uC870\uD569\uC5D0
+      \uB530\uB77C \uB2E4\uB978 \uAD34\uBB3C\uC774 \uC7A1\uD799\uB2C8\uB2E4."
+    en: "Open the [Hunt] tab and dispatch a hunter.\nThe bait \xD7 power combo decides
+      which monsters appear."
+    where: GameUI.Tutorial.cs:34
+    args: 
+    origKo: "\uC704\uCABD [\uD3EC\uD68D\uC7A5] \uD0ED\uC5D0\uC11C \uD3EC\uD68D\uB300\uC6D0\uC744
+      \uD30C\uACAC\uD558\uC138\uC694.\n\uBBF8\uB07C \xD7 \uD798 \uC870\uD569\uC5D0
+      \uB530\uB77C \uB2E4\uB978 \uAD34\uBB3C\uC774 \uC7A1\uD799\uB2C8\uB2E4."
+    origEn: "Open the [Hunt] tab and dispatch a hunter.\nThe bait \xD7 power combo
+      decides which monsters appear."
+  - ko: 
+    en: 
+    where: GameUI.Tutorial.cs:36
+    args: 
+    origKo: "\uBCF4\uC11D\uC740 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC"
+    origEn: Gems are precious
+  - ko: "\uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uAC00 \uBCF4\uC11D\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.\n\uBCF4\uC11D\uC73C\uB85C
+      \uC131\uC744 \uC99D\uCD95\uD558\uACE0 \uC0C8 \uC9C0\uC5ED\uC744 \uD0D0\uC0AC\uD558\uC138\uC694.\n[\uC9C1\uC6D0]\uC744
+      \uD30C\uACAC\uD558\uBA74 \uD310\uB9E4\xB7\uC218\uAC70\uB97C \uB300\uC2E0\uD574
+      \uC90D\uB2C8\uB2E4."
+    en: 'The Dark Magic Lab slowly makes Gems.
+
+      Spend them to expand the castle
+      and explore.
+
+      Dispatch [Staff] to sell and collect for you.'
+    where: GameUI.Tutorial.cs:37
+    args: 
+    origKo: "\uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uAC00 \uBCF4\uC11D\uC744 \uC544\uC8FC
+      \uCC9C\uCC9C\uD788 \uB9CC\uB4ED\uB2C8\uB2E4.\n\uBCF4\uC11D\uC73C\uB85C \uC131\uC744
+      \uC99D\uCD95(\uC88C\uC6B0 \uB0A0\uAC1C 10\uCE35)\uD558\uACE0 \uC0C8 \uC9C0\uC5ED\uC744
+      \uD0D0\uC0AC\uD558\uC138\uC694.\n[\uC9C1\uC6D0]\uC744 \uD30C\uACAC\uD558\uBA74
+      \uD310\uB9E4\xB7\uC218\uAC70\uB97C \uB300\uC2E0\uD574 \uC90D\uB2C8\uB2E4."
+    origEn: 'The Dark Magic Lab slowly makes Gems.
+
+      Spend them to expand the
+      castle (two wings, 10 floors) and explore.
+
+      Dispatch [Staff] to sell
+      and collect for you.'
+  - ko: "\uAC74\uB108\uB6F0\uAE30"
+    en: Skip
+    where: GameUI.Tutorial.cs:99
+    args: 
+    origKo: "\uAC74\uB108\uB6F0\uAE30"
+    origEn: Skip
+  - ko: "\uC2DC\uC791\uD558\uAE30!"
+    en: Let's go!
+    where: GameUI.Tutorial.cs:101
+    args: 
+    origKo: "\uC2DC\uC791\uD558\uAE30!"
+    origEn: Let's go!
+  - ko: "\uB2E4\uC74C"
+    en: Next
+    where: GameUI.Tutorial.cs:101
+    args: 
+    origKo: "\uB2E4\uC74C"
+    origEn: Next
+  - ko: "\u2605 \uD788\uB4E0! {0}"
+    en: "\u2605 Hidden! {0}"
+    where: HuntScene.cs:561
+    args: '{0} = m.def.Name'
+    origKo: "\u2605 \uD788\uB4E0! {0}"
+    origEn: "\u2605 Hidden! {0}"
+  - ko: "{0}\n\uD0ED\uD574\uC11C \uC90D\uAE30: {1} +{2}"
+    en: '{3}
+
+      Tap to pick up: +{2} {1}'
+    where: HuntScene.cs:599
+    args: "{0} = (item.can ? \"\uBE48 \uCE94\" : \"\uD398\uD2B8\uBCD1\")  \xB7  {1}
+      = L.Cur(item.can ? Currency.Gold : Currency.Material)  \xB7  {2} = Mathf.RoundToInt(GameData.TrashReward
+      * g.Mods.trashMul)  \xB7  {3} = (item.can ? \"Empty can\" : \"Plastic bottle\")"
+    origKo: "{0}\n\uD0ED\uD574\uC11C \uC90D\uAE30: {1} +{2}"
+    origEn: '{3}
+
+      Tap to pick up: +{2} {1}'
+  - ko: "\uBB34\uB8CC"
+    en: Free
+    where: "UIKit.cs:359 \uC678 1\uACF3"
+    args: 
+    origKo: "\uBB34\uB8CC"
+    origEn: Free
+  - ko: "{0}G / {1}\uC790\uC7AC"
+    en: '{0}G / {1} Mat'
+    where: UIKit.cs:477
+    args: "{0} = g:N0  \xB7  {1} = m:N0"
+    origKo: "{0}G / {1}\uC790\uC7AC"
+    origEn: '{0}G / {1} Mat'
+  - ko: "{0}\uC790\uC7AC"
+    en: '{0} Mat'
+    where: UIKit.cs:479
+    args: '{0} = m:N0'
+    origKo: "{0}\uC790\uC7AC"
+    origEn: '{0} Mat'
+  - ko: "\uD0ED\uD558\uC5EC {0}\uCE35 \uC99D\uCD95"
+    en: Tap to build floor {0}
+    where: CastleView.cs:160
+    args: '{0} = n'
+    origKo: "\uD0ED\uD558\uC5EC {0}\uCE35 \uC99D\uCD95"
+    origEn: Tap to build floor {0}
+  - ko: "\uBCF4\uC11D {0} \xB7 {1}G \xB7 \uC790\uC7AC {2}"
+    en: "{0} Gems \xB7 {1}G \xB7 {2} Mat"
+    where: CastleView.cs:161
+    args: "{0} = GameData.ExpandGems(n)  \xB7  {1} = GameData.ExpandGold(n):N0  \xB7 
+      {2} = GameData.ExpandMat(n):N0"
+    origKo: "\uBCF4\uC11D {0} \xB7 {1}G \xB7 \uC790\uC7AC {2}"
+    origEn: "{0} Gems \xB7 {1}G \xB7 {2} Mat"
+  - ko: "\uAF49 \uCC44\uC6C0"
+    en: Fit
+    where: CastleView.cs:170
+    args: 
+    origKo: "\uAF49 \uCC44\uC6C0"
+    origEn: Fit
+  - ko: "\uC313\uC778 \uAD00\uB78C\uB8CC \uC5C6\uC74C"
+    en: Nothing to collect
+    where: CastleView.cs:457
+    args: 
+    origKo: "\uC313\uC778 \uAD00\uB78C\uB8CC \uC5C6\uC74C"
+    origEn: Nothing to collect
+  - ko: "\uC7AC\uACE0 \uC5C6\uC74C! (\uAE38\uAC8C: \uAD00\uB9AC)"
+    en: 'Out of stock! (hold: manage)'
+    where: CastleView.cs:463
+    args: 
+    origKo: "\uC7AC\uACE0 \uC5C6\uC74C! (\uAE38\uAC8C: \uAD00\uB9AC)"
+    origEn: 'Out of stock! (hold: manage)'
+  - ko: "\uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8 \uC5C6\uC74C"
+    en: No one waiting
+    where: CastleView.cs:463
+    args: 
+    origKo: "\uAE30\uB2E4\uB9AC\uB294 \uC190\uB2D8 \uC5C6\uC74C"
+    origEn: No one waiting
+  - ko: "\uB2E4\uC74C \uBCF4\uC11D {0}\uCD08"
+    en: Next gem in {0}s
+    where: CastleView.cs:474
+    args: '{0} = g.LabInterval(b) - b.labTimer:0'
+    origKo: "\uB2E4\uC74C \uBCF4\uC11D {0}\uCD08"
+    origEn: Next gem in {0}s
+  - ko: "\uC9C0\uC744 \uC218 \uC788\uB294 \uBE48 \uCE78\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: No free cells to build on.
+    where: CastleView.cs:508
+    args: 
+    origKo: "\uC9C0\uC744 \uC218 \uC788\uB294 \uBE48 \uCE78\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
+    origEn: No free cells to build on.
+  - ko: "\uAD00\uB78C\uB8CC {0}/{1} \xB7 {2}/\uBD84 \xB7 \uACF5\uAC04 {3}/{4}"
+    en: "Fees {0}/{1} \xB7 {2}/min \xB7 Space {3}/{4}"
+    where: CastleView.cs:635
+    args: "{0} = Mathf.FloorToInt(b.accumulated):N0  \xB7  {1} = g.TankCap(b):N0 
+      \xB7  {2} = g.TankRatePerMin(b):N0  \xB7  {3} = g.TankSpaceUsed(b)  \xB7  {4}
+      = g.TankSpaceMax(b)"
+    origKo: "\uAD00\uB78C\uB8CC {0}/{1} \xB7 {2}/\uBD84 \xB7 \uACF5\uAC04 {3}/{4}"
+    origEn: "Fees {0}/{1} \xB7 {2}/min \xB7 Space {3}/{4}"
+  - ko: "\uC7AC\uACE0 \uC5C6\uC74C!"
+    en: Out of stock!
+    where: CastleView.cs:642
+    args: 
+    origKo: "\uC7AC\uACE0 \uC5C6\uC74C!"
+    origEn: Out of stock!
+  - ko: "\uC7AC\uACE0 {0} \xB7 \uC190\uB2D8 {1}\uBA85 \uB300\uAE30 (\uD0ED: \uD310\uB9E4)"
+    en: "Stock {0} \xB7 {1} waiting (tap: sell)"
+    where: CastleView.cs:643
+    args: "{0} = stock  \xB7  {1} = wait"
+    origKo: "\uC7AC\uACE0 {0} \xB7 \uC190\uB2D8 {1}\uBA85 \uB300\uAE30 (\uD0ED: \uD310\uB9E4)"
+    origEn: "Stock {0} \xB7 {1} waiting (tap: sell)"
+  - ko: "\uBCF4\uC11D {0}/{1} \xB7 \uB2E4\uC74C {2}\uCD08"
+    en: "Gems {0}/{1} \xB7 next {2}s"
+    where: CastleView.cs:646
+    args: "{0} = b.labRp  \xB7  {1} = g.LabRpCap  \xB7  {2} = g.LabInterval(b) -
+      b.labTimer:0"
+    origKo: "\uBCF4\uC11D {0}/{1} \xB7 \uB2E4\uC74C {2}\uCD08"
+    origEn: "Gems {0}/{1} \xB7 next {2}s"
+  - ko: "\uC9C1\uC6D0 {0}/{1}"
+    en: Staff {0}/{1}
+    where: CastleView.cs:648
+    args: "{0} = g.StaffCount  \xB7  {1} = g.StaffCapacity()"
+    origKo: "\uC9C1\uC6D0 {0}/{1}"
+    origEn: Staff {0}/{1}
+  - ko: "\uB9E4\uC77C 06\uC2DC +2,000G"
+    en: Daily 06:00 +2,000G
+    where: CastleView.cs:650
+    args: 
+    origKo: "\uB9E4\uC77C 06\uC2DC +2,000G"
+    origEn: Daily 06:00 +2,000G
+  - ko: " \uC790\uC7AC"
+    en: ' Mat'
+    where: CastleView.cs:738
+    args: 
+    origKo: " \uC790\uC7AC"
+    origEn: ' Mat'
+  - ko: "\uBE48 \uCE78 {0}\uACF3\uC5D0 \uC9D3\uAE30"
+    en: Build on {0} free cells
+    where: CastleView.cs:745
+    args: '{0} = free'
+    origKo: "\uBE48 \uCE78 {0}\uACF3\uC5D0 \uC9D3\uAE30"
+    origEn: Build on {0} free cells

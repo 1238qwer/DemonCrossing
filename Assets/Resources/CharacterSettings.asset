@@ -1,0 +1,426 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf62695e0475c8448e21bbd408ecaee, type: 3}
+  m_Name: CharacterSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Mawang.CharacterSettings
+  castleMonsterScale: 1.5
+  castleVisitorScale: 1.5
+  castleStaffScale: 1.5
+  huntHunterScale: 2
+  huntMonsterScale: 1.5
+  monsters:
+  - name: "\uC2AC\uB77C\uC784"
+    id: m_slime
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD761\uD608 \uBC15\uC950"
+    id: m_bat
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uBC84\uC12F \uC694\uC815"
+    id: m_mushroom
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD574\uACE8 \uBCD1\uC0AC"
+    id: m_skeleton
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uD2B8\uB80C\uD2B8 \uC0C8\uC2F9"
+    id: m_treant
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB291\uB300\uC778\uAC04"
+    id: m_werewolf
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB3C5\uBC84\uC12F \uAD70\uB77D"
+    id: p_toadstool
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uC800\uC8FC \uB369\uAD74"
+    id: p_vine
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uADF8\uB9BC\uC790 \uAE4C\uB9C8\uADC0\uC655"
+    id: m_crowking
+    group: "1. \uC800\uC8FC\uBC1B\uC740 \uC232 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uD30C\uC774\uC5B4 \uC784\uD504"
+    id: m_imp
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC6A9\uC554 \uACE8\uB818"
+    id: m_golem
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC0D0\uB7EC\uB9E8\uB354"
+    id: m_salamander
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD751\uC694\uC11D \uAC70\uBBF8"
+    id: m_spider
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB9C8\uADF8\uB9C8 \uC6DC"
+    id: m_worm
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uD5EC\uD558\uC6B4\uB4DC"
+    id: m_hellhound
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBD88\uAF43 \uC774\uB07C"
+    id: p_firemoss
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uC720\uD669 \uC218\uC815"
+    id: p_sulfur
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uC0C8\uB07C \uB4DC\uB798\uACE4"
+    id: m_drake
+    group: "2. \uC6A9\uC554 \uB3D9\uAD74 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uC11C\uB9AC \uC2AC\uB77C\uC784"
+    id: s3_0
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC5BC\uC74C \uBC15\uC950"
+    id: s3_1
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC124\uC778 \uB291\uB300"
+    id: s3_2
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC5BC\uC74C \uD574\uACE8"
+    id: s3_3
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBE59\uACB0 \uAC70\uBBF8"
+    id: s3_4
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC11C\uB9AC \uACE8\uB818"
+    id: s3_5
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC5BC\uC74C \uC774\uB07C"
+    id: s3_6
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBE59\uC815 \uC218\uC815"
+    id: s3_7
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBE59\uB8E1\uC758 \uC0C8\uB07C"
+    id: s3_8
+    group: "3. \uC11C\uB9AC \uBE59\uAD74 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uB3C5 \uC2AC\uB77C\uC784"
+    id: s4_0
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uB2AA \uBC40"
+    id: s4_1
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uB3C5\uBC84\uC12F \uAC70\uC778"
+    id: s4_2
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uB2AA\uC9C0 \uD2B8\uB80C\uD2B8"
+    id: s4_3
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB9F9\uB3C5 \uAC70\uBBF8"
+    id: s4_4
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uAC70\uBA38\uB9AC \uC6DC"
+    id: s4_5
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB3C5\uD3EC\uC790 \uAD70\uB77D"
+    id: s4_6
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB2AA \uB369\uAD74"
+    id: s4_7
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB2AA\uC758 \uD788\uB4DC\uB77C"
+    id: s4_8
+    group: "4. \uB3C5\uC548\uAC1C \uB2AA \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uB5A0\uB3C4\uB294 \uC720\uB839"
+    id: s5_0
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD761\uD63C \uBC15\uC950"
+    id: s5_1
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uAD6C\uC6B8 \uB291\uB300"
+    id: s5_2
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD574\uACE8 \uAE30\uC0AC"
+    id: s5_3
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBB34\uB364 \uBC8C\uB808"
+    id: s5_4
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBF08 \uACE8\uB818"
+    id: s5_5
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBB18\uC9C0 \uC774\uB07C"
+    id: s5_6
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB9DD\uB839 \uB369\uAD74"
+    id: s5_7
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB9DD\uC790\uC758 \uC655"
+    id: s5_8
+    group: "5. \uB9DD\uC790\uC758 \uBB18\uC9C0 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uBAA8\uB798 \uC2AC\uB77C\uC784"
+    id: s6_0
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC0AC\uB9C9 \uC804\uAC08"
+    id: s6_1
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uBCF4\uBB3C \uBBF8\uBBF9"
+    id: s6_2
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uBBF8\uB77C \uBCD1\uC0AC"
+    id: s6_3
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBAA8\uB798 \uC6DC"
+    id: s6_4
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC0AC\uB9C9 \uACE8\uB818"
+    id: s6_5
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uD669\uAE08 \uC774\uB07C"
+    id: s6_6
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBAA8\uB798 \uC7A5\uBBF8"
+    id: s6_7
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uD669\uAE08 \uBBF8\uBBF9"
+    id: s6_8
+    group: "6. \uBAA8\uB798 \uC720\uC801 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uC218\uC815 \uC2AC\uB77C\uC784"
+    id: s7_0
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uBCF4\uC11D \uBC15\uC950"
+    id: s7_1
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC218\uC815 \uAC70\uBBF8"
+    id: s7_2
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uAD11\uBD80 \uD574\uACE8"
+    id: s7_3
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC218\uC815 \uACE8\uB818"
+    id: s7_4
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBCF4\uC11D \uC6DC"
+    id: s7_5
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBE5B \uC774\uB07C"
+    id: s7_6
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBB34\uC9C0\uAC1C \uC218\uC815"
+    id: s7_7
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uC218\uC815\uB8E1\uC758 \uC0C8\uB07C"
+    id: s7_8
+    group: "7. \uC218\uC815 \uAD11\uC0B0 \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uBC88\uAC1C \uC815\uB839"
+    id: s8_0
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD3ED\uD48D \uBC15\uC950"
+    id: s8_1
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uB1CC\uC6B4 \uB291\uB300"
+    id: s8_2
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uD3ED\uD48D \uC784\uD504"
+    id: s8_3
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBC88\uAC1C \uC804\uAC08"
+    id: s8_4
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uBC14\uC704 \uACE8\uB818"
+    id: s8_5
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uB1CC\uC804 \uC774\uB07C"
+    id: s8_6
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBC88\uAC1C \uC218\uC815"
+    id: s8_7
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB1CC\uC870\uC655"
+    id: s8_8
+    group: "8. \uD3ED\uD48D \uBD09\uC6B0\uB9AC \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uC2EC\uD574 \uC2AC\uB77C\uC784"
+    id: s9_0
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC2EC\uC5F0 \uB208\uC54C"
+    id: s9_1
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC2EC\uD574 \uBC40"
+    id: s9_2
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uC775\uC0AC\uD55C \uD574\uACE8"
+    id: s9_3
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC2EC\uD574 \uAC70\uBBF8"
+    id: s9_4
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC2EC\uC5F0 \uC6DC"
+    id: s9_5
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uC2EC\uD574 \uC0B0\uD638"
+    id: s9_6
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uBC1C\uAD11 \uB369\uAD74"
+    id: s9_7
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uB808\uBE44\uC544\uD0C4\uC758 \uC0C8\uB07C"
+    id: s9_8
+    group: "9. \uC2EC\uC5F0 \uD574\uAD6C \xB7 \uD788\uB4E0"
+    scale: 1
+  - name: "\uD63C\uB3C8 \uC815\uB839"
+    id: s10_0
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uACF5\uD5C8 \uB208\uC54C"
+    id: s10_1
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uADE0\uC5F4 \uBBF8\uBBF9"
+    id: s10_2
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uACE8\uB4DC"
+    scale: 1
+  - name: "\uACF5\uD5C8 \uAE30\uC0AC"
+    id: s10_3
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uD63C\uB3C8 \uD5EC\uD558\uC6B4\uB4DC"
+    id: s10_4
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uACF5\uD5C8 \uACE8\uB818"
+    id: s10_5
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uC790\uC7AC"
+    scale: 1
+  - name: "\uD63C\uB3C8 \uC774\uB07C"
+    id: s10_6
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uACF5\uD5C8 \uC218\uC815"
+    id: s10_7
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uB9C8\uCD08"
+    scale: 1
+  - name: "\uD63C\uB3C8\uB8E1"
+    id: s10_8
+    group: "10. \uD63C\uB3C8\uC758 \uADE0\uC5F4 \xB7 \uD788\uB4E0"
+    scale: 1
+  staff:
+  - name: "\uC784\uD504 \uD3EC\uD68D\uAFBC"
+    id: hunter_imp
+    group: "\uD3EC\uD68D\uB300\uC6D0"
+    scale: 1
+  - name: "\uC624\uD06C \uC0AC\uB0E5\uAFBC"
+    id: hunter_orc
+    group: "\uD3EC\uD68D\uB300\uC6D0"
+    scale: 1
+  - name: "\uB9AC\uCE58 \uC18C\uD658\uC0AC"
+    id: hunter_lich
+    group: "\uD3EC\uD68D\uB300\uC6D0"
+    scale: 1
+  - name: "\uC2A4\uCF08\uB808\uD1A4 \uC9D1\uC0AC"
+    id: castle_skel
+    group: "\uC131 \uAD00\uB9AC\uC790"
+    scale: 1
+  - name: "\uC11C\uD050\uBC84\uC2A4 \uC810\uC6D0"
+    id: castle_succ
+    group: "\uC131 \uAD00\uB9AC\uC790"
+    scale: 1
+  - name: "\uAC00\uACE0\uC77C \uACBD\uBE44"
+    id: castle_garg
+    group: "\uC131 \uAD00\uB9AC\uC790"
+    scale: 1
+  - name: "\uB9C8\uB140 \uC5F0\uAD6C\uC6D0"
+    id: castle_witch
+    group: "\uC131 \uAD00\uB9AC\uC790"
+    scale: 1
+  visitors:
+  - name: "\uC804\uC0AC \uC6A9\uC0AC"
+    id: hero_warrior
+    group: "\uC6A9\uC0AC \uC190\uB2D8"
+    scale: 1
+  - name: "\uB9C8\uBC95\uC0AC \uC6A9\uC0AC"
+    id: hero_mage
+    group: "\uC6A9\uC0AC \uC190\uB2D8"
+    scale: 1
+  - name: "\uAD81\uC218 \uC6A9\uC0AC"
+    id: hero_archer
+    group: "\uC6A9\uC0AC \uC190\uB2D8"
+    scale: 1
+  - name: "\uC131\uC9C1\uC790 \uC6A9\uC0AC"
+    id: hero_cleric
+    group: "\uC6A9\uC0AC \uC190\uB2D8"
+    scale: 1
