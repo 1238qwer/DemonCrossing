@@ -252,6 +252,14 @@ namespace Mawang
             return rt;
         }
 
+        // 고정 높이 줄을 '최소 높이'로 바꿔 글이 여러 줄로 꺾이면 줄 높이가 함께 늘어나게 한다 (영어·폰에서 글이 겹치지 않게)
+        public static RectTransform Grow(this RectTransform row)
+        {
+            var le = row.GetComponent<LayoutElement>();
+            if (le != null) le.preferredHeight = -1;
+            return row;
+        }
+
         public static RectTransform Column(Transform parent, float spacing = 6, string bg = null, int pad = 0)
         {
             var rt = Rect("Column", parent);
@@ -304,7 +312,7 @@ namespace Mawang
 
         public static void Note(Transform parent, string text, int size = TS)
         {
-            var row = Row(parent, size + 16);
+            var row = Row(parent, size + 16).Grow();
             Label(row, text, size, TextAnchor.MiddleLeft, TextDim);
         }
 
@@ -414,7 +422,8 @@ namespace Mawang
         }
 
         // 숫자 배지 (0이면 숨김)
-        public static void Badge(Transform target, Func<int> count, Vector2 offset)
+        // label: 숫자 대신 보일 글자 (예: "!")
+        public static void Badge(Transform target, Func<int> count, Vector2 offset, Func<string> label = null)
         {
             var b = Panel(target, "ui_badge", "Badge");
             var rt = b.rectTransform;
@@ -431,7 +440,7 @@ namespace Mawang
                 if (b.enabled != on) { b.enabled = on; t.enabled = on; }
                 if (on)
                 {
-                    string s = n > 9 ? "9+" : n.ToString();
+                    string s = label != null ? label() : n > 9 ? "9+" : n.ToString();
                     if (t.text != s) t.text = s;
                     rt.sizeDelta = new Vector2(n > 9 ? 40 : 30, 30);
                 }
@@ -452,9 +461,10 @@ namespace Mawang
         }
 
         // 숫자가 부드럽게 올라가는 재화 표시 + 증가 시 번쩍
-        public static Text BindCounter(this Text t, Func<long> value, string format = "N0", bool compact = false)
+        // full: 참이면 빨간색 (최대 보유량에 닿음)
+        public static Text BindCounter(this Text t, Func<long> value, string format = "N0", bool compact = false, Func<bool> full = null)
         {
-            t.gameObject.AddComponent<Counter>().Init(t, value, format, compact);
+            t.gameObject.AddComponent<Counter>().Init(t, value, format, compact, full);
             return t;
         }
 
@@ -467,7 +477,23 @@ namespace Mawang
             var ph = go.GetComponent<PointerHandler>() ?? go.AddComponent<PointerHandler>();
             ph.onEnter += () => Tooltip.Show(go, text);
             ph.onExit += () => Tooltip.Hide(go);
+            (go.GetComponent<TipSource>() ?? go.AddComponent<TipSource>()).text = text; // 정보(i) 버튼이 같은 내용을 띄운다
             return c;
+        }
+
+        // 정보 버튼: host 오른쪽 위의 작은 (i). 누르면 host 의 툴팁 내용을 고정해서 띄운다(다른 곳을 누르면 닫힘).
+        // 꾹 눌러 빠르게 사고팔기와 겹치지 않게 정보만 따로 본다.
+        public static Button InfoButton(Transform host, float size)
+        {
+            Button b = null;
+            b = Button(host, "i", () => { var src = host.GetComponent<TipSource>(); if (src != null && src.text != null) Tooltip.Pin((RectTransform)b.transform, src.text); }, size, size, Btn.Alt, TS);
+            var rt = (RectTransform)b.transform;
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(1, 1);
+            rt.anchoredPosition = new Vector2(-4, -4);
+            var le = b.GetComponent<LayoutElement>() ?? b.gameObject.AddComponent<LayoutElement>();
+            le.ignoreLayout = true;
+            b.gameObject.AddComponent<KeepOnTop>(); // 나중에 추가된 내용(아이콘·이름)에 가리지 않게
+            return b;
         }
 
         public static T Tip<T>(this T c, string text) where T : Component => c.Tip(() => text);
@@ -502,10 +528,11 @@ namespace Mawang
         Color baseColor;
 
         bool compact;
+        Func<bool> full;
 
-        public void Init(Text text, Func<long> v, string fmt, bool compactNumbers = false)
+        public void Init(Text text, Func<long> v, string fmt, bool compactNumbers = false, Func<bool> isFull = null)
         {
-            t = text; value = v; format = fmt; compact = compactNumbers;
+            t = text; value = v; format = fmt; compact = compactNumbers; full = isFull;
             shown = v();
             baseColor = t.color;
             t.text = Format((long)shown);
@@ -532,7 +559,8 @@ namespace Mawang
                 t.text = Format((long)shown);
             }
             flash = Mathf.Max(0, flash - Time.unscaledDeltaTime);
-            t.color = Color.Lerp(baseColor, Color.white, flash / 0.35f);
+            var c = full != null && full() ? UIKit.BadText : baseColor;
+            t.color = Color.Lerp(c, Color.white, flash / 0.35f);
         }
     }
 
@@ -645,6 +673,18 @@ namespace Mawang
     }
 
     // 좌/우 클릭, 호버를 전달하는 범용 핸들러
+    // 같은 부모 안에서 맨 위에 그린다 (시작할 때 한 번)
+    public class KeepOnTop : MonoBehaviour
+    {
+        void Start() => transform.SetAsLastSibling();
+    }
+
+    // 툴팁 내용 (정보 버튼이 같은 내용을 고정해서 띄울 때 쓴다)
+    public class TipSource : MonoBehaviour
+    {
+        public Func<string> text;
+    }
+
     public class PointerHandler : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public Action onLeft, onRight, onEnter, onExit;
@@ -668,6 +708,8 @@ namespace Mawang
         static GameObject owner;
         static Func<string> source;
         static float delay;
+        static bool pinned;           // 정보(i) 버튼으로 띄운 고정 툴팁: 다른 곳을 누를 때까지 그대로
+        static RectTransform pinAnchor;
 
         public static void Init(RectTransform parent)
         {
@@ -688,11 +730,19 @@ namespace Mawang
             box.gameObject.SetActive(false);
         }
 
-        public static void Show(GameObject o, Func<string> f) { owner = o; source = f; delay = 0.25f; }
+        public static void Show(GameObject o, Func<string> f) { if (pinned) return; owner = o; source = f; delay = 0.25f; }
+
+        // 정보 버튼: 버튼 옆에 바로 띄우고, 다음에 화면 어디든 누르면 닫힌다
+        public static void Pin(RectTransform anchor, Func<string> f)
+        {
+            owner = anchor.gameObject; source = f; delay = 0; pinned = true; pinAnchor = anchor;
+            pinFrame = Time.frameCount;
+        }
+        static int pinFrame;
 
         public static void Hide(GameObject o)
         {
-            if (owner != o) return;
+            if (pinned || owner != o) return;
             owner = null;
             if (box != null) box.gameObject.SetActive(false);
         }
@@ -700,6 +750,9 @@ namespace Mawang
         public static void Tick()
         {
             if (box == null) return;
+            if (pinned && Time.frameCount > pinFrame && Pointer.current != null && Pointer.current.press.wasPressedThisFrame) pinned = false; // 다른 곳을 누르면 닫는다
+            if (pinned && (pinAnchor == null || !pinAnchor.gameObject.activeInHierarchy)) pinned = false;
+            if (!pinned && owner != null && pinAnchor != null && owner == pinAnchor.gameObject) { owner = null; pinAnchor = null; }
             if (owner == null || !owner.activeInHierarchy) { owner = null; box.gameObject.SetActive(false); return; }
             delay -= Time.unscaledDeltaTime;
             if (delay > 0) return;
@@ -711,6 +764,7 @@ namespace Mawang
 
             var canvas = root.GetComponentInParent<Canvas>();
             Vector2 mouse = Pointer.current != null ? Pointer.current.position.ReadValue() : Vector2.zero;
+            if (pinned) mouse = RectTransformUtility.WorldToScreenPoint(canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, pinAnchor.position); // 고정: 버튼 옆
             RectTransformUtility.ScreenPointToLocalPointInRectangle(root, mouse, canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, out var local);
             var pos = local + root.rect.size * root.pivot + new Vector2(22, -26);
             var size = box.rect.size;

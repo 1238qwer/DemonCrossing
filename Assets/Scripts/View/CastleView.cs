@@ -158,8 +158,8 @@ namespace Mawang
             {
                 int n = floor + 1;
                 Art.Text(lockRoot, L.T($"탭하여 {n}층 증축", $"Tap to build floor {n}"), new Vector2(0, 0.55f), 0.8f, UIKit.Gold, OrderLock + 2);
-                Art.Text(lockRoot, L.T($"보석 {GameData.ExpandGems(n)} · {GameData.ExpandGold(n):N0}G · 자재 {GameData.ExpandMat(n):N0}",
-                                       $"{GameData.ExpandGems(n)} Gems · {GameData.ExpandGold(n):N0}G · {GameData.ExpandMat(n):N0} Mat"),
+                Art.Text(lockRoot, L.T($"{GameData.ExpandGold(n):N0}G · 자재 {GameData.ExpandMat(n):N0}",
+                                       $"{GameData.ExpandGold(n):N0}G · {GameData.ExpandMat(n):N0} Mat"),
                          new Vector2(0, -0.6f), 0.5f, new Color(0.85f, 0.8f, 0.9f), OrderLock + 2);
             }
             else Art.Text(lockRoot, L.T("잠김", "Locked"), Vector2.zero, 0.6f, new Color(0.75f, 0.7f, 0.8f), OrderLock + 2);
@@ -451,8 +451,8 @@ namespace Mawang
                     if (b.accumulated >= 1f)
                     {
                         int amt = g.CollectTank(b, 0f);
-                        Sound.Play("coin");
-                        OnFloatingText(at, $"+{amt:N0}");
+                        if (amt > 0) { Sound.Play("coin"); OnFloatingText(at, $"+{amt:N0}"); }
+                        else Info(b, GoldFullText);
                     }
                     else Info(b, L.T("쌓인 관람료 없음", "Nothing to collect"));
                     return;
@@ -460,16 +460,15 @@ namespace Mawang
                 case BuildingType.Souvenir:
                 {
                     int sold = g.Sim.ServeAll(b);
-                    if (sold == 0) Info(b, ShopStock(b) == 0 ? L.T("재고 없음! (길게: 관리)", "Out of stock! (hold: manage)") : L.T("기다리는 손님 없음", "No one waiting"));
+                    if (sold == 0) Info(b, g.GoldFull ? GoldFullText : ShopStock(b) == 0 ? L.T("재고 없음! (길게: 관리)", "Out of stock! (hold: manage)") : L.T("기다리는 손님 없음", "No one waiting"));
                     return;
                 }
                 case BuildingType.Lab:
                     if (b.labRp > 0)
                     {
-                        int rp = b.labRp;
-                        g.CollectLab(b);
-                        Sound.Play("gem");
-                        OnFloatingText(at, L.T($"+{rp} 보석", $"+{rp} Gems"), UIKit.RpText);
+                        int rp = g.CollectLab(b);
+                        if (rp > 0) { Sound.Play("gem"); OnFloatingText(at, L.T($"+{rp} 보석", $"+{rp} Gems"), UIKit.RpText); }
+                        else Info(b, L.T("보석 최대 보유량", "Gems at max"));
                     }
                     else Info(b, L.T($"다음 보석 {g.LabInterval(b) - b.labTimer:0}초", $"Next gem in {g.LabInterval(b) - b.labTimer:0}s"));
                     return;
@@ -477,6 +476,8 @@ namespace Mawang
             Sound.Play("open");
             ui.OpenBuilding(b);
         }
+
+        static string GoldFullText => L.T("골드 최대 보유량", "Gold at max");
 
         int ShopStock(BuildingState b)
         {
@@ -559,15 +560,12 @@ namespace Mawang
             BuildStatic();
         }
 
-        static string RoomSprite(BuildingType t) => t switch
+        // 레벨마다 내부 인테리어가 조금씩 고급스러워진다: room_x (Lv.1), room_x_2 … (RoomPainter)
+        static string RoomSprite(BuildingState b)
         {
-            BuildingType.Tank => "room_tank",
-            BuildingType.Restaurant => "room_restaurant",
-            BuildingType.Souvenir => "room_souvenir",
-            BuildingType.Lab => "room_lab",
-            BuildingType.Dorm => "room_dorm",
-            _ => "room_rest",
-        };
+            string name = GameData.Buildings[b.type].icon;
+            return b.level > 1 ? $"{name}_{b.level}" : name;
+        }
 
         void CreateRoom(BuildingState b)
         {
@@ -579,7 +577,7 @@ namespace Mawang
 
             for (int r = 0; r < b.ch; r++)
                 for (int c = 0; c < b.cw; c++)
-                    Art.Sprite(root, "Room", Art.Get(RoomSprite(b.type)), OrderRoom, new Vector2(c * CellW, r * FloorH));
+                    Art.Sprite(root, "Room", Art.Get(RoomSprite(b)), OrderRoom, new Vector2(c * CellW, r * FloorH));
 
             if (b.type == BuildingType.Tank)
             {
@@ -599,6 +597,12 @@ namespace Mawang
                     for (int c = 0; c < b.cw; c++)
                         Art.Sprite(root, "Bars", Art.Get("room_tank_front"), OrderRoomFront, new Vector2(c * CellW, r * FloorH));
                 if (b.Cells > 1) Outline(root, W, H, new Color(1f, 0.8f, 0.35f, 0.9f)); // 하나로 이어진 우리
+            }
+            if (b.type == BuildingType.Arena)
+            {
+                // 출전 괴물: 모래 위에 서서 찾아온 용사와 대련한다
+                var mon = Art.Sprite(root, "Champion", null, OrderAgent, new Vector2(GameData.ArenaMonsterX * CellW, FootY));
+                mon.gameObject.AddComponent<ArenaFighter>().Init(b, OrderFx);
             }
 
             // 이름표: 맨 윗줄 위쪽 반투명 판 + 이름 + 상태
@@ -647,7 +651,13 @@ namespace Mawang
                 case BuildingType.Dorm:
                     return L.T($"직원 {g.StaffCount}/{g.StaffCapacity()}", $"Staff {g.StaffCount}/{g.StaffCapacity()}");
                 case BuildingType.Rest:
-                    return L.T("매일 06시 +2,000G", "Daily 06:00 +2,000G");
+                    return L.T($"매일 06시 +{GameData.RestDailyGold(g.TotalFloorsOpen):N0}G", $"Daily 06:00 +{GameData.RestDailyGold(g.TotalFloorsOpen):N0}G");
+                case BuildingType.Arena:
+                {
+                    var champ = g.ArenaChampion();
+                    if (champ == null) return L.T("출전 괴물 없음!", "No fighters!");
+                    return L.T($"출전 {champ.Name} · 전투력 {champ.power:N0} · 보상 ×{g.ArenaLevelMul(b):0.##}", $"{champ.Name} · Power {champ.power:N0} · Reward ×{g.ArenaLevelMul(b):0.##}");
+                }
             }
             return "";
         }
@@ -778,6 +788,14 @@ namespace Mawang
                 sr.transform.localScale = new Vector3(vs, vs, 1);
                 sr.color = v.state == VisitorState.WaitingService ? Color.Lerp(Color.white, new Color(1f, 0.4f, 0.4f), 1f - v.timer / Mathf.Max(1f, v.patience)) : Color.white;
                 sr.GetComponent<CharacterMotion>().MoveTo(ToWorld(v.pos));
+                if (v.state == VisitorState.Sparring)
+                {
+                    // 투기장 대련: 오른쪽 괴물을 향해 휘두르고, 맞으면 붉게 번쩍이며 밀려난다
+                    float p = ArenaFighter.Progress(v);
+                    sr.flipX = false;
+                    sr.transform.localPosition += new Vector3(ArenaFighter.Snap(ArenaFighter.HeroOffset(p) * CellW), ArenaFighter.Snap(ArenaFighter.Hop(p, true)), 0);
+                    sr.color = Color.Lerp(Color.white, new Color(1f, 0.35f, 0.35f), ArenaFighter.HitFlash(p, false));
+                }
                 TrackAgent(v, sr, null);
             }
         }
@@ -810,6 +828,7 @@ namespace Mawang
         }
 
         void OnFloatingText(Vector2 simPos, string text) => OnFloatingText(simPos, text, UIKit.Gold);
+        void OnFloatingText(Vector2 simPos, string text, Color? color) => OnFloatingText(simPos, text, color ?? UIKit.Gold);
 
         void OnFloatingText(Vector2 simPos, string text, Color color)
         {
@@ -944,6 +963,173 @@ namespace Mawang
                 var c = sr.color; c.a = (1f - k) * (Mathf.Sin(st * 30f) > -0.3f ? 1f : 0.25f); sr.color = c;
             }
             if (t >= Life) Destroy(gameObject);
+        }
+    }
+
+    // 투기장의 출전 괴물 + 대련 연출 (도트 없이 스프라이트 이동·번쩍임과 이펙트로만).
+    // 대련 시간 동안 용사(0.2) → 괴물(0.45) → 용사(0.7) 순서로 한 번씩 달려들어 친다. 결과(골드·사망)는 CastleSim.Spar 가 띄운다.
+    public class ArenaFighter : MonoBehaviour
+    {
+        const float Px = 1f / 16f, FootY = 4f / 16f;
+        static readonly (float t, bool hero)[] Strikes = { (0.2f, true), (0.45f, false), (0.7f, true) };
+        const float Width = 0.09f;      // 한 번 달려드는 데 걸리는 진행 비율(반폭)
+        const float Reach = 0.22f;      // 달려드는 거리 (칸 폭 대비)
+
+        BuildingState b;
+        SpriteRenderer sr;
+        int fxOrder;
+        string curId;
+        Visitor cur;
+        float lastP = -1f, phase;
+
+        public void Init(BuildingState building, int order)
+        {
+            b = building;
+            fxOrder = order;
+            sr = GetComponent<SpriteRenderer>();
+            phase = Random.value * 10f;
+            Update();
+        }
+
+        public static float Snap(float v) => Mathf.Round(v / Px) * Px;
+        public static float Progress(Visitor v) => Mathf.Clamp01(1f - v.timer / Mathf.Max(0.1f, GuestSettings.I.boutTime));
+
+        // 0 → 1 → 0 로 부드럽게 (달려들었다 돌아오기)
+        static float Bell(float p, float t) { float k = Mathf.Clamp01(1f - Mathf.Abs(p - t) / Width); return k * k * (3f - 2f * k); }
+
+        // 오른쪽(+)으로 달려들고, 괴물에게 맞으면 살짝 밀려난다 (칸 폭 대비)
+        public static float HeroOffset(float p)
+        {
+            float x = 0;
+            foreach (var (t, hero) in Strikes) x += hero ? Bell(p, t) * Reach : -Bell(p, t + 0.05f) * 0.06f;
+            return x;
+        }
+
+        public static float MonsterOffset(float p)
+        {
+            float x = 0;
+            foreach (var (t, hero) in Strikes) x += hero ? Bell(p, t + 0.05f) * 0.06f : -Bell(p, t) * Reach;
+            return x;
+        }
+
+        // 달려들 때 살짝 뛰어오른다 (월드 단위)
+        public static float Hop(float p, bool isHero)
+        {
+            float y = 0;
+            foreach (var (t, hero) in Strikes) if (hero == isHero) y += Mathf.Sin(Mathf.Clamp01((p - t + Width) / (Width * 2f)) * Mathf.PI) * 0.35f;
+            return y;
+        }
+
+        // 맞은 쪽이 붉게 번쩍인다 (0~1)
+        public static float HitFlash(float p, bool monster)
+        {
+            float f = 0;
+            foreach (var (t, hero) in Strikes) if (hero == monster) f = Mathf.Max(f, Mathf.Clamp01(1f - Mathf.Abs(p - (t + 0.03f)) / 0.05f));
+            return f;
+        }
+
+        void Update()
+        {
+            var g = Game.I;
+            if (g == null || g.Sim == null) return;
+            var champ = g.ArenaChampion();
+            string id = champ?.id;
+            if (id != curId)
+            {
+                // 쓰러져 다음 괴물로 바뀌면 연기와 함께 사라진다
+                if (curId != null) Fx("fx_poof", transform.localPosition + new Vector3(0, 0.6f, 0), Vector2.up * 0.3f, 0.4f, Color.white, 0.8f, 1.4f, 0);
+                curId = id;
+                sr.sprite = champ != null ? Art.Get(champ.id) : null;
+            }
+            sr.enabled = champ != null;
+            if (champ == null) return;
+
+            // 지금 이 투기장에서 대련 중인 용사 (첫 번째)
+            Visitor v = null;
+            foreach (var x in g.Sim.visitors)
+                if (x.state == VisitorState.Sparring && x.currentStop == b.uid) { v = x; break; }
+            if (v != cur) { cur = v; lastP = -1f; }
+
+            var cs = CharacterSettings.I;
+            float s = cs.castleMonsterScale * cs.Scale(champ.id);
+            transform.localScale = new Vector3(s, s, 1);
+            sr.flipX = true; // 왼쪽(용사)을 본다
+
+            float baseX = GameData.ArenaMonsterX * CastleView.CellW;
+            phase += Time.deltaTime;
+            if (v == null)
+            {
+                // 쉬는 중: 제자리에서 숨 쉬듯 통통
+                sr.color = Color.white;
+                transform.localPosition = new Vector3(Snap(baseX), FootY + Snap(Mathf.Abs(Mathf.Sin(phase * 2.2f)) * 0.12f), 0);
+                return;
+            }
+
+            float p = Progress(v);
+            transform.localPosition = new Vector3(Snap(baseX + MonsterOffset(p) * CastleView.CellW), FootY + Snap(Hop(p, false)), 0);
+            sr.color = Color.Lerp(Color.white, new Color(1f, 0.35f, 0.35f), HitFlash(p, true));
+
+            // 칠 때마다: 베기 + 충격 + 불티 (맞는 쪽 앞에서)
+            foreach (var (t, hero) in Strikes)
+            {
+                float hit = t + 0.03f;
+                if (lastP < hit && p >= hit)
+                {
+                    float hx = hero ? baseX - 0.05f * CastleView.CellW : (GameData.ArenaHeroX + 0.05f) * CastleView.CellW;
+                    var at = new Vector3(hx, FootY + 0.9f, 0);
+                    var col = hero ? new Color(1f, 0.95f, 0.7f) : new Color(1f, 0.5f, 0.45f);
+                    Fx("fx_slash", at + new Vector3(hero ? -0.3f : 0.3f, 0.2f, 0), new Vector2(hero ? 0.4f : -0.4f, -0.3f), 0.2f, col, 1.0f, 1.3f, hero ? -60f : 120f);
+                    Fx("fx_hit", at, Vector2.zero, 0.16f, Color.white, 0.6f, 1.1f, 0);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        float a = Random.value * Mathf.PI * 2f;
+                        Fx("fx_spark", at, new Vector2(Mathf.Cos(a), Mathf.Sin(a)) * Random.Range(0.6f, 1.2f), 0.3f, col, 0.5f, 0.2f, 0);
+                    }
+                    Sound.Play("click", 0.6f);
+                }
+            }
+            lastP = p;
+        }
+
+        // 방 기준 좌표에 이펙트 하나
+        void Fx(string sprite, Vector3 at, Vector2 move, float life, Color color, float s0, float s1, float rot)
+        {
+            var go = new GameObject("ArenaFx");
+            go.transform.SetParent(transform.parent, false);
+            go.transform.localPosition = at;
+            go.AddComponent<WorldFx>().Init(Art.Get(sprite), fxOrder, move, life, color, s0, s1, rot);
+        }
+    }
+
+    // 짧은 이펙트: 움직이며 커지고(작아지고) 사라진다
+    public class WorldFx : MonoBehaviour
+    {
+        SpriteRenderer sr;
+        Vector3 start;
+        Vector2 move;
+        float t, life, s0, s1;
+        Color color;
+
+        public void Init(Sprite sprite, int order, Vector2 moveBy, float lifetime, Color c, float scale0, float scale1, float rot)
+        {
+            sr = gameObject.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            sr.sortingOrder = order;
+            start = transform.localPosition;
+            move = moveBy; life = lifetime; color = c; s0 = scale0; s1 = scale1;
+            transform.localRotation = Quaternion.Euler(0, 0, rot);
+            Update();
+        }
+
+        void Update()
+        {
+            t += Time.deltaTime;
+            float k = Mathf.Clamp01(t / life);
+            transform.localPosition = start + (Vector3)(move * k);
+            float s = Mathf.Lerp(s0, s1, k);
+            transform.localScale = new Vector3(s, s, 1);
+            var c = color; c.a = 1f - k * k; sr.color = c;
+            if (t >= life) Destroy(gameObject);
         }
     }
 

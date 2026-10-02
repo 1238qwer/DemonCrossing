@@ -8,15 +8,16 @@ using UnityEngine;
 namespace Mawang.EditorTools
 {
     // 플레이 스토어 제출용 빌드 (.aab, 업로드 키로 서명).
-    //   Mawang/Store/Apply Player Settings : 앱 ID·이름·버전·SDK·가로 화면·아이콘·서명 설정
+    //   Mawang/Store/Apply Player Settings : 앱 ID·이름·SDK·가로 화면·아이콘·서명 설정
     //   Mawang/Store/Build AAB             : 위 설정 후 Builds/PlayStore/ 에 .aab
-    //   Mawang/Store/Build AAB (Version Code +1) : 업데이트를 올릴 때 (스토어는 같은 버전 코드를 다시 받지 않는다)
+    // 버전(예: 1.2.0)은 Project Settings > Player 에 적은 그대로 쓴다(덮어쓰지 않는다).
+    // 버전 코드는 안드로이드 빌드를 할 때마다 이전보다 1 올린다(스토어는 같은 코드를 다시 받지 않는다). 빌드가 실패하면 되돌린다.
     public static class StoreBuild
     {
         public const string AppId = "com.zhz.game";
         public const string Company = "ZHZ";
         public const string ProductName = "Demon Crossing";   // 한국어 기기: Plugins/Android/AppName.androidlib → "놀러와요 마왕의 성"
-        public const string Version = "1.0.0";
+        public static string Version => PlayerSettings.bundleVersion; // Project Settings 에 적은 버전 그대로
         const string Scene = "Assets/Scenes/MawangCastle.unity";
         const string KeystoreDir = "Assets/Keystore";
         static readonly NamedBuildTarget Android = NamedBuildTarget.Android;
@@ -27,7 +28,6 @@ namespace Mawang.EditorTools
             PlayerSettings.companyName = Company;
             PlayerSettings.productName = ProductName;
             PlayerSettings.SetApplicationIdentifier(Android, AppId);
-            PlayerSettings.bundleVersion = Version;
             if (PlayerSettings.Android.bundleVersionCode < 1) PlayerSettings.Android.bundleVersionCode = 1;
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel25;
             PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel36;
@@ -85,10 +85,7 @@ namespace Mawang.EditorTools
         }
 
         [MenuItem("Mawang/Store/Build AAB")]
-        public static void BuildAab() => Build(false);
-
-        [MenuItem("Mawang/Store/Build AAB (Version Code +1)")]
-        public static void BuildAabNext() => Build(true);
+        public static void BuildAab() => Build(true);
 
         // 한 번에 세 가지: Builds/PlayStore/*.aab, Builds/Android/*.apk, Builds/Windows/DemonCrossing.exe
         // (유니티는 빌드를 하나씩만 돌리므로 차례로 만든다. 안드로이드 두 개를 먼저 만들고 윈도우로 바꾼다.)
@@ -98,7 +95,7 @@ namespace Mawang.EditorTools
         public static string BuildAll()
         {
             var log = new System.Text.StringBuilder();
-            log.AppendLine(Build(false));
+            log.AppendLine(Build(true));   // 버전 코드 +1 (AAB 와 APK 는 같은 코드)
             log.AppendLine(BuildApk());
             log.AppendLine(BuildExe());
             log.AppendLine(BuildInstaller());
@@ -142,7 +139,6 @@ namespace Mawang.EditorTools
         {
             PlayerSettings.companyName = Company;
             PlayerSettings.productName = ProductName;
-            PlayerSettings.bundleVersion = Version;
             EditorUserBuildSettings.development = false;
             EditorUserBuildSettings.allowDebugging = false;
             string path = Out("Windows", "DemonCrossing.exe");
@@ -170,10 +166,12 @@ namespace Mawang.EditorTools
             return $"{s.result} {path} errors={s.totalErrors}";
         }
 
+        // bumpCode: 버전 코드를 이전보다 1 올려서 빌드 (실패하면 되돌린다)
         public static string Build(bool bumpCode)
         {
             Apply();
-            if (bumpCode) PlayerSettings.Android.bundleVersionCode++;
+            int prevCode = PlayerSettings.Android.bundleVersionCode;
+            if (bumpCode) { PlayerSettings.Android.bundleVersionCode = prevCode + 1; AssetDatabase.SaveAssets(); }
             EditorUserBuildSettings.buildAppBundle = true;
             EditorUserBuildSettings.development = false;
             EditorUserBuildSettings.allowDebugging = false;
@@ -191,7 +189,12 @@ namespace Mawang.EditorTools
                 options = BuildOptions.None,
             });
             var s = report.summary;
-            Debug.Log($"[StoreBuild] {s.result} · {s.totalSize / 1024f / 1024f:0.0}MB · {s.totalTime} → {path}");
+            if (bumpCode && s.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+            {
+                PlayerSettings.Android.bundleVersionCode = prevCode; // 실패한 빌드는 번호를 쓰지 않는다
+                AssetDatabase.SaveAssets();
+            }
+            Debug.Log($"[StoreBuild] {s.result} · v{Version} ({PlayerSettings.Android.bundleVersionCode}) · {s.totalSize / 1024f / 1024f:0.0}MB · {s.totalTime} → {path}");
             return $"{s.result} {path} errors={s.totalErrors}";
         }
     }

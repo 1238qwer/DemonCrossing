@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6080134347cee419c23e8fa58b6788, type: 3}
+  m_Name: GuestSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Mawang.GuestSettings
+  maxBase: 10
+  maxPerVisitableCell: 0
+  maxPerResearchLevel: 10
+  maxCap: 150
+  appealMultiplier: 2.5
+  minCrowd: 0.5
+  maxCrowd: 1
+  crowdWave: 0.2
+  crowdWavePeriod: 90
+  fillSeconds: 7
+  minSpawnInterval: 0.15
+  walletMin: 30
+  walletMax: 110
+  walletPerFloor: 1.1
+  energyMin: 60
+  energyMax: 100
+  energyPerStop: 25
+  happyMin: 60
+  happyMax: 90
+  leaveBelowHappy: 30
+  happyBuy: 10
+  happyWatch: 5
+  happySpar: 8
+  happyNoMoney: 10
+  happyQueueFull: 15
+  happyWaitTimeout: 25
+  happyNoFighter: 10
+  weightRestaurant: 1.5
+  weightSouvenir: 1.5
+  weightTankBase: 1
+  weightTankPerAdmission: 0.05
+  weightTankMax: 3
+  weightArena: 3
+  tasteSpread: 0.5
+  shopQueueLimit: 5
+  notInterestedBase: 0.45
+  notInterestedPerLevel: 0.02
+  notInterestedMin: 0.1
+  patience: 12
+  watchMin: 3
+  watchMax: 4
+  tipChance: 0.2
+  tipMin: 0.07
+  tipMax: 0.15
+  sparChance: 0.6
+  boutTime: 2.5
+  continueBase: 0.35
+  continueMoneyBonus: 0.4
+  moneyRefMultiple: 3
+  continueDecay: 0.85
+  maxStops: 8

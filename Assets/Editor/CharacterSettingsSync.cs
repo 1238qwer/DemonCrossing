@@ -35,7 +35,7 @@ namespace Mawang.EditorTools
             foreach (var m in GameData.Monsters)
             {
                 var r = GameData.RegionById(m.region);
-                string kind = m.hidden ? "히든" : m.isPlant ? "마초" : m.sellCurrency == Currency.Gold ? "골드" : "자재";
+                string kind = m.hidden ? "히든" : m.isPlant ? "마력초" : m.sellCurrency == Currency.Gold ? "골드" : "자재";
                 monsters.Add((m.id, m.name, $"{r.stage}. {r.name} · {kind}"));
             }
             var staff = new List<(string, string, string)>();

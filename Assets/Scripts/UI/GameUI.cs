@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Mawang
 {
@@ -35,7 +36,7 @@ namespace Mawang
         // 모달 창
         RectTransform modal, modalWindow, modalContent;
         Text modalTitle;
-        Image modalIcon;
+        UnityEngine.UI.Image modalIcon;
         ScrollRect modalScroll;
         Action<RectTransform> modalBuilder;
         bool needRebuild;
@@ -46,7 +47,8 @@ namespace Mawang
         readonly Queue<GameObject> logLines = new Queue<GameObject>();
 
         RectTransform sidebarContent, logBox;
-
+        UnityEngine.UI.Button sideToggle;
+        int seenGoalStep = -1; // 폰: 사이드바를 열어 본 목표 단계. 지금 단계와 다르면 별 버튼에 '!' 배지 (처음 시작할 때 포함)
         struct MenuDef
         {
             public string label, icon, title;
@@ -157,10 +159,12 @@ namespace Mawang
                     tip = L.T("가진 괴물·미끼·상품을 한눈에 봅니다.", "See your monsters, bait and goods.") },
                 new MenuDef { label = L.T("연구", Mobile ? "Tech" : "Research"), icon = "ic_research", title = L.T("흑마법 연구 · 증축", "Research & Expansion"), build = BuildResearchPanel,
                     badge = AffordableUpgrades,
-                    tip = L.T("보석과 골드로 성을 증축하고 업그레이드합니다.\n빨간 숫자 = 지금 할 수 있는 연구", "Spend Gems and Gold on expansions and upgrades.\nRed number = affordable now") },
+                    tip = L.T("보석으로 연구하고, 골드·자재로 성을 증축합니다.\n빨간 숫자 = 지금 할 수 있는 연구", "Spend Gems on research and Gold on expansions.\nRed number = affordable now") },
                 new MenuDef { label = L.T("도감", "Book"), icon = "ic_book", title = L.T("괴물 도감", "Monster Book"), build = BuildCollectionPanel,
                     badge = () => GameData.Monsters.FindAll(m => g.CanClaimCollection(m.id)).Count,
                     tip = L.T("잡은 괴물을 등록하고 보상(보석 포함)을 받습니다.\n빨간 숫자 = 등록 가능한 괴물", "Register monsters for rewards (including Gems).\nRed number = ready to register") },
+                new MenuDef { label = L.T("업적", Mobile ? "Goals" : "Achieve"), icon = "ic_trophy", title = L.T("업적", "Achievements"), build = BuildAchievementPanel,
+                    tip = L.T("달성하면 골드를 자동으로 받습니다.", "Complete them to earn Gold automatically.") },
             };
         }
 
@@ -187,16 +191,16 @@ namespace Mawang
             float tabW = Mobile ? 112 : 176;
 
             // 화면 전환 탭: 마왕성 / 포획장 (Tab 키)
-            castleTab = UIKit.Button(row, L.T("마왕성", "Castle"), HideHunt, tabW, 52, Btn.Accent, UIKit.TM, "up_floor", 32);
+            castleTab = UIKit.Button(row, L.T("마왕성", "Castle"), HideHunt, tabW, 52, Btn.Accent, Mobile ? UIKit.TS : UIKit.TM, "up_floor", Mobile ? 24 : 32);
             castleTab.Tip(L.T("마왕성\n건물을 짓고 손님을 맞습니다.  [Tab]", "Castle\nBuild rooms and welcome guests.  [Tab]"));
-            huntTab = UIKit.Button(row, L.T("포획장", "Hunt"), () => ShowHunt(), tabW, 52, Btn.Alt, UIKit.TM, "ic_hunt", 32);
+            huntTab = UIKit.Button(row, L.T("포획장", "Hunt"), () => ShowHunt(), tabW, 52, Btn.Alt, Mobile ? UIKit.TS : UIKit.TM, "ic_hunt", Mobile ? 24 : 32);
             huntTab.Tip(L.T("포획장\n포획대원을 파견해 괴물을 잡고, 쓰레기를 줍습니다.  [Tab]\n빨간 숫자 = 쉬고 있는 포획대원", "Hunting Grounds\nSend hunters to catch monsters and pick up trash.  [Tab]\nRed number = idle hunters"));
             UIKit.Badge(huntTab.transform, () => g.S.hunters.FindAll(h => !h.dispatched && h.restTimer <= 0).Count, new Vector2(-6, -6));
             if (!Mobile) UIKit.Size(UIKit.Box(row, new Color(0.3f, 0.24f, 0.36f), "Divider"), 3, 44);
 
-            Pill(row, "ic_gold", () => g.S.gold, UIKit.Gold, Mobile ? 160 : 230, L.T("골드\n건설·구매·연구에 씁니다.", "Gold\nFor building, buying and research."));
-            Pill(row, "ic_mat", () => g.S.material, UIKit.MatText, Mobile ? 140 : 200, L.T("건설 자재\n건설·업그레이드에 씁니다.\n상점에서 골드와 1:1 교환", "Materials\nFor building and upgrades.\nExchange 1:1 with Gold in the Shop."));
-            Pill(row, "ic_rp", () => g.S.rp, UIKit.RpText, Mobile ? 100 : 150, L.T("보석 — 가장 귀한 재료\n흑마법 연구소에서 아주 천천히 나옵니다.\n증축·탐사·업그레이드에 씁니다.", "Gems — the rarest resource\nSlowly made by the Dark Magic Lab.\nUsed for expansions, exploration and upgrades."));
+            Pill(row, "ic_gold", () => g.S.gold, () => g.GoldFull, UIKit.Gold, Mobile ? 160 : 230, () => L.T($"골드 (최대 {CapText(g.GoldCap)})\n건설·구매·고용에 씁니다.\n최대 보유량에 닿으면 가게·전시 우리·투기장 수입이 멈춥니다.", $"Gold (max {CapText(g.GoldCap)})\nFor building, buying and hiring.\nAt the max, shop, cage and arena income stops."));
+            Pill(row, "ic_mat", () => g.S.material, () => g.S.material >= g.MatCap, UIKit.MatText, Mobile ? 140 : 200, () => L.T($"건설 자재 (최대 {CapText(g.MatCap)})\n건설·업그레이드에 씁니다.\n상점에서 골드와 1:1 교환", $"Materials (max {CapText(g.MatCap)})\nFor building and upgrades.\nExchange 1:1 with Gold in the Shop."));
+            Pill(row, "ic_rp", () => g.S.rp, () => g.GemFull, UIKit.RpText, Mobile ? 100 : 150, () => L.T($"보석 — 가장 귀한 재료 (최대 {CapText(g.GemCap)})\n흑마법 연구소에서 아주 천천히 나옵니다.\n연구에만 씁니다.", $"Gems — the rarest resource (max {CapText(g.GemCap)})\nSlowly made by the Dark Magic Lab.\nUsed only for research."));
 
             var visitors = UIKit.Panel(row, "ui_inset", "Visitors");
             UIKit.Size(visitors, Mobile ? 120 : 230, 50);
@@ -208,8 +212,8 @@ namespace Mawang
             vLabel.Bind(() => Mobile
                 ? $"{g.Sim.visitors.Count}<color=#{UIKit.Hex(UIKit.TextDim)}>/{g.Sim.VisitorMax}</color>"
                 : $"{g.Sim.visitors.Count}<size=20><color=#{UIKit.Hex(UIKit.TextDim)}> / {g.Sim.VisitorMax}{L.T("명", "")}</color></size>");
-            visitors.Tip(() => L.T($"용사 손님 {g.Sim.visitors.Count}명 (최대 {g.Sim.VisitorMax}명)\n판매 {g.Sim.visitorsServed}회 · 불만 이탈 {g.Sim.visitorsLeftUnhappy}명\n\n층을 늘리거나 [연구 > 손님 유치]로 손님을 늘릴 수 있습니다.",
-                                   $"Hero guests {g.Sim.visitors.Count} (max {g.Sim.VisitorMax})\nSales {g.Sim.visitorsServed} · Left unhappy {g.Sim.visitorsLeftUnhappy}\n\nMore floors or [Research > Advertising] bring more guests."));
+            visitors.Tip(() => L.T($"용사 손님 {g.Sim.visitors.Count}명 (최대 {g.Sim.VisitorMax}명)\n판매 {g.Sim.visitorsServed}회 · 불만 이탈 {g.Sim.visitorsLeftUnhappy}명\n\n방문할 수 있는 가게·전시 우리·투기장을 늘리거나 [연구 > 손님 유치]로 손님을 늘릴 수 있습니다.",
+                                   $"Hero guests {g.Sim.visitors.Count} (max {g.Sim.VisitorMax})\nSales {g.Sim.visitorsServed} · Left unhappy {g.Sim.visitorsLeftUnhappy}\n\nMore shops, cages and the Arena, or [Research > Advertising], bring more guests."));
 
             UIKit.Flex(row);
             if (!Mobile) // 폰은 상단에 시계가 있다
@@ -219,7 +223,9 @@ namespace Mawang
             UIKit.Button(row, "", OpenSettings, 56, 52, Btn.Alt, UIKit.TS, "ic_gear").Tip(L.T("설정 — 소리 · 언어 · 새로 시작", "Settings — sound, language, new game"));
         }
 
-        void Pill(Transform parent, string icon, Func<long> value, Color color, float w, string tip)
+        static string CapText(int cap) => cap == int.MaxValue ? L.T("무제한", "unlimited") : cap.ToString("N0"); // 테스트용 상한 끄기
+
+        void Pill(Transform parent, string icon, Func<long> value, Func<bool> full, Color color, float w, Func<string> tip)
         {
             var box = UIKit.Panel(parent, "ui_inset", "Pill");
             UIKit.Size(box, w, 50);
@@ -228,7 +234,7 @@ namespace Mawang
             UIKit.Icon(r, icon, Mobile ? 32 : 36);
             var num = UIKit.Label(r, "", UIKit.TM, TextAnchor.MiddleRight, color);
             num.horizontalOverflow = HorizontalWrapMode.Overflow; // 큰 숫자가 두 줄로 꺾이지 않게
-            num.BindCounter(value, "N0", Mobile); // 폰: 2.93M 처럼 줄여 쓴다
+            num.BindCounter(value, "N0", Mobile, full); // 폰: 2.93M 처럼 줄여 쓴다. 최대 보유량이면 빨간색
             box.Tip(tip);
         }
 
@@ -285,7 +291,7 @@ namespace Mawang
                 UIKit.Spacer(c, 20);
                 var row = UIKit.Row(c, 60, 20);
                 row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
-                UIKit.Button(row, L.T("새로 시작", "Start over"), () => { CloseModal(); g.ResetGame(); castle.Rebuild(true); RebuildSidebar(); ShowTutorial(); }, 220, 56, Btn.Danger, UIKit.TM, "ic_reset");
+                UIKit.Button(row, L.T("새로 시작", "Start over"), () => { CloseModal(); g.ResetGame(); seenGoalStep = -1; castle.Rebuild(true); RebuildSidebar(); ShowTutorial(); }, 220, 56, Btn.Danger, UIKit.TM, "ic_reset");
                 UIKit.Button(row, L.T("취소", "Cancel"), OpenSettings, 160, 56, Btn.Alt, UIKit.TM);
             }, "ic_reset");
         }
@@ -359,7 +365,7 @@ namespace Mawang
             UIKit.Label(hr, "", UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim).Bind(() => castle != null && castle.placing != null
                 ? $"<color=#{UIKit.Hex(UIKit.Gold)}>[{GameData.Buildings[castle.placing.Value].Name}]</color> " + (Mobile ? L.T("탭·끌기: 짓기\n길게: 취소", "tap/drag: build\nhold: cancel") : L.T("배치 중\n빈 칸 클릭·끌기: 짓기 · 우클릭/ESC: 취소", "placing\nClick/drag empty cells · Right-click/ESC: cancel"))
                 : Mobile ? L.T("탭: 수령·판매\n길게: 관리", "Tap: collect/sell\nHold: manage")
-                : L.T("건물 좌클릭: 수령·판매 · 우클릭: 관리\n빈 칸 클릭: 건설 · 숫자키 1~6 · Tab · ESC", "Left-click: collect/sell · Right-click: manage\nClick empty cell: build · Keys 1-6 · Tab · ESC"));
+                : L.T("건물 좌클릭: 수령·판매 · 우클릭: 관리\n빈 칸 클릭: 건설 · 숫자키 1~7 · Tab · ESC", "Left-click: collect/sell · Right-click: manage\nClick empty cell: build · Keys 1-7 · Tab · ESC"));
         }
 
         void CollectAll()
@@ -386,6 +392,7 @@ namespace Mawang
                 trt.anchorMin = trt.anchorMax = trt.pivot = new Vector2(1, 1);
                 trt.anchoredPosition = new Vector2(-SideMargin, -(TopH + 8));
                 toggle.Tip(L.T("현황 · 알림 열기/닫기", "Status · notifications"));
+                sideToggle = toggle;
             }
             else UIKit.Anchor(side, new Vector2(1, 0), Vector2.one, new Vector2(-(SideMargin + SideW), DockH + 8), new Vector2(-SideMargin, -(TopH + 8)));
 
@@ -421,14 +428,30 @@ namespace Mawang
             vl.childControlHeight = true;
             logRoot.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             FitLogBox();
-            if (Mobile) side.gameObject.SetActive(false);
+            if (Mobile)
+            {
+                side.gameObject.SetActive(false);
+                // 배지는 사이드바를 닫은 뒤에 단다 (먼저 달면 열려 있는 것으로 보고 '본 것'으로 처리된다)
+                UIKit.Badge(sideToggle.transform, () => NewGoalUnseen ? 1 : 0, new Vector2(-8, -8), () => "!");
+            }
         }
 
         void ToggleSidebar()
         {
             bool on = !sidePanel.gameObject.activeSelf;
             sidePanel.gameObject.SetActive(on);
-            if (on) { sidePanel.SetSiblingIndex(modal.GetSiblingIndex()); FitLogBox(); } // 메뉴 창보다는 아래
+            if (on) { seenGoalStep = g.S.goalStep; sidePanel.SetSiblingIndex(modal.GetSiblingIndex()); FitLogBox(); } // 메뉴 창보다는 아래
+        }
+
+        // 폰: 아직 보지 않은 새 목표가 있다 (사이드바가 열려 있으면 바로 본 것으로 친다)
+        bool NewGoalUnseen
+        {
+            get
+            {
+                if (g.CurrentGoal == null) return false;
+                if (sidePanel.gameObject.activeSelf) seenGoalStep = g.S.goalStep;
+                return seenGoalStep != g.S.goalStep;
+            }
         }
 
         // 알림창은 위쪽 내용(목표·포획대) 아래 남는 높이만 쓴다 → 낮은 화면에서도 겹치지 않는다
@@ -446,9 +469,13 @@ namespace Mawang
         {
             for (int i = sidebarContent.childCount - 1; i >= 0; i--) DestroyImmediate(sidebarContent.GetChild(i).gameObject); // 바로 지워야 높이 계산이 맞다
 
-            UIKit.Header(sidebarContent, L.T("다음 목표", "Next goal"), "ic_star");
-            var goal = UIKit.Row(sidebarContent, 62, 8, true);
-            UIKit.Label(goal, "", UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextMain).Bind(GoalText);
+            // 다음 목표: 1회성 임무를 모두 마치면 칸 자체를 띄우지 않는다
+            if (g.CurrentGoal != null)
+            {
+                UIKit.Header(sidebarContent, L.T("다음 목표", "Next goal"), "ic_star");
+                var goal = UIKit.Row(sidebarContent, 62, 8, true).Grow(); // 안내 + 보상이 여러 줄이면 늘어난다
+                UIKit.Label(goal, "", UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextMain).Bind(GoalText);
+            }
 
             UIKit.Header(sidebarContent, L.T("포획대 현황", "Hunters"), "ic_hunt");
             foreach (var h in g.S.hunters)
@@ -477,27 +504,7 @@ namespace Mawang
             return h.timer / g.HuntInterval(h);
         }
 
-        // 플레이어가 항상 할 일을 알 수 있도록 현재 상태에서 다음 단계를 제시한다
-        string GoalText()
-        {
-            bool Has(BuildingType t) => g.S.buildings.Exists(b => b.type == t);
-            int goods = 0;
-            foreach (var e in g.S.goods) goods += e.count;
-
-            if (!Has(BuildingType.Lab)) return L.T("빈 칸을 탭해 흑마법 연구소를 지으세요.\n보석이 나옵니다.", "Tap an empty cell and build a Dark Magic Lab.\nIt makes Gems.");
-            if (!Has(BuildingType.Restaurant) && !Has(BuildingType.Souvenir)) return L.T("마족 식당이나 기념품점을 지으세요.", "Build a Demon Diner or Gift Shop.");
-            if (!g.S.castleStaff.Exists(c => c.dispatched)) return L.T("[직원] 성 관리자를 파견하세요.\n직원이 판매·수거를 대신합니다.", "[Staff] Dispatch castle staff.\nThey sell and collect for you.");
-            if (goods == 0) return L.T("[상점] 음식·기념품 재고를 채우세요.", "[Shop] Stock up on food and gifts.");
-            if (!g.S.hunters.Exists(h => h.dispatched || h.restTimer > 0) && g.S.monsters.Count == 0) return L.T("[포획장] 포획대원을 파견해 괴물을 잡으세요.", "[Hunt] Send a hunter to catch monsters.");
-            if (g.S.trashItems.Count >= 5) return L.T("[포획장] 쓰레기가 쌓였어요.\n장면에서 탭해 주우세요.", "[Hunt] Trash is piling up.\nTap it in the scene to collect.");
-            if (!Has(BuildingType.Tank)) return L.T("[건설] 전시 우리를 끌어서 넓게 지어 보세요.", "[Build] Drag to build a big Exhibit Cage.");
-            if (!g.S.buildings.Exists(b => b.type == BuildingType.Tank && b.contents.Count > 0)) return L.T("전시 우리를 탭해 괴물을 넣으세요.", "Tap the cage to add monsters.");
-            if (g.S.floorsRight == 0) return L.T("잠긴 오른쪽 1층을 탭해 성을 증축하세요.", "Tap the locked right-wing floor to expand.");
-            if (g.S.research.Count == 0) return L.T("[연구] 보석으로 첫 업그레이드를 올려 보세요.", "[Research] Spend Gems on your first upgrade.");
-            if (!g.S.research.Contains("region_2")) return L.T("[연구] '용암 동굴 탐사'로 새 지역을 여세요.", "[Research] Explore the Lava Cave.");
-            if (g.CountOf(BuildingType.Lab) < 2) return L.T("연구소를 하나 더 지어 보석을 더 모으세요.", "Build another Lab for more Gems.");
-            return L.T("성을 10층까지 증축하고 도감을 채우세요.", "Expand to 10 floors and complete the book.");
-        }
+        // 다음 목표: GameUI.Goals.cs (단계는 GoalSettings 에셋에서 고친다)
 
         // ── 알림: 로그 + 토스트 ────────────────────────────────
         void OnNotify(string msg, string icon)
@@ -608,7 +615,7 @@ namespace Mawang
             var view = UIKit.Rect("Viewport", win.transform);
             UIKit.Stretch(view, 34, 30, 60, 64);
             view.gameObject.AddComponent<RectMask2D>();
-            view.gameObject.AddComponent<Image>().color = new Color(0, 0, 0, 0.001f);
+            view.gameObject.AddComponent<UnityEngine.UI.Image>().color = new Color(0, 0, 0, 0.001f);
 
             modalContent = UIKit.Column(view, 8);
             modalContent.anchorMin = new Vector2(0, 1);
@@ -656,7 +663,7 @@ namespace Mawang
             if (pix != null && icon != null)
             {
                 var sp = Art.Get(icon);
-                var img = pix.GetComponent<Image>();
+                var img = pix.GetComponent<UnityEngine.UI.Image>();
                 img.sprite = sp;
                 if (sp != null)
                 {
@@ -735,7 +742,7 @@ namespace Mawang
 
         void RebuildSidebarIfNeeded()
         {
-            int sig = g.S.hunters.Count * 100 + g.S.research.Count;
+            int sig = g.S.hunters.Count * 100 + g.S.research.Count + g.S.goalStep * 100000; // 목표 단계가 넘어가면 높이가 바뀔 수 있다
             if (sig == sidebarSig) return;
             sidebarSig = sig;
             RebuildSidebar();

@@ -27,15 +27,15 @@ namespace Mawang
             new TutorialPage { icon = "ic_gold", title = L.T("짧게 · 길게", "Tap & Hold"),
                 body = Mobile
                     ? L.T("짧게 탭: 우리 관람료 수령 · 가게에서 기다리는 손님에게 판매\n꾹 누르기: 업그레이드·관리 창\n목록에서 꾹 누르면 빠르게 연속으로 사고팝니다.",
-                          "Tap: collect cage fees · sell to waiting shop guests\nHold: upgrade & manage\nHold a list item to buy/sell repeatedly.")
+                          "Tap: collect fees · sell to waiting guests\nHold: upgrade & manage\nHold a list item to buy/sell repeatedly.")
                     : L.T("좌클릭: 우리 관람료 수령 · 가게에서 기다리는 손님에게 판매\n우클릭: 업그레이드·관리 창\n목록에서 우클릭을 누르고 있으면 빠르게 연속으로 사고팝니다.",
                           "Left-click: collect cage fees · sell to waiting shop guests\nRight-click: upgrade & manage\nHold right-click on a list item to buy/sell repeatedly.") },
             new TutorialPage { icon = "ic_hunt", title = L.T("포획장", "Hunting"),
                 body = L.T("위쪽 [포획장] 탭에서 포획대원을 파견하세요.\n미끼 × 힘 조합에 따라 다른 괴물이 잡힙니다.",
                            "Open the [Hunt] tab and dispatch a hunter.\nThe bait × power combo decides which monsters appear.") },
             new TutorialPage { icon = "ic_rp", title = L.T("보석은 가장 귀한 재료", "Gems are precious"),
-                body = L.T("흑마법 연구소가 보석을 아주 천천히 만듭니다.\n보석으로 성을 증축(좌우 날개 10층)하고 새 지역을 탐사하세요.\n[직원]을 파견하면 판매·수거를 대신해 줍니다.",
-                           "The Dark Magic Lab slowly makes Gems.\nSpend them to expand the castle (two wings, 10 floors) and explore.\nDispatch [Staff] to sell and collect for you.") },
+                body = L.T("흑마법 연구소가 보석을 아주 천천히 만듭니다.\n보석으로 연구해 새 지역을 탐사하고 성을 강화하세요.\n[직원]을 파견하면 판매·수거를 대신해 줍니다.",
+                           "The Dark Magic Lab slowly makes Gems.\nSpend them on research to explore and upgrade.\nDispatch [Staff] to sell and collect for you.") },
         };
 
         public void ShowTutorial()
@@ -77,7 +77,7 @@ namespace Mawang
             var head = UIKit.Row(col, 72, 14);
             head.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
             UIKit.Icon(head, p.icon, 64);
-            var title = UIKit.Label(head, p.title, UIKit.TL, TextAnchor.MiddleLeft, UIKit.Gold);
+            var title = UIKit.Label(head, p.title, Mobile ? UIKit.TM : UIKit.TL, TextAnchor.MiddleLeft, UIKit.Gold); // 폰: 긴 영어 제목이 카드 밖으로 나가지 않게
             title.GetComponent<LayoutElement>().flexibleWidth = 0;
             title.horizontalOverflow = HorizontalWrapMode.Overflow;
 

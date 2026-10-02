@@ -291,7 +291,7 @@ namespace Mawang
             UIKit.Label(col, L.T("아직 탐사하지 않은 스테이지", "Unexplored stage"), UIKit.TM, TextAnchor.MiddleCenter, UIKit.TextMain).GetComponent<LayoutElement>().flexibleWidth = 0;
             var res = GameData.ResearchById(r.unlockResearch);
             if (res == null) return;
-            UIKit.Cost(col, res.gold, 0, res.rp);
+            UIKit.Cost(col, 0, 0, res.rp);
             var btn = UIKit.Button(col, $"{res.Name}", () => { g.DoResearch(res); RebuildHunt(); huntScene.SetRegion(viewRegion); }, 320, 56, Btn.Good, UIKit.TM, "up_region", 32);
             var block = g.ResearchBlock(res);
             bool needPrev = !string.IsNullOrEmpty(res.requires) && !g.S.research.Contains(res.requires);
@@ -346,21 +346,24 @@ namespace Mawang
             {
                 int bi = i;
                 var bd = GameData.Baits[i];
-                var b = UIKit.Button(baitRow, $"{CountList.Get(g.S.baits, bd.id)}", () => { hs.bait = bi; Sound.Play("click"); g.MarkDirty(); }, Mobile ? 62 : 76, 46, h.bait == bi ? Btn.Accent : Btn.Alt, UIKit.TS, bd.id, 28);
+                var b = UIKit.Button(baitRow, $"{CountList.Get(g.S.baits, bd.id)}", () => { hs.bait = bi; Sound.Play("click"); g.MarkDirty(); }, Mobile ? 72 : 76, 46, h.bait == bi ? Btn.Accent : Btn.Alt, UIKit.TS, bd.id, Mobile ? 22 : 28);
+                if (Mobile) b.Content().GetComponent<HorizontalLayoutGroup>().spacing = 2; // 폰: 세 자리 보유 수가 버튼 밖으로 나가지 않게
                 b.interactable = !locked || h.bait == bi;
                 b.Tip(L.T($"{bd.Name}  (보유 {CountList.Get(g.S.baits, bd.id)})\n미끼에 따라 다가오는 괴물이 달라집니다.", $"{bd.Name}  (own {CountList.Get(g.S.baits, bd.id)})\nDifferent bait attracts different monsters."));
             }
-            UIKit.Button(baitRow, h.autoBait ? L.T("자동", "Auto") : L.T("수동", "Man."), () => { hs.autoBait = !hs.autoBait; Sound.Play("click"); g.MarkDirty(); }, Mobile ? 54 : 60, 46, h.autoBait ? Btn.Good : Btn.Alt, UIKit.TS)
+            // 미끼 자동 교체: 넓은 카드는 미끼 줄 끝, 좁은 카드는 폭이 모자라 등장 괴물 줄 끝 (카드 3장이 화면 밖으로 밀리지 않게)
+            void AutoBait(Transform row) => UIKit.Button(row, h.autoBait ? L.T("자동", "Auto") : L.T("수동", "Man."), () => { hs.autoBait = !hs.autoBait; Sound.Play("click"); g.MarkDirty(); }, Mobile ? 54 : 60, 44, h.autoBait ? Btn.Good : Btn.Alt, UIKit.TS)
                 .Tip(h.autoBait ? L.T("자동 교체 ON: 미끼가 떨어지면 다른 미끼를 씁니다.", "Auto-switch ON: uses other bait when out.") : L.T("자동 교체 OFF: 미끼가 떨어지면 포획을 멈춥니다.", "Auto-switch OFF: stops when out of bait."));
+            if (wideCards) AutoBait(baitRow);
 
             // 힘 (넓은 카드면 등장 괴물과 같은 줄)
             var powerRow = UIKit.Row(card, 44, 4);
-            if (!Mobile) UIKit.Label(powerRow, L.T("힘", "Pow"), UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim, 28);
+            if (wideCards) UIKit.Label(powerRow, L.T("힘", "Pow"), UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim, 44); // 좁은 카드는 버튼만
             string[] powerTip = { L.T("약하게: 작은 괴물이 잘 나옵니다.", "Low: small monsters appear more."), L.T("보통으로", "Medium"), L.T("강하게: 큰 괴물이 잘 나옵니다.", "High: big monsters appear more.") };
             for (int p = 0; p < 3; p++)
             {
                 var pw = (Power)p;
-                var b = UIKit.Button(powerRow, GameData.PowerName(p), () => { hs.power = pw; Sound.Play("click"); g.MarkDirty(); }, Mobile ? 56 : 60, 44, h.power == pw ? Btn.Accent : Btn.Alt, UIKit.TM);
+                var b = UIKit.Button(powerRow, GameData.PowerName(p), () => { hs.power = pw; Sound.Play("click"); g.MarkDirty(); }, wideCards ? 60 : Mobile ? 56 : 52, 44, h.power == pw ? Btn.Accent : Btn.Alt, UIKit.TM);
                 b.interactable = !locked || h.power == pw;
                 b.Tip(powerTip[p] + L.T("\n미끼 × 힘 조합이 등장 괴물을 정합니다.", "\nBait × power decides which monsters appear."));
             }
@@ -384,7 +387,7 @@ namespace Mawang
                     if (!known) UIKit.Tint(ic, new Color(0.08f, 0.05f, 0.12f));
                     chip.Tip(known ? MonsterTip(m) : L.T("아직 잡은 적 없는 괴물", "Not caught yet"));
                 }
-
+            if (!wideCards) { UIKit.Flex(pool); AutoBait(pool); }
         }
 
         // 행동 버튼: 파견 / 복귀 / 다른 스테이지 보러 가기 / 회복 대기

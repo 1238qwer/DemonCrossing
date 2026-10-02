@@ -16,7 +16,9 @@ namespace Mawang
         public float patienceAdd;
         public float salesAdd;
         public float labSpeedMul = 1f;
-        public int labCapAdd;
+        public int buildingLevelCap = 1;   // 건물 연구: 올릴 수 있는 최대 건물 레벨
+        public bool arenaUnlocked;
+        public int goldCap = GameData.GoldCapAt(0), gemCap = GameData.GemCapAt(0);
 
         public void Recalculate(SaveData s)
         {
@@ -29,13 +31,16 @@ namespace Mawang
             tankCapMul = 1f + Lv("cap") * 0.15f;
             makiPerCellAdd = Lv("maki");
             visitorRateMul = 1f + Lv("visitor") * 0.12f;
-            visitorMaxAdd = Lv("visitor") * GameData.VisitorMaxPerLevel;
+            visitorMaxAdd = Lv("visitor") * GuestSettings.I.maxPerResearchLevel;
             walletMul = 1f + Lv("wallet") * 0.20f;
             patienceAdd = Lv("patience") * 1.5f;
             salesAdd = Lv("sales") * 0.05f;
             labSpeedMul = 1f + Lv("lab") * 0.08f;
-            labCapAdd = Lv("lab") * 2;
             trashMul = 1f + Lv("trash") * 0.5f;
+            buildingLevelCap = 1 + Lv("build");
+            arenaUnlocked = Lv("build") >= GameData.ArenaResearchLevel;
+            goldCap = GameData.GoldCapAt(Lv("storage"));
+            gemCap = GameData.GemCapAt(Lv("storage"));
         }
 
         // 업그레이드 라인의 현재 단계: 1단계부터 연속으로 완료된 수

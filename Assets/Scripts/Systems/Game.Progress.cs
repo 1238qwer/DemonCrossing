@@ -13,7 +13,6 @@ namespace Mawang
             if (!string.IsNullOrEmpty(r.requires) && !S.research.Contains(r.requires))
                 return L.T($"선행: {GameData.ResearchById(r.requires).Name}", $"Requires: {GameData.ResearchById(r.requires).Name}");
             if (S.rp < r.rp) return L.T("보석 부족", "Not enough Gems");
-            if (S.gold < r.gold) return L.T("골드 부족", "Not enough Gold");
             return null;
         }
 
@@ -22,7 +21,6 @@ namespace Mawang
             var block = ResearchBlock(r);
             if (block != null) { Fail(block); return; }
             S.rp -= r.rp;
-            S.gold -= r.gold;
             S.research.Add(r.id);
             Mods.Recalculate(S);
             Sound.Play("upgrade");
@@ -38,7 +36,6 @@ namespace Mawang
             int next = UpgradeLevel(u) + 1;
             if (next > u.maxLevel) return L.T("최대 단계", "Maxed");
             if (S.rp < u.Rp(next)) return L.T("보석 부족", "Not enough Gems");
-            if (S.gold < u.Gold(next)) return L.T("골드 부족", "Not enough Gold");
             return null;
         }
 
@@ -48,7 +45,6 @@ namespace Mawang
             if (block != null) { Fail(block); return; }
             int next = UpgradeLevel(u) + 1;
             S.rp -= u.Rp(next);
-            S.gold -= u.Gold(next);
             S.research.Add(u.TierId(next));
             Mods.Recalculate(S);
             Sound.Play("upgrade");
@@ -80,7 +76,7 @@ namespace Mawang
 
         public string HireBlock(StaffDef d)
         {
-            if (StaffCount >= StaffCapacity()) return L.T("직원 숙소를 짓거나 업그레이드해야 더 고용할 수 있습니다.", "Build or upgrade a Staff Dorm to hire more.");
+            if (StaffCount >= StaffCapacity()) return L.T("직원 숙소를 짓고 Lv.2 이상으로 올려야 더 고용할 수 있습니다.", "Build a Staff Dorm and upgrade it to Lv.2+ to hire more.");
             if (S.gold < HireCost(d)) return L.T("골드 부족", "Not enough Gold");
             return null;
         }

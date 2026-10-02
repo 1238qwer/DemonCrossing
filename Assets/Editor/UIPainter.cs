@@ -697,6 +697,38 @@ namespace Mawang.EditorTools
                 .Flat(M.Rect(5, 3, 5, 12).Rect(10, 3, 10, 12), C("#c8b080"))
                 .Dots(C("#a06040"), 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 7, 9, 8)
                 .Dots(C("#e03048"), 10, 9, 12, 11, 12, 9, 10, 11, 11, 10));
+
+            // 업적: 트로피
+            yield return I("ic_trophy", c => c
+                .Paint(M.Disc(3, 11.5f, 2.8f).Minus(M.Disc(3, 11.5f, 1.4f)).Disc(13, 11.5f, 2.8f).Minus(M.Disc(13, 11.5f, 1.4f)), GoldC)
+                .Paint(M.Poly(2.5f, 15.5f, 13.5f, 15.5f, 11.5f, 8, 4.5f, 8), GoldC)
+                .Paint(M.Rect(7, 4, 8, 8), GoldC)
+                .Paint(M.Rect(3, 0, 12, 3), Wood)
+                .Dots(Ico.W8, 5, 13, 5, 12, 6, 14));
+
+            // 투기장: 칼
+            yield return I("ic_sword", c => c
+                .Paint(M.Line(4.5f, 4.5f, 13.5f, 13.5f, 4f), Steel)
+                .Paint(M.Line(1.5f, 8f, 8f, 1.5f, 3.4f), GoldC)
+                .Paint(M.Line(1f, 1f, 4.5f, 4.5f, 3f), Wood)
+                .Dots(Ico.W8, 7, 8, 9, 10, 11, 12, 12, 13));
+
+            // 건물 연구: 위로 올라가는 탑
+            yield return I("up_build", c => c
+                .Paint(M.Rect(2, 0, 9, 9), C("#8a7080"))
+                .Paint(M.Poly(1, 9.5f, 5.5f, 14.5f, 10.5f, 9.5f), C("#c84848"))
+                .Flat(M.Rect(4, 0, 6, 3), C("#4a2e20"))
+                .Flat(M.Rect(5, 6, 6, 7), C("#ffd040"))
+                .Paint(M.Rect(11, 3, 14, 10).Poly(9, 10.5f, 16, 10.5f, 12.5f, 16), C("#5ad060")));
+
+            // 자원 창고: 금테 두른 상자
+            yield return I("up_storage", c => c
+                .Paint(M.Rect(1, 0, 14, 9), Wood)
+                .Paint(M.Rect(1, 9, 14, 13), C("#b07040"))
+                .Flat(M.Rect(3, 1, 4, 12).Rect(11, 1, 12, 12), Steel)
+                .Paint(M.Rect(6, 6, 9, 10), GoldC)
+                .Dots(Ico.K, 7, 7, 8, 7)
+                .Dots(GoldC, 4, 14, 8, 15, 11, 14));
         }
     }
 }

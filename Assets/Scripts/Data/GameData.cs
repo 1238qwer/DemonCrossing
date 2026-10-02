@@ -6,19 +6,20 @@ namespace Mawang
     // ─────────────────────────────────────────────────────────────
     // 정적 게임 데이터. 밸런스 조정은 이 파일에서만 한다.
     // 원작(아라드 수족관 메이커) 대응:
-    //   물고기 → 괴물, 해초 → 마초(수질 대신 '마기' 회복), 어항 → 전시 우리
+    //   물고기 → 괴물, 해초 → 마력초(수질 대신 '항마력' 회복), 어항 → 전시 우리
     //   낚시 직원 → 포획대원, 수족관 직원 → 성 관리자, 낚싯배 내구도 → 체력
     //
     // 밸런스 목표: 약 10시간 플레이.
     //   보석(연구소에서만 천천히 나오는 가장 귀한 재료)이 진행 속도를 정한다.
-    //   보석 총 사용처 ≈ 800개(업그레이드 ~500 · 스테이지 탐사 ~190 · 성 증축 ~125),
-    //   연구소 생산은 초반 시간당 12개 → 후반(3개 · Lv.5 · 연구 효율) 시간당 ~130개.
+    //   보석은 연구에만 쓴다(업그레이드 · 건물 연구 · 자원 창고 · 스테이지 탐사). 증축·건설은 골드와 자재.
+    //   연구소는 1개만 지을 수 있다: 초반 시간당 12개 → 후반(Lv.5 · 연구 효율) 시간당 ~43개.
     //   골드는 스테이지·층이 늘수록 기하급수로 커지므로 비용도 같은 비율로 커진다.
     // ─────────────────────────────────────────────────────────────
 
     public enum Currency { Gold, Material }
     public enum Power { Weak, Mid, Strong }
-    public enum BuildingType { Tank, Restaurant, Souvenir, Lab, Dorm, Rest }
+    public enum BuildingType { Tank, Restaurant, Souvenir, Lab, Dorm, Rest, Arena } // 세이브에 숫자로 저장 → 새 건물은 끝에 추가
+    public enum BoutResult { GreatFail, Fail, Draw, Win, GreatWin }
     public enum StaffRole { Hunter, Castle }
 
     public class MonsterDef
@@ -28,8 +29,9 @@ namespace Mawang
         public Currency sellCurrency;
         public int sellPrice;
         public int space;
-        public int maki;          // 음수 = 마기 소모, 양수 = 마기 회복(마초)
+        public int maki;          // 음수 = 항마력 소모, 양수 = 항마력 회복(마력초)
         public float admission;   // 분당 관람료
+        public int power;         // 투기장 전투력 (마력초는 0 = 대련 불가)
         public Color color;
         public string Name => L.En && !string.IsNullOrEmpty(en) ? en : name;
     }
@@ -98,7 +100,7 @@ namespace Mawang
     public class ResearchDef
     {
         public string id, name, en, desc, descEn, icon;
-        public int rp, gold;
+        public int rp;            // 연구 비용은 보석만
         public string requires;
         public string Name => L.En ? en : name;
         public string Desc => L.En ? descEn : desc;
@@ -110,18 +112,32 @@ namespace Mawang
         public string id, name, en, icon;
         public int category;
         public int maxLevel = 10;
-        public int rp0, gold0;
+        public int rp0;           // 연구 비용은 보석만
         public System.Func<int, string> effect;   // 누적 효과 설명 (레벨 n)
         public string Name => L.En ? en : name;
 
         public string TierId(int lv) => $"{id}_{lv}";
         public int Rp(int lv) => Mathf.RoundToInt(rp0 * Mathf.Pow(GameData.UpgradeRpGrowth, lv - 1));
-        public int Gold(int lv) => Mathf.RoundToInt(gold0 * Mathf.Pow(GameData.UpgradeGoldGrowth, lv - 1) / 100f) * 100;
+    }
+
+    // 업적: progress(게임) 가 target 이상이면 달성 → 골드 자동 지급
+    public class AchievementDef
+    {
+        public string id, name, en, desc, descEn;
+        public long target;
+        public int gold;
+        public System.Func<Game, long> progress;
+        public string Name => L.En ? en : name;
+        public string Desc => L.En ? descEn : desc;
     }
 
     public static class GameData
     {
         // ── 공통 수치 ───────────────────────────────────────────
+        // 반복 골드 수입 배율: 가게 판매(매입가·판매가)·관람료·골드 괴물 판매가·쓰레기 캔·휴게실에 곱한다.
+        // 업적·목표·도감 같은 1회성 보상과 투기장(보상 계수에 이미 반영)은 제외.
+        public const float GoldIncomeMul = 0.5f;
+
         public const int StartGold = 5000;
         public const int StartMaterial = 5000;
         public const int StartGems = 2;
@@ -134,10 +150,19 @@ namespace Mawang
         public const int StartFloorsLeft = 2, StartFloorsRight = 0;
         public const float ElevatorCells = 0.2f;      // 엘리베이터 폭(칸 단위, 32/160 px)
 
-        // 성 증축: n층을 여는 비용 (왼쪽·오른쪽 날개 따로)
-        public static int ExpandGold(int floor) => Mathf.RoundToInt(3000 * Mathf.Pow(1.75f, floor - 1) / 100f) * 100;
+        // 성 증축: n층을 여는 비용 (왼쪽·오른쪽 날개 따로). 보석은 연구에만 쓰므로 골드·자재만 (보석 대신 25% 비싸다)
+        public static int ExpandGold(int floor) => Mathf.RoundToInt(3750 * Mathf.Pow(1.75f, floor - 1) / 100f) * 100;
         public static int ExpandMat(int floor) => ExpandGold(floor) / 2;
-        public static int ExpandGems(int floor) => floor + 1;
+
+        // 자원 최대 보유량 (연구 '자원 창고' n단계). 넘으면 자동 수입(가게 판매·전시 우리·투기장·연구소)이 멈춘다.
+        // 골드 90만 → 10단계 약 9,900만 (상점 Lv.10 업그레이드 ~137만을 감당), 자재도 같은 한도.
+        // 보석은 10개에서 단계마다 +10, 최대 50개 (가장 비싼 연구 = 스테이지 10 탐사 50개).
+        public static int GoldCapAt(int lv) => Mathf.RoundToInt(30000 * Mathf.Pow(2f, lv) / 1000f) * 1000; // 90만 → 10단계 약 9,900만
+        public const int GemCapBase = 10, GemCapPerLevel = 10, GemCapMax = 50;
+        public static int GemCapAt(int lv) => Mathf.Min(GemCapMax, GemCapBase + GemCapPerLevel * lv);
+
+        // 건물 연구 n단계 → 모든 건물을 Lv.(n+1)까지 올릴 수 있다. 투기장은 3단계부터 짓는다.
+        public const int ArenaResearchLevel = 3;
 
         // 전시 우리 크기 = 칸 수 × (레벨 + 1)
         public const int TankSpacePerSize = 5;
@@ -149,12 +174,22 @@ namespace Mawang
         public const float HunterRestTime = 60f;     // 원작: 내구도 0 → 60초 회복
         public const float HunterRecallPenalty = 50f; // 원작: 복귀 시 약 50초 패널티
 
-        // 보석: 가장 귀한 재료. 연구소 Lv.1 은 5분에 1개.
-        public const int LabRpCap = 10;
+        // 보석: 가장 귀한 재료. 연구소 Lv.1 은 5분에 1개. 연구소 안에는 1개까지만 쌓인다(수거해야 다음 보석을 만든다).
+        public const int LabRpCap = 1;
         public static readonly float[] LabInterval = { 300f, 255f, 215f, 180f, 150f };
 
-        public const int RestDailyGold = 2000;       // 원작: 매일 06시 건물당 2,000골드
+        // 휴게실: 매일 06시 건물당 1,000골드(2,000 × 반복 수입 배율) × 1.3^(열린 층-2)
+        public const float RestGoldPerFloor = 1.3f;
+        public static int RestDailyGold(int floorsOpen) => Mathf.RoundToInt(2000 * GoldIncomeMul * Mathf.Pow(RestGoldPerFloor, Mathf.Max(0, floorsOpen - 2)) / 100f) * 100;
         public const int RestDailyHour = 6;
+
+        // 전시 우리 추가 관람료·투기장 대련 확률 등 손님 행동 수치는 GuestSettings 에셋(Mawang/Guest Settings)에 있다.
+
+        // 투기장: 1개만 짓는 대신 보상이 크다. 용사가 오면 가장 강한 몬스터가 대련한다.
+        public const float ArenaHeroX = 0.34f, ArenaMonsterX = 0.66f; // 투기장 칸 안에서 용사·괴물이 서는 자리 (칸 폭 대비)
+        public const float ArenaLevelBonus = 0.25f;    // 레벨당 보상 +25% (Lv.10 = ×3.25)
+        public const float ArenaRewardPerPower = 0.3f; // 성공 보상 = 전투력 × 0.3 × 레벨 배율 (대련 1회 기대값 ≈ 가게 판매 3건)
+        public static readonly float[] ArenaRewardMul = { 0f, 0f, 0.3f, 1f, 3f }; // 대실패·실패·무승부·성공·대성공
 
         public const float TrashInterval = 20f;          // 스테이지마다 20초에 하나씩 떨어진다
 
@@ -162,18 +197,13 @@ namespace Mawang
         public const int StageW = 276, StageH = 108, StageGroundY = 34;
         public const float TrashMinX = 24f;
         public const int TrashMaxPerRegion = 5;
-        public const int TrashReward = 20;           // 원작: 페트병 자재 20 / 캔 20골드
+        public const int TrashReward = 20;           // 원작: 페트병 자재 20 / 캔 20골드 (캔 골드는 반복 수입 배율을 곱한다)
 
         public const int CollectionRegisterCount = 30;
         public static int CollectionGold(MonsterDef m) => 500 * GameData.RegionById(m.region).stage * (m.hidden ? 3 : 1);
         public static int CollectionGems(MonsterDef m) => m.hidden ? 5 : 1;
 
-        public const float VisitorBaseInterval = 7f;
-        public const float VisitorMinInterval = 1.2f;
-        public const int VisitorMaxBase = 20, VisitorMaxPerFloor = 4;
-        public const float VisitorPatience = 12f;
-        public const int VisitorWalletMin = 60, VisitorWalletMax = 220;
-        public const float VisitorWalletPerFloor = 1.3f; // 열린 층이 늘수록 부유한 용사가 온다
+        // 손님 수·소지금·행동 확률은 GuestSettings 에셋(Mawang/Guest Settings)에서 조정한다.
 
         public const float WalkSpeed = 0.5f;         // 칸/초 (1칸 = 방 하나)
         public const float ElevatorSecPerFloor = 0.8f;
@@ -182,7 +212,8 @@ namespace Mawang
         public const float OffSpecialtySpeed = 0.9f;
         public const float SpecialtyWork = 0.6f;     // 특화 건물 작업 시간 배율
 
-        public const int BaseStaffCap = 3;
+        // 직원 한도: 처음 2명(포획대원 1 + 성 관리자 1). 직원 숙소는 Lv.2부터 레벨마다 +1 (Lv.5 = 6명)
+        public const int BaseStaffCap = 2;
 
         // ── 미끼 ───────────────────────────────────────────────
         public static readonly BaitDef[] Baits =
@@ -202,14 +233,16 @@ namespace Mawang
 
         static MonsterDef M(string id, string name, string en, string region, Currency cur, int price, int space, int maki, float adm, Color c, bool plant = false, bool hidden = false)
         {
-            var m = new MonsterDef { id = id, name = name, en = en, region = region, sellCurrency = cur, sellPrice = price, space = space, maki = maki, admission = adm, color = c, isPlant = plant, hidden = hidden };
+            // 반복 골드 수입 배율: 관람료와 골드 괴물 판매가에 곱한다 (자재 괴물은 그대로)
+            if (cur == Currency.Gold) price = Mathf.Max(1, Mathf.RoundToInt(price * GoldIncomeMul));
+            var m = new MonsterDef { id = id, name = name, en = en, region = region, sellCurrency = cur, sellPrice = price, space = space, maki = maki, admission = adm * GoldIncomeMul, color = c, isPlant = plant, hidden = hidden };
             Monsters.Add(m);
             MonsterById[id] = m;
             return m;
         }
 
         // 원작: 지역당 골드 물고기 3 + 자재 물고기 3 + 골드 해초 1 + 자재 해초 1 (+ 히든)
-        // 풀 배치 규칙: [bait, power] → 인덱스 (0~2 골드, 3~5 자재, 6 골드 마초, 7 자재 마초)
+        // 풀 배치 규칙: [bait, power] → 인덱스 (0~2 골드, 3~5 자재, 6 골드 마력초, 7 자재 마력초)
         static readonly int[,][] PoolLayout =
         {
             { new[] { 0, 3, 6 }, new[] { 0, 3, 7 }, new[] { 1, 3 } },   // 벌레
@@ -238,6 +271,15 @@ namespace Mawang
 
         // ── 건물 ───────────────────────────────────────────────
         // 레벨업 비용표: base × growth^(레벨-1)
+        // 업그레이드 비용 배율 (건설비는 그대로)
+        public const int UpgradeCostMul = 5, DormUpgradeCostMul = 10;
+        static int[] Up(int[] a, int mul = UpgradeCostMul)
+        {
+            var r = new int[a.Length];
+            for (int i = 0; i < a.Length; i++) r[i] = a[i] * mul;
+            return r;
+        }
+
         static int[] Curve(int levels, float baseCost, float growth)
         {
             var a = new int[Mathf.Max(0, levels - 1)];
@@ -257,29 +299,33 @@ namespace Mawang
         public static readonly Dictionary<BuildingType, BuildingDef> Buildings = new Dictionary<BuildingType, BuildingDef>
         {
             [BuildingType.Tank] = new BuildingDef { type = BuildingType.Tank, icon = "room_tank", name = "전시 우리", en = "Exhibit Cage", costGold = 2000, costMat = 1000, maxLevel = 5,
-                upGold = Curve(5, 1500, 2f), upMat = Curve(5, 1500, 2f), color = new Color(0.25f, 0.35f, 0.6f),
+                upGold = Up(Curve(5, 1500, 2f)), upMat = Up(Curve(5, 1500, 2f)), color = new Color(0.25f, 0.35f, 0.6f),
                 desc = "괴물을 전시해 관람료를 쌓는다. 끌어서 여러 칸을 하나로 지을 수 있다.",
                 descEn = "Shows monsters for admission fees. Drag to build one cage over many cells." },
-            [BuildingType.Restaurant] = new BuildingDef { type = BuildingType.Restaurant, icon = "room_restaurant", name = "마족 식당", en = "Demon Diner", maxCount = 3, costGold = 1500, costMat = 500, maxLevel = ShopMaxLevel,
-                upGold = Curve(ShopMaxLevel, 2000, 1.85f), upMat = Half(Curve(ShopMaxLevel, 2000, 1.85f)), color = new Color(0.65f, 0.35f, 0.2f),
+            [BuildingType.Restaurant] = new BuildingDef { type = BuildingType.Restaurant, icon = "room_restaurant", name = "식당", en = "Diner", maxCount = 4, costGold = 1500, costMat = 500, maxLevel = ShopMaxLevel,
+                upGold = Up(Curve(ShopMaxLevel, 2000, 1.85f)), upMat = Up(Half(Curve(ShopMaxLevel, 2000, 1.85f))), color = new Color(0.65f, 0.35f, 0.2f),
                 desc = "용사 손님에게 음식을 판다. 레벨이 오를수록 비싼 메뉴(10단계)를 판다.",
                 descEn = "Sells food to hero guests. Higher levels unlock pricier dishes (10 tiers)." },
-            [BuildingType.Souvenir] = new BuildingDef { type = BuildingType.Souvenir, icon = "room_souvenir", name = "기념품점", en = "Gift Shop", maxCount = 3, costGold = 1500, costMat = 500, maxLevel = ShopMaxLevel,
-                upGold = Curve(ShopMaxLevel, 2000, 1.85f), upMat = Half(Curve(ShopMaxLevel, 2000, 1.85f)), color = new Color(0.55f, 0.25f, 0.5f),
+            [BuildingType.Souvenir] = new BuildingDef { type = BuildingType.Souvenir, icon = "room_souvenir", name = "기념품점", en = "Gift Shop", maxCount = 4, costGold = 1500, costMat = 500, maxLevel = ShopMaxLevel,
+                upGold = Up(Curve(ShopMaxLevel, 2000, 1.85f)), upMat = Up(Half(Curve(ShopMaxLevel, 2000, 1.85f))), color = new Color(0.55f, 0.25f, 0.5f),
                 desc = "용사 손님에게 기념품을 판다. 레벨이 오를수록 비싼 상품(10단계)을 판다.",
                 descEn = "Sells souvenirs to hero guests. Higher levels unlock pricier goods (10 tiers)." },
-            [BuildingType.Lab] = new BuildingDef { type = BuildingType.Lab, icon = "room_lab", name = "흑마법 연구소", en = "Dark Magic Lab", maxCount = 3, costGold = 1000, costMat = 1000, maxLevel = 5,
-                upGold = Curve(5, 4000, 2.2f), upMat = Curve(5, 4000, 2.2f), color = new Color(0.2f, 0.5f, 0.45f),
+            [BuildingType.Lab] = new BuildingDef { type = BuildingType.Lab, icon = "room_lab", name = "흑마법 연구소", en = "Dark Magic Lab", maxCount = 1, costGold = 1000, costMat = 1000, maxLevel = 5,
+                upGold = Up(Curve(5, 4000, 2.2f)), upMat = Up(Curve(5, 4000, 2.2f)), color = new Color(0.2f, 0.5f, 0.45f),
                 desc = "가장 귀한 재료인 보석을 아주 천천히 만든다. 탭하거나 관리자가 수거한다.",
                 descEn = "Slowly makes Gems, the rarest resource. Tap or let staff collect them." },
-            [BuildingType.Dorm] = new BuildingDef { type = BuildingType.Dorm, icon = "room_dorm", name = "직원 숙소", en = "Staff Dorm", costGold = 2000, costMat = 2000, maxLevel = 5,
-                upGold = Curve(5, 3000, 2f), upMat = Curve(5, 3000, 2f), color = new Color(0.45f, 0.45f, 0.3f),
-                desc = "레벨마다 직원 고용 한도 +1.",
+            [BuildingType.Dorm] = new BuildingDef { type = BuildingType.Dorm, icon = "room_dorm", name = "직원 숙소", en = "Staff Dorm", maxCount = 1, costGold = 2000, costMat = 2000, maxLevel = 5,
+                upGold = Up(Curve(5, 3000, 2f), DormUpgradeCostMul), upMat = Up(Curve(5, 3000, 2f), DormUpgradeCostMul), color = new Color(0.45f, 0.45f, 0.3f),
+                desc = "Lv.2부터 레벨마다 직원 고용 한도 +1.",
                 descEn = "Each level adds +1 staff capacity." },
-            [BuildingType.Rest] = new BuildingDef { type = BuildingType.Rest, icon = "room_rest", name = "휴게실", en = "Lounge", costGold = 1000, costMat = 1000, maxLevel = 1,
+            [BuildingType.Rest] = new BuildingDef { type = BuildingType.Rest, icon = "room_rest", name = "휴게실", en = "Lounge", maxCount = 8, costGold = 1000, costMat = 1000, maxLevel = 1,
                 upGold = new int[0], upMat = new int[0], color = new Color(0.35f, 0.5f, 0.3f),
-                desc = "매일 06시에 휴게실 1개당 2,000골드 지원금.",
-                descEn = "Pays 2,000 Gold per lounge every day at 06:00." },
+                desc = "매일 06시에 휴게실 1개당 지원금. 열린 층이 많을수록 많이 준다.",
+                descEn = "Pays a daily bonus per lounge at 06:00. More floors, bigger bonus." },
+            [BuildingType.Arena] = new BuildingDef { type = BuildingType.Arena, icon = "room_arena", name = "투기장", en = "Arena", maxCount = 1, costGold = 3000, costMat = 1500, maxLevel = ShopMaxLevel,
+                upGold = Up(Curve(ShopMaxLevel, 2500, 1.85f)), upMat = Up(Half(Curve(ShopMaxLevel, 2500, 1.85f))), color = new Color(0.6f, 0.3f, 0.25f),
+                desc = "용사가 몬스터와 대련한다. 가장 강한 몬스터부터 나서고, 레벨이 오를수록 보상이 커진다.",
+                descEn = "Heroes spar with your monsters. The strongest fights first; higher levels pay more." },
         };
 
         // ── 음식 / 기념품: 각 10단계. 매입가 = 10 × 1.75^(단계-1), 판매가 = 매입가 × 2.5 ──
@@ -290,17 +336,17 @@ namespace Mawang
             string[] foodKo = { "해골 수프", "마왕 스테이크", "드래곤 다리 구이", "독버섯 리조또", "용암 피자", "서리 젤라토", "심연 초밥", "흑마법 케이크", "마왕의 와인", "혼돈 코스요리" };
             string[] foodEn = { "Skull Soup", "Demon Steak", "Roast Dragon Leg", "Toadstool Risotto", "Lava Pizza", "Frost Gelato", "Abyss Sushi", "Hex Cake", "Demon Lord's Wine", "Chaos Full Course" };
             string[] giftKo = { "마왕 열쇠고리", "박쥐 인형", "마왕 망토", "해골 머그컵", "마법 수정구", "용의 알 모형", "저주받은 거울", "마검 레플리카", "마왕 왕관", "마왕성 미니어처" };
-            string[] giftEn = { "Demon Keychain", "Bat Plush", "Demon Cape", "Skull Mug", "Crystal Ball", "Dragon Egg Replica", "Cursed Mirror", "Demon Sword Replica", "Demon Crown", "Castle Miniature" };
+            string[] giftEn = { "Demon Keychain", "Bat Plush", "Demon Cape", "Skull Mug", "Crystal Ball", "Dragon Egg Replica", "Cursed Mirror", "Replica Sword", "Demon Crown", "Castle Miniature" };
             var list = new List<ShopItemDef>();
             for (int t = 1; t <= 10; t++)
             {
-                int buy = Mathf.RoundToInt(10 * Mathf.Pow(1.75f, t - 1));
-                list.Add(new ShopItemDef { id = $"food_{t}", name = foodKo[t - 1], en = foodEn[t - 1], shop = BuildingType.Restaurant, tier = t, buyPrice = buy, sellPrice = Mathf.RoundToInt(buy * 2.5f) });
+                float b = 10 * Mathf.Pow(1.75f, t - 1) * GoldIncomeMul; // 매입가·판매가 모두 반복 수입 배율 → 이익도 같은 비율
+                list.Add(new ShopItemDef { id = $"food_{t}", name = foodKo[t - 1], en = foodEn[t - 1], shop = BuildingType.Restaurant, tier = t, buyPrice = Mathf.Max(1, Mathf.RoundToInt(b)), sellPrice = Mathf.RoundToInt(b * 2.5f) });
             }
             for (int t = 1; t <= 10; t++)
             {
-                int buy = Mathf.RoundToInt(8 * Mathf.Pow(1.75f, t - 1));
-                list.Add(new ShopItemDef { id = $"gift_{t}", name = giftKo[t - 1], en = giftEn[t - 1], shop = BuildingType.Souvenir, tier = t, buyPrice = buy, sellPrice = Mathf.RoundToInt(buy * 2.6f) });
+                float b = 8 * Mathf.Pow(1.75f, t - 1) * GoldIncomeMul;
+                list.Add(new ShopItemDef { id = $"gift_{t}", name = giftKo[t - 1], en = giftEn[t - 1], shop = BuildingType.Souvenir, tier = t, buyPrice = Mathf.Max(1, Mathf.RoundToInt(b)), sellPrice = Mathf.RoundToInt(b * 2.6f) });
             }
             return list.ToArray();
         }
@@ -310,12 +356,12 @@ namespace Mawang
         public static readonly StaffDef[] Staff =
         {
             new StaffDef { id = "hunter_imp",  name = "임프 포획꾼",  en = "Imp Catcher",    role = StaffRole.Hunter, interval = 10f, amount = 1, durability = 20, hireGold = 0 },
-            new StaffDef { id = "hunter_orc",  name = "오크 사냥꾼",  en = "Orc Hunter",     role = StaffRole.Hunter, interval = 14f, amount = 2, durability = 15, hireGold = 3000 },
-            new StaffDef { id = "hunter_lich", name = "리치 소환사",  en = "Lich Summoner",  role = StaffRole.Hunter, interval = 8f,  amount = 1, durability = 30, hireGold = 12000 },
-            new StaffDef { id = "castle_skel",  name = "스켈레톤 집사", en = "Skeleton Butler", role = StaffRole.Castle, moveSpeed = 1.0f,  specialty = BuildingType.Tank,       admissionBonus = 0.05f, hireGold = 1000 },
-            new StaffDef { id = "castle_succ",  name = "서큐버스 점원", en = "Succubus Clerk",  role = StaffRole.Castle, moveSpeed = 1.15f, specialty = BuildingType.Restaurant, foodBonus = 0.10f, souvenirBonus = 0.03f, hireGold = 1000 },
-            new StaffDef { id = "castle_garg",  name = "가고일 경비",  en = "Gargoyle Guard",  role = StaffRole.Castle, moveSpeed = 0.9f,  specialty = BuildingType.Souvenir,   foodBonus = 0.02f, souvenirBonus = 0.12f, admissionBonus = 0.03f, hireGold = 1000 },
-            new StaffDef { id = "castle_witch", name = "마녀 연구원",  en = "Witch Researcher", role = StaffRole.Castle, moveSpeed = 1.05f, specialty = BuildingType.Lab,        hireGold = 1000 },
+            new StaffDef { id = "hunter_orc",  name = "오크 사냥꾼",  en = "Orc Hunter",     role = StaffRole.Hunter, interval = 14f, amount = 2, durability = 15, hireGold = 15000 },
+            new StaffDef { id = "hunter_lich", name = "리치 소환사",  en = "Lich Summoner",  role = StaffRole.Hunter, interval = 8f,  amount = 1, durability = 30, hireGold = 60000 },
+            new StaffDef { id = "castle_skel",  name = "스켈레톤 집사", en = "Skeleton Butler", role = StaffRole.Castle, moveSpeed = 1.0f,  specialty = BuildingType.Tank,       admissionBonus = 0.05f, hireGold = 5000 },
+            new StaffDef { id = "castle_succ",  name = "서큐버스 점원", en = "Succubus Clerk",  role = StaffRole.Castle, moveSpeed = 1.15f, specialty = BuildingType.Restaurant, foodBonus = 0.10f, souvenirBonus = 0.03f, hireGold = 5000 },
+            new StaffDef { id = "castle_garg",  name = "가고일 경비",  en = "Gargoyle Guard",  role = StaffRole.Castle, moveSpeed = 0.9f,  specialty = BuildingType.Souvenir,   foodBonus = 0.02f, souvenirBonus = 0.12f, admissionBonus = 0.03f, hireGold = 5000 },
+            new StaffDef { id = "castle_witch", name = "마녀 연구원",  en = "Witch Researcher", role = StaffRole.Castle, moveSpeed = 1.05f, specialty = BuildingType.Lab,        hireGold = 5000 },
         };
         public static readonly string[] StartStaff = { "hunter_imp", "castle_skel" };
         public const float StaffHireGrowth = 1.8f;   // 성 관리자를 한 명 더 고용할 때마다 고용비 배율
@@ -335,37 +381,62 @@ namespace Mawang
         {
             id = $"region_{stage}", name = $"{name} 탐사", en = $"Explore {en}",
             desc = $"포획 스테이지 {stage} '{name}' 개방", descEn = $"Unlocks hunting stage {stage}: {en}", icon = "up_region",
-            rp = ExploreGems[stage],
-            gold = Mathf.RoundToInt(5000 * Mathf.Pow(2.1f, stage - 2) / 1000f) * 1000,
+            rp = Mathf.Max(1, ExploreGems[stage]),
             requires = stage > 2 ? $"region_{stage - 1}" : null,
         };
 
         // ── 연구: 10단계 업그레이드 ────────────────────────────
         public const float UpgradeRpGrowth = 1.25f;
-        public const float UpgradeGoldGrowth = 1.7f;
 
-        public static string CategoryName(int i) => L.En
-            ? new[] { "Hunting", "Exhibits", "Guests & Shops", "Operations" }[i]
+        // shortName: 폰 연구 탭처럼 좁은 곳 (영어만 줄인다)
+        public static string CategoryName(int i, bool shortName = false) => L.En
+            ? (shortName ? new[] { "Hunt", "Exhibits", "Guests", "Ops" } : new[] { "Hunting", "Exhibits", "Guests & Shops", "Operations" })[i]
             : new[] { "포획", "전시", "손님 · 상점", "운영" }[i];
         public const int CategoryCount = 4;
 
+        // effect(n): n단계일 때의 효과. 0단계(연구 전)는 지금 기본값을 설명한다.
         public static readonly UpgradeLine[] Upgrades =
         {
-            new UpgradeLine { id = "speed",    name = "포획 속도",    en = "Hunt Speed",     icon = "up_speed",    category = 0, rp0 = 1, gold0 = 1000, effect = n => L.T($"포획 주기 -{n * 4}%", $"Hunt cycle -{n * 4}%") },
-            new UpgradeLine { id = "dura",     name = "탐험대 체력",  en = "Hunter Stamina", icon = "up_dura",     category = 0, rp0 = 1, gold0 = 1000, effect = n => L.T($"포획대원 체력 +{n * 3}", $"Hunter stamina +{n * 3}") },
-            new UpgradeLine { id = "rest",     name = "빠른 회복",    en = "Quick Recovery", icon = "up_rest",     category = 0, rp0 = 1, gold0 = 1500, effect = n => L.T($"체력 회복 {HunterRestTime:0}초 → {RestTimeAt(n):0}초", $"Recovery {HunterRestTime:0}s → {RestTimeAt(n):0}s") },
-            new UpgradeLine { id = "adm",      name = "관람료 인상",  en = "Ticket Price",   icon = "up_adm",      category = 1, rp0 = 2, gold0 = 1500, effect = n => L.T($"관람료 +{n * 10}%", $"Admission +{n * 10}%") },
-            new UpgradeLine { id = "cap",      name = "우리 금고",    en = "Cage Vault",     icon = "up_cap",      category = 1, rp0 = 1, gold0 = 1200, effect = n => L.T($"관람료 누적 한도 +{n * 15}%", $"Fee storage +{n * 15}%") },
-            new UpgradeLine { id = "maki",     name = "마기 정화",    en = "Miasma Purifier", icon = "up_maki",    category = 1, rp0 = 1, gold0 = 2000, effect = n => L.T($"전시 우리 크기당 마기 +{n}", $"Miasma +{n} per cage size") },
-            new UpgradeLine { id = "visitor",  name = "손님 유치",    en = "Advertising",    icon = "up_visitor",  category = 2, rp0 = 2, gold0 = 1500, effect = n => L.T($"손님 방문 빈도 +{n * 12}% · 최대 손님 +{n * VisitorMaxPerLevel}명", $"Guest rate +{n * 12}% · Max guests +{n * VisitorMaxPerLevel}") },
-            new UpgradeLine { id = "wallet",   name = "용사 지갑",    en = "Rich Heroes",    icon = "up_wallet",   category = 2, rp0 = 1, gold0 = 1500, effect = n => L.T($"용사 소지금 +{n * 20}%", $"Hero wallets +{n * 20}%") },
-            new UpgradeLine { id = "patience", name = "친절 교육",    en = "Hospitality",    icon = "up_patience", category = 2, rp0 = 1, gold0 = 800,  effect = n => L.T($"손님 대기 시간 +{n * 1.5f:0.#}초", $"Guest patience +{n * 1.5f:0.#}s") },
-            new UpgradeLine { id = "sales",    name = "상술",         en = "Salesmanship",   icon = "up_sales",    category = 2, rp0 = 2, gold0 = 2000, effect = n => L.T($"음식·기념품 판매가 +{n * 5}%", $"Food & gift prices +{n * 5}%") },
-            new UpgradeLine { id = "lab",      name = "연구 효율",    en = "Lab Efficiency", icon = "up_lab",      category = 3, rp0 = 1, gold0 = 800,  effect = n => L.T($"보석 생산 속도 +{n * 8}% · 보관 한도 +{n * 2}", $"Gem output +{n * 8}% · Storage +{n * 2}") },
-            new UpgradeLine { id = "trash",    name = "쓰레기 재활용", en = "Recycling",     icon = "up_trash",    category = 3, rp0 = 1, gold0 = 500,  effect = n => L.T($"쓰레기 수거 보상 +{n * 50}%", $"Trash rewards +{n * 50}%") },
+            new UpgradeLine { id = "speed",    name = "포획 속도",    en = "Hunt Speed",     icon = "up_speed",    category = 0, rp0 = 1, effect = n => n == 0
+                ? L.T("포획 주기 기본 (포획대원마다 8~14초)", "Base hunt cycle (8–14s per hunter)")
+                : L.T($"포획 주기 -{n * 4}%", $"Hunt cycle -{n * 4}%") },
+            new UpgradeLine { id = "dura",     name = "탐험대 체력",  en = "Hunter Stamina", icon = "up_dura",     category = 0, rp0 = 1, effect = n => n == 0
+                ? L.T("포획대원 기본 체력 (15~30, 포획 1회에 1 소모)", "Base hunter stamina (15–30, -1 per catch)")
+                : L.T($"포획대원 체력 +{n * 3}", $"Hunter stamina +{n * 3}") },
+            new UpgradeLine { id = "rest",     name = "빠른 회복",    en = "Quick Recovery", icon = "up_rest",     category = 0, rp0 = 1, effect = n => n == 0
+                ? L.T($"체력 회복 {HunterRestTime:0}초", $"Recovery {HunterRestTime:0}s")
+                : L.T($"체력 회복 {RestTimeAt(n):0}초 (기본 {HunterRestTime:0}초)", $"Recovery {RestTimeAt(n):0}s (base {HunterRestTime:0}s)") },
+            new UpgradeLine { id = "adm",      name = "관람료 인상",  en = "Ticket Price",   icon = "up_adm",      category = 1, rp0 = 2, effect = n => n == 0
+                ? L.T("관람료 기본 (괴물마다 다름)", "Base admission (varies by monster)")
+                : L.T($"관람료 +{n * 10}%", $"Admission +{n * 10}%") },
+            new UpgradeLine { id = "cap",      name = "우리 금고",    en = "Cage Vault",     icon = "up_cap",      category = 1, rp0 = 1, effect = n => n == 0
+                ? L.T($"관람료 누적 한도 기본 (우리 크기당 {TankCapPerSize:N0} 또는 {TankCapMinutes:0}분치)", $"Base fee storage ({TankCapPerSize:N0} per cage size or {TankCapMinutes:0} min)")
+                : L.T($"관람료 누적 한도 +{n * 15}%", $"Fee storage +{n * 15}%") },
+            new UpgradeLine { id = "maki",     name = "항마력 강화",  en = "Ward Boost",     icon = "up_maki",     category = 1, rp0 = 1, effect = n => n == 0
+                ? L.T($"전시 우리 크기당 항마력 {TankMakiPerSize}", $"Ward {TankMakiPerSize} per cage size")
+                : L.T($"전시 우리 크기당 항마력 {TankMakiPerSize + n} (+{n})", $"Ward {TankMakiPerSize + n} per cage size (+{n})") },
+            new UpgradeLine { id = "visitor",  name = "손님 유치",    en = "Advertising",    icon = "up_visitor",  category = 2, rp0 = 2, effect = n => n == 0
+                ? L.T($"기본 최대 손님 {GuestSettings.I.maxBase:0}명 + 방문 가능 칸당 {GuestSettings.I.maxPerVisitableCell:0.#}명", $"Base max guests {GuestSettings.I.maxBase:0} + {GuestSettings.I.maxPerVisitableCell:0.#} per visitable cell")
+                : L.T($"손님 방문 빈도 +{n * 12}% · 최대 손님 +{n * GuestSettings.I.maxPerResearchLevel}명", $"Guest rate +{n * 12}% · Max guests +{n * GuestSettings.I.maxPerResearchLevel}") },
+            new UpgradeLine { id = "wallet",   name = "용사 지갑",    en = "Rich Heroes",    icon = "up_wallet",   category = 2, rp0 = 1, effect = n => n == 0
+                ? L.T($"용사 기본 소지금 {GuestSettings.I.walletMin}~{GuestSettings.I.walletMax}골드 (열린 층마다 ×{GuestSettings.I.walletPerFloor:0.##})", $"Base hero wallet {GuestSettings.I.walletMin}–{GuestSettings.I.walletMax} Gold (×{GuestSettings.I.walletPerFloor:0.##} per floor)")
+                : L.T($"용사 소지금 +{n * 20}%", $"Hero wallets +{n * 20}%") },
+            new UpgradeLine { id = "patience", name = "친절 교육",    en = "Hospitality",    icon = "up_patience", category = 2, rp0 = 1, effect = n => n == 0
+                ? L.T($"손님 대기 시간 {GuestSettings.I.patience:0.#}초", $"Guest patience {GuestSettings.I.patience:0.#}s")
+                : L.T($"손님 대기 시간 {GuestSettings.I.patience + n * 1.5f:0.#}초 (+{n * 1.5f:0.#}초)", $"Guest patience {GuestSettings.I.patience + n * 1.5f:0.#}s (+{n * 1.5f:0.#}s)") },
+            new UpgradeLine { id = "sales",    name = "상술",         en = "Salesmanship",   icon = "up_sales",    category = 2, rp0 = 2, effect = n => n == 0
+                ? L.T("음식·기념품 기본 판매가 (상품 목록 가격)", "Base food & gift prices (as listed)")
+                : L.T($"음식·기념품 판매가 +{n * 5}%", $"Food & gift prices +{n * 5}%") },
+            new UpgradeLine { id = "lab",      name = "연구 효율",    en = "Lab Efficiency", icon = "up_lab",      category = 3, rp0 = 1, effect = n => n == 0
+                ? L.T($"보석 생산 기본 속도 (연구소 Lv.1: {LabInterval[0] / 60f:0}분에 1개)", $"Base Gem output (Lab Lv.1: 1 per {LabInterval[0] / 60f:0} min)")
+                : L.T($"보석 생산 속도 +{n * 8}%", $"Gem output +{n * 8}%") },
+            new UpgradeLine { id = "trash",    name = "쓰레기 재활용", en = "Recycling",     icon = "up_trash",    category = 3, rp0 = 1, effect = n => n == 0
+                ? L.T($"쓰레기 하나에 캔 {TrashReward * GoldIncomeMul:0}골드 · 병 자재 {TrashReward}", $"Per trash: can {TrashReward * GoldIncomeMul:0} Gold · bottle {TrashReward} Mat")
+                : L.T($"쓰레기 수거 보상 +{n * 50}%", $"Trash rewards +{n * 50}%") },
+            new UpgradeLine { id = "build",    name = "건물 연구",    en = "Architecture",   icon = "up_build",    category = 3, rp0 = 2, maxLevel = 9, effect = n => L.T($"건물 Lv.{n + 1}까지 업그레이드{(n >= ArenaResearchLevel ? " · 투기장 개방" : "")}", $"Buildings up to Lv.{n + 1}{(n >= ArenaResearchLevel ? " · Arena unlocked" : "")}") },
+            new UpgradeLine { id = "storage",  name = "자원 창고",    en = "Storehouse",     icon = "up_storage",  category = 3, rp0 = 1, effect = n => L.T($"최대 보유 골드·자재 {GoldCapAt(n):N0} · 보석 {GemCapAt(n)}", $"Max Gold & Mat {GoldCapAt(n):N0} · Gems {GemCapAt(n)}") },
         };
 
-        public const int VisitorMaxPerLevel = 4;
         public static float RestTimeAt(int lv) => Mathf.Max(10f, HunterRestTime - lv * 5f);
 
         public static UpgradeLine UpgradeById(string id)
@@ -431,7 +502,7 @@ namespace Mawang
             var drake = M("m_drake", "새끼 드래곤", "Baby Dragon", R2, Currency.Gold, 1200, 3, -6, 150, new Color(0.7f, 0.1f, 0.2f), hidden: true);
             Region(R2, "용암 동굴", "Lava Cave", "region_2", lava, drake, 0, Power.Strong, 2);
 
-            // 스테이지 3~10: 이름 [골드 소·중·대, 자재 소·중·대, 골드 마초, 자재 마초, 히든]
+            // 스테이지 3~10: 이름 [골드 소·중·대, 자재 소·중·대, 골드 마력초, 자재 마력초, 히든]
             Stage(3, "frost", "서리 빙굴", "Frost Cavern", new Color(0.6f, 0.8f, 1f), 2, Power.Weak,
                 "서리 슬라임,얼음 박쥐,설인 늑대,얼음 해골,빙결 거미,서리 골렘,얼음 이끼,빙정 수정,빙룡의 새끼",
                 "Frost Slime,Ice Bat,Yeti Wolf,Ice Skeleton,Frost Spider,Frost Golem,Ice Moss,Ice Crystal,Ice Wyrmling");
@@ -468,7 +539,105 @@ namespace Mawang
             Visual("storm", new Color(0.7f, 0.85f, 1f), new Vector2(-20, -40), "번개가 끊이지 않는 봉우리.", "A peak struck by endless lightning.");
             Visual("abyss", new Color(0.6f, 1f, 1f), new Vector2(0, 8), "빛이 닿지 않는 바다 밑바닥.", "The sea floor where no light reaches.");
             Visual("chaos", new Color(1f, 0.4f, 1f), new Vector2(0, 5), "마계와 이어진 공간의 균열.", "A rift in space leading to the demon realm.");
+
+            foreach (var r in Regions) ComputePower(r);
+            foreach (var a in Achievements) if (a.id == "book_all") a.target = Monsters.Count; // 필드 초기화 시점엔 괴물 목록이 비어 있다
         }
+
+        // ── 투기장 전투력 ─────────────────────────────────────
+        // 스테이지 배율(관람료와 같은 비율): 1스테이지 1배, 2스테이지 2.6배, 이후 1.6배씩
+        public static float StageMul(int stage) => stage <= 1 ? 1f : 2.6f * Mathf.Pow(1.6f, stage - 2);
+
+        // 차지하는 공간·항마력에 비해 관람료가 적은(저밸류) 괴물일수록 전투력이 높다.
+        // 효율 = 분당 관람료 / (공간 + 소모 항마력). 전투력 = 100 × 스테이지 배율 × (지역 평균 효율 / 이 괴물 효율)².
+        static void ComputePower(RegionDef r)
+        {
+            float sum = 0; int n = 0;
+            foreach (var m in Monsters)
+                if (m.region == r.id && !m.isPlant && !m.hidden) { sum += Efficiency(m); n++; }
+            float avg = n > 0 ? sum / n : 1f;
+            foreach (var m in Monsters)
+            {
+                if (m.region != r.id || m.isPlant) continue;
+                float rel = avg / Mathf.Max(0.01f, Efficiency(m));
+                m.power = Mathf.Max(1, Mathf.RoundToInt(100f * StageMul(r.stage) * rel * rel));
+            }
+        }
+
+        static float Efficiency(MonsterDef m) => m.admission / (m.space + Mathf.Max(0, -m.maki));
+
+        // 대련 결과 확률. r = 전투력 / 용사 힘 (용사는 열린 가장 높은 스테이지만큼 강하다).
+        // r = 1 → 대실패 12% · 실패 28% · 무승부 25% · 성공 25% · 대성공 10%. 강할수록 성공 쪽으로 기운다.
+        public static float HeroPower(int maxStage) => 100f * StageMul(maxStage) * 0.8f;
+
+        public static float[] BoutOdds(float power, float heroPower)
+        {
+            float r = Mathf.Clamp(power / Mathf.Max(1f, heroPower), 0.2f, 4f);
+            float sr = Mathf.Sqrt(r);
+            var w = new[] { 0.12f / r, 0.28f / sr, 0.25f, 0.25f * sr, 0.10f * r };
+            float total = 0;
+            foreach (var x in w) total += x;
+            for (int i = 0; i < w.Length; i++) w[i] /= total;
+            return w;
+        }
+
+        public static string BoutName(BoutResult r) => r switch
+        {
+            BoutResult.GreatFail => L.T("대실패", "Disaster"),
+            BoutResult.Fail => L.T("실패", "Defeat"),
+            BoutResult.Draw => L.T("무승부", "Draw"),
+            BoutResult.Win => L.T("성공", "Victory"),
+            _ => L.T("대성공", "Triumph"),
+        };
+
+        // ── 업적: 처음부터 끝까지. 보상은 소량의 골드 ───────────
+        static AchievementDef A(string id, string name, string en, string desc, string descEn, long target, int gold, System.Func<Game, long> progress) =>
+            new AchievementDef { id = id, name = name, en = en, desc = desc, descEn = descEn, target = target, gold = gold, progress = progress };
+
+        static long Sum(List<CountEntry> list) { long n = 0; foreach (var e in list) n += e.count; return n; }
+        static long MaxLevel(Game g, BuildingType t) { int lv = 0; foreach (var b in g.S.buildings) if (b.type == t) lv = Mathf.Max(lv, b.level); return lv; }
+        static long Explored(Game g) { int n = 1; foreach (var r in Regions) if (r.unlockResearch != null && g.S.research.Contains(r.unlockResearch)) n++; return n; }
+        static long HiddenFound(Game g) { int n = 0; foreach (var m in Monsters) if (m.hidden && CountList.Get(g.S.caught, m.id) > 0) n++; return n; }
+
+        public static readonly AchievementDef[] Achievements =
+        {
+            A("build_1",    "첫 삽",          "Groundbreaking",   "건물을 처음 짓는다",                 "Build your first room",              1, 200,   g => g.S.buildings.Count),
+            A("catch_1",    "첫 포획",        "First Catch",      "괴물을 처음 잡는다",                 "Catch your first monster",           1, 200,   g => Sum(g.S.caught)),
+            A("exhibit_1",  "개관",           "Grand Opening",    "전시 우리에 괴물을 넣는다",          "Put a monster on display",           1, 300,   g => g.S.buildings.Exists(b => b.type == BuildingType.Tank && b.contents.Count > 0) ? 1 : 0),
+            A("sale_1",     "첫 손님",        "First Customer",   "음식이나 기념품을 처음 판다",        "Make your first sale",               1, 200,   g => g.S.stats.sales),
+            A("staff_1",    "출근 완료",      "Clocked In",       "성 관리자를 파견한다",               "Dispatch a castle staff member",     1, 200,   g => g.S.castleStaff.Exists(c => c.dispatched) ? 1 : 0),
+            A("lab_1",      "흑마법 입문",    "Dark Arts 101",    "흑마법 연구소를 짓는다",             "Build the Dark Magic Lab",           1, 300,   g => g.CountOf(BuildingType.Lab)),
+            A("research_1", "첫 연구",        "Eureka",           "연구를 처음 완료한다",               "Complete your first research",       1, 300,   g => g.S.research.Count),
+            A("wing_r",     "오른쪽 날개",    "Right Wing",       "오른쪽 날개를 연다",                 "Open the right wing",                1, 500,   g => g.S.floorsRight),
+            A("trash_50",   "청소 반장",      "Clean Sweep",      "쓰레기 50개를 줍는다",               "Pick up 50 pieces of trash",         50, 500,  g => g.S.stats.trash),
+            A("sale_100",   "단골 장사",      "Regulars",         "100번 판다",                         "Make 100 sales",                     100, 800,  g => g.S.stats.sales),
+            A("catch_100",  "포획 전문가",    "Seasoned Hunter",  "괴물 100마리를 잡는다",              "Catch 100 monsters",                 100, 800,  g => Sum(g.S.caught)),
+            A("book_1",     "도감 첫 장",     "First Entry",      "도감에 괴물을 처음 등록한다",        "Register your first monster",        1, 500,   g => g.S.collectionClaimed.Count),
+            A("stage_3",    "탐험가",         "Explorer",         "스테이지 3을 연다",                  "Unlock stage 3",                     3, 1000,  Explored),
+            A("hidden_1",   "숨은 그림 찾기", "Hidden Gem",       "히든 괴물을 발견한다",               "Find a hidden monster",              1, 1500,  HiddenFound),
+            A("floors_8",   "증축 공사",      "Renovation",       "성을 모두 합쳐 8층 연다",            "Open 8 floors in total",             8, 1500,  g => g.TotalFloorsOpen),
+            A("shop_5",     "맛집 등극",      "Rising Star",      "식당이나 기념품점을 Lv.5로 올린다",  "Raise a Diner or Gift Shop to Lv.5", 5, 1500,  g => System.Math.Max(MaxLevel(g, BuildingType.Restaurant), MaxLevel(g, BuildingType.Souvenir))),
+            A("arena_1",    "투기장 개장",    "Let the Games Begin", "투기장을 짓는다",                 "Build an Arena",                     1, 1500,  g => g.CountOf(BuildingType.Arena)),
+            A("arena_win",  "첫 승리",        "First Blood",      "투기장 대련에서 이긴다",             "Win an arena bout",                  1, 1000,  g => g.S.stats.arenaWins),
+            A("visitors_60","북새통",         "Packed House",     "손님 60명이 동시에 머문다",          "Host 60 guests at once",             60, 2000, g => g.S.stats.peakVisitors),
+            A("earn_100k",  "십만장자",       "Hundred Grand",    "누적 수입 100,000골드",              "Earn 100,000 Gold in total",         100000, 2000, g => g.S.stats.goldEarned),
+            A("stage_5",    "개척자",         "Pathfinder",       "스테이지 5를 연다",                  "Unlock stage 5",                     5, 3000,  Explored),
+            A("sale_1000",  "장사의 신",      "Merchant Lord",    "1,000번 판다",                       "Make 1,000 sales",                   1000, 3000, g => g.S.stats.sales),
+            A("catch_1000", "괴물 사냥꾼",    "Monster Hunter",   "괴물 1,000마리를 잡는다",            "Catch 1,000 monsters",               1000, 3000, g => Sum(g.S.caught)),
+            A("book_20",    "도감 수집가",    "Collector",        "도감에 20종을 등록한다",             "Register 20 monsters",               20, 3000, g => g.S.collectionClaimed.Count),
+            A("arena_great","관중 열광",      "Crowd Goes Wild",  "투기장 대성공 10번",                 "10 arena triumphs",                  10, 3000, g => g.S.stats.arenaGreat),
+            A("research_30","대마법사",       "Archmage",         "연구를 30단계 완료한다",             "Complete 30 research levels",        30, 4000, g => g.S.research.Count),
+            A("earn_1m",    "백만장자",       "Millionaire",      "누적 수입 1,000,000골드",            "Earn 1,000,000 Gold in total",       1000000, 5000, g => g.S.stats.goldEarned),
+            A("shop_10",    "전설의 가게",    "Legendary Shop",   "식당이나 기념품점을 Lv.10으로 올린다", "Raise a Diner or Gift Shop to Lv.10", 10, 6000, g => System.Math.Max(MaxLevel(g, BuildingType.Restaurant), MaxLevel(g, BuildingType.Souvenir))),
+            A("stage_8",    "심연의 문턱",    "Edge of the Abyss","스테이지 8을 연다",                  "Unlock stage 8",                     8, 6000,  Explored),
+            A("arena_100",  "투기장의 제왕",  "Arena Champion",   "투기장 대련에서 100번 이긴다",       "Win 100 arena bouts",                100, 6000, g => g.S.stats.arenaWins),
+            A("hidden_5",   "히든 헌터",      "Secret Seeker",    "히든 괴물 5종을 발견한다",           "Find 5 hidden monsters",             5, 6000,  HiddenFound),
+            A("visitors_120","인산인해",      "Sea of Heroes",    "손님 120명이 동시에 머문다",         "Host 120 guests at once",            120, 8000, g => g.S.stats.peakVisitors),
+            A("floors_20",  "마왕성 완공",    "Castle Complete",  "양쪽 날개를 모두 10층까지 연다",     "Open all 20 floors",                 20, 10000, g => g.TotalFloorsOpen),
+            A("stage_10",   "혼돈 정복",      "Chaos Conquered",  "스테이지 10을 연다",                 "Unlock stage 10",                    10, 10000, Explored),
+            A("earn_10m",   "마계 재벌",      "Demon Tycoon",     "누적 수입 10,000,000골드",           "Earn 10,000,000 Gold in total",      10000000, 12000, g => g.S.stats.goldEarned),
+            A("book_all",   "완전한 도감",    "Complete Book",    "모든 괴물을 도감에 등록한다",        "Register every monster",             999, 20000, g => g.S.collectionClaimed.Count),
+        };
 
         static void Visual(string id, Color c, Vector2 vel, string desc, string descEn)
         {

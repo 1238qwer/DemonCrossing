@@ -68,6 +68,15 @@ namespace Mawang
         public int floor = -1;       // 담당 층: -1 = 전체, 0~9
     }
 
+    // 누적 기록 (업적 판정용)
+    [Serializable]
+    public class Stats
+    {
+        public long goldEarned;   // 자동·행동 수입 합계 (환급·교환 제외)
+        public int sales, trash, arenaBouts, arenaWins, arenaGreat, peakVisitors;
+        public int labCollects, tankCollects, monstersSold;   // 처음 해보기 목표용
+    }
+
     [Serializable]
     public class SaveData
     {
@@ -81,6 +90,10 @@ namespace Mawang
         public List<CountEntry> monsters = new List<CountEntry>();     // 보관함
         public List<CountEntry> baits = new List<CountEntry>();
         public List<CountEntry> goods = new List<CountEntry>();        // 음식/기념품 재고
+        public List<CountEntry> arena = new List<CountEntry>();        // 투기장 출전 괴물 (모든 투기장이 함께 쓰는 재고)
+        public List<string> achievements = new List<string>();         // 달성한 업적
+        public Stats stats = new Stats();
+        public int goalStep;                                           // 다음 목표: 지금 진행 중인 단계 (한 번 달성하면 돌아가지 않는다)
         public List<CountEntry> caught = new List<CountEntry>();       // 도감: 누적 포획 수
         public List<string> collectionClaimed = new List<string>();
         public List<string> research = new List<string>();

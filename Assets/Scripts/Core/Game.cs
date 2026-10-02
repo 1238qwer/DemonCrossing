@@ -42,6 +42,8 @@ namespace Mawang
             TickTrash(dt);
             TickDaily();
             Sim.Tick(dt);
+            TickAchievements(dt);
+            TickGoals(dt);
 
             autoSaveTimer += dt;
             if (autoSaveTimer >= AutoSaveInterval) { autoSaveTimer = 0; Save(); }
@@ -92,6 +94,9 @@ namespace Mawang
                 S = null;
             }
             if (S == null) S = NewGame();
+            S.stats ??= new Stats();
+            S.arena ??= new System.Collections.Generic.List<CountEntry>();
+            S.achievements ??= new System.Collections.Generic.List<string>();
             foreach (var c in S.castleStaff) if (c.uid == 0) c.uid = S.nextUid++;
             Mods.Recalculate(S);
         }
@@ -158,9 +163,38 @@ namespace Mawang
             return true;
         }
 
+        // 행동 수입(괴물 판매·쓰레기 등): 최대 보유량을 넘어도 받는다
         public void Earn(Currency c, int amount)
         {
-            if (c == Currency.Gold) S.gold += amount; else S.material += amount;
+            if (c == Currency.Gold) EarnGold(amount); else S.material += amount;
+        }
+
+        public void EarnGold(int amount)
+        {
+            if (amount <= 0) return;
+            S.gold += amount;
+            S.stats.goldEarned += amount;
+        }
+
+        // ── 최대 보유량: 자동 수입(가게 판매·전시 우리·투기장·연구소)만 막는다 ──
+        // 테스트용: Game 인스펙터의 '자원 상한 끄기' 버튼 (에디터 전용, 저장되지 않는다)
+#if UNITY_EDITOR
+        public static bool DevNoCaps;
+#else
+        public const bool DevNoCaps = false;
+#endif
+        public int GoldCap => DevNoCaps ? int.MaxValue : Mods.goldCap;
+        public int MatCap => DevNoCaps ? int.MaxValue : Mods.goldCap;
+        public int GemCap => DevNoCaps ? int.MaxValue : Mods.gemCap;
+        public bool GoldFull => S.gold >= GoldCap;
+        public bool GemFull => S.rp >= GemCap;
+
+        // 자동 골드 수입: 최대 보유량까지만 받고, 실제로 받은 양을 돌려준다
+        public int EarnAutoGold(int amount)
+        {
+            amount = Mathf.Min(amount, Mathf.Max(0, GoldCap - S.gold));
+            EarnGold(amount);
+            return amount;
         }
 
         // 원작: 골드와 건설 자재는 1:1 교환
@@ -192,11 +226,33 @@ namespace Mawang
             int rests = 0;
             foreach (var b in S.buildings) if (b.type == BuildingType.Rest) rests++;
             if (rests == 0) return;
-            int gold = rests * GameData.RestDailyGold;
-            S.gold += gold;
+            int gold = rests * GameData.RestDailyGold(TotalFloorsOpen);
+            EarnGold(gold);
             Sound.Play("coin");
             Notify(L.T($"[휴게실] 일일 지원금 {gold:N0}골드를 받았습니다.", $"[Lounge] Received a daily bonus of {gold:N0} Gold."), "ic_gold");
             MarkDirty();
+        }
+
+        // ── 업적: 1초마다 확인, 달성하면 골드 자동 지급 ─────────
+        float achievementTimer;
+
+        public bool AchievementDone(AchievementDef a) => S.achievements.Contains(a.id);
+
+        void TickAchievements(float dt)
+        {
+            S.stats.peakVisitors = Mathf.Max(S.stats.peakVisitors, Sim.visitors.Count);
+            achievementTimer -= dt;
+            if (achievementTimer > 0) return;
+            achievementTimer = 1f;
+            foreach (var a in GameData.Achievements)
+            {
+                if (AchievementDone(a) || a.progress(this) < a.target) continue;
+                S.achievements.Add(a.id);
+                EarnGold(a.gold);
+                Sound.Play("upgrade");
+                Notify(L.T($"[업적 달성] {a.Name} (+{a.gold:N0}골드)", $"[Achievement] {a.Name} (+{a.gold:N0} Gold)"), "ic_trophy");
+                MarkDirty();
+            }
         }
     }
 }

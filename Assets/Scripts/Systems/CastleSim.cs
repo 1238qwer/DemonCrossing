@@ -51,12 +51,16 @@ namespace Mawang
         }
     }
 
-    public enum VisitorState { Walking, Watching, WaitingService, Leaving }
+    public enum VisitorState { Walking, Watching, WaitingService, Sparring, Leaving }
 
+    // 용사 손님 (롤러코스터 타이쿤처럼 소지금·체력·기분을 가지고 한 곳씩 골라 들른다)
     public class Visitor : Agent
     {
         public int wallet;
-        public readonly Queue<int> stops = new Queue<int>(); // 건물 uid
+        public float energy, happy;  // 체력(0이면 집에 간다) · 기분(0~100, 낮으면 집에 간다)
+        public float appetite;       // 식욕 0~1: 높으면 식당, 낮으면 기념품점을 좋아한다
+        public int visited;          // 들른 장소 수
+        public readonly HashSet<int> seen = new HashSet<int>(); // 들른 건물 uid (다시 고르지 않는다)
         public VisitorState state;
         public int currentStop;
         public float timer, patience;
@@ -87,6 +91,8 @@ namespace Mawang
 
     public class CastleSim
     {
+        /// <summary>게임 인스턴스 참조</summary>
+        /// <summary>게임 인스턴스 참조</summary>
         readonly Game g;
         public readonly List<Visitor> visitors = new List<Visitor>();
         public readonly List<StaffAgent> staff = new List<StaffAgent>();
@@ -162,16 +168,69 @@ namespace Mawang
             foreach (var s in staff) TickStaff(s, dt);
         }
 
-        public int VisitorMax => GameData.VisitorMaxBase + GameData.VisitorMaxPerFloor * g.TotalFloorsOpen + g.Mods.visitorMaxAdd;
+        // ── 손님 (롤러코스터 타이쿤 방식) ───────────────────────
+        // 모든 확률·변수는 GuestSettings 에셋(메뉴 Mawang/Guest Settings)에서 고친다.
+        static GuestSettings GS => GuestSettings.I;
 
+        // 최대 손님 = 기본 + 방문 가능한 칸 수 × 칸당 + 손님 유치 연구 (층 수와 무관, 상한 있음)
+        public int VisitorMax => Mathf.Min(GS.maxCap, Mathf.RoundToInt(GS.maxBase + GS.maxPerVisitableCell * VisitableCells) + g.Mods.visitorMaxAdd);
+
+        // 방문 가능한 칸 수 (전시 우리는 묶어 지은 칸 전체)
+        public int VisitableCells
+        {
+            get
+            {
+                int cells = 0;
+                foreach (var b in g.S.buildings) if (Visitable(b)) cells += b.Cells;
+                return cells;
+            }
+        }
+
+        // 방문할 수 있는 건물: 재고가 있는 가게 · 괴물이 있는 전시 우리 · 출전 괴물이 있는 투기장
+        bool Visitable(BuildingState b)
+        {
+            switch (b.type)
+            {
+                case BuildingType.Restaurant:
+                case BuildingType.Souvenir: return BestItem(b, int.MaxValue) != null;
+                case BuildingType.Tank: return b.contents.Count > 0;
+                case BuildingType.Arena: return g.S.arena.Count > 0;
+            }
+            return false;
+        }
+
+        // 볼거리 비율 = 방문 가능한 건물이 차지한 칸 수 / 열린 칸 수
+        public float AttractionRatio
+        {
+            get
+            {
+                int open = g.TotalFloorsOpen * GameData.WingWidth;
+                return open <= 0 ? 0f : (float)VisitableCells / open;
+            }
+        }
+
+        // 붐빔 물결: 0 ~ crowdWave 사이를 주기적으로 부드럽게 오르내린다 (기계적으로 느껴지지 않게)
+        public float CrowdWave => GS.crowdWave * Mathf.PerlinNoise(Time.time / Mathf.Max(1f, GS.crowdWavePeriod), 0.37f);
+
+        // 목표 손님 수: 볼거리가 없으면 0, 있으면 최대 손님 × (볼거리 비율 × 배율, 하한·상한 사이) × (1 + 붐빔 물결)
+        public int VisitorTarget
+        {
+            get
+            {
+                float ratio = AttractionRatio;
+                if (ratio <= 0f) return 0;
+                return Mathf.RoundToInt(VisitorMax * Mathf.Clamp(ratio * GS.appealMultiplier, GS.minCrowd, GS.maxCrowd) * (1f + CrowdWave));
+            }
+        }
+
+        // 목표까지 남은 자리에 비례해 들어온다. 손님 유치 연구는 채우는 속도를 올린다.
         void TickSpawn(float dt)
         {
-            bool anyVenue = g.S.buildings.Exists(b => b.type == BuildingType.Tank || b.type == BuildingType.Restaurant || b.type == BuildingType.Souvenir);
-            if (!anyVenue || visitors.Count >= VisitorMax) return;
+            int room = VisitorTarget - visitors.Count;
+            if (room <= 0) { spawnTimer = 0; return; }
 
-            float attraction = 0;
-            foreach (var b in g.S.buildings) if (b.type == BuildingType.Tank) attraction += g.TankRatePerMin(b);
-            float interval = Mathf.Max(GameData.VisitorMinInterval, GameData.VisitorBaseInterval / (1f + attraction / 150f) / g.Mods.visitorRateMul);
+            float perSec = room / Mathf.Max(0.1f, GS.fillSeconds) * g.Mods.visitorRateMul;
+            float interval = Mathf.Max(GS.minSpawnInterval, 1f / perSec);
 
             spawnTimer += dt;
             if (spawnTimer < interval) return;
@@ -179,65 +238,96 @@ namespace Mawang
             SpawnVisitor();
         }
 
+        // 취향: 식욕 a 가 높을수록 식당, 낮을수록 기념품점
+        static float Taste(float a) => 1f - GS.tasteSpread + a * 2f * GS.tasteSpread;
+
+        float VenueWeight(Visitor v, BuildingState b)
+        {
+            if (!Visitable(b)) return 0f;
+            switch (b.type)
+            {
+                case BuildingType.Restaurant: return GS.weightRestaurant * Taste(v.appetite);
+                case BuildingType.Souvenir: return GS.weightSouvenir * Taste(1f - v.appetite);
+                case BuildingType.Tank: return Mathf.Min(GS.weightTankMax, GS.weightTankBase + g.TankRatePerMin(b) * GS.weightTankPerAdmission);
+                case BuildingType.Arena: return GS.weightArena;
+            }
+            return 0f;
+        }
+
+        // 아직 들르지 않은 방문지 하나를 가중치로 고른다 (없으면 null)
+        BuildingState PickVenue(Visitor v)
+        {
+            BuildingState pick = null;
+            float total = 0;
+            foreach (var b in g.S.buildings)
+            {
+                if (v.seen.Contains(b.uid)) continue;
+                float w = VenueWeight(v, b);
+                if (w <= 0) continue;
+                total += w;
+                if (Random.value * total < w) pick = b; // 가중 저수지 표본
+            }
+            return pick;
+        }
+
         void SpawnVisitor()
         {
-            float rich = Mathf.Pow(GameData.VisitorWalletPerFloor, Mathf.Max(0, g.TotalFloorsOpen - 2));
+            float rich = Mathf.Pow(GS.walletPerFloor, Mathf.Max(0, g.TotalFloorsOpen - 2));
             var v = new Visitor
             {
                 pos = Entrance,
-                wallet = Mathf.RoundToInt(Random.Range(GameData.VisitorWalletMin, GameData.VisitorWalletMax) * g.Mods.walletMul * rich),
+                wallet = Mathf.RoundToInt(Random.Range(GS.walletMin, GS.walletMax) * g.Mods.walletMul * rich),
+                energy = Random.Range(GS.energyMin, GS.energyMax),
+                happy = Random.Range(GS.happyMin, GS.happyMax),
+                appetite = Random.value,
                 speedMul = Random.Range(0.7f, 1.0f),
                 color = Color.HSVToRGB(Random.value, 0.15f, 1f),
                 look = Random.Range(0, 4),
             };
-
-            // 방문지 1~3곳을 가중치로 고른다. 전시 우리는 관람 가치가 높을수록 인기.
-            var cands = new List<BuildingState>();
-            var weights = new List<float>();
-            foreach (var b in g.S.buildings)
-            {
-                float w = b.type switch
-                {
-                    BuildingType.Tank => 1f + g.TankRatePerMin(b) / 20f,
-                    BuildingType.Restaurant => 3f,
-                    BuildingType.Souvenir => 3f,
-                    _ => 0f,
-                };
-                if (w > 0) { cands.Add(b); weights.Add(w); }
-            }
-            int n = Mathf.Min(cands.Count, Random.Range(1, 4));
-            for (int k = 0; k < n; k++)
-            {
-                float total = 0;
-                foreach (var w in weights) total += w;
-                float r = Random.value * total;
-                int pick = 0;
-                for (; pick < weights.Count - 1; pick++) { r -= weights[pick]; if (r <= 0) break; }
-                v.stops.Enqueue(cands[pick].uid);
-                cands.RemoveAt(pick);
-                weights.RemoveAt(pick);
-            }
-
             visitors.Add(v);
             NextStop(v);
         }
 
+        // 더 둘러볼지: 지쳤거나 기분이 나쁘거나 많이 돌았으면 안 간다.
+        // 확률 = (기본 + 돈 보너스 × 남은 돈 / (가장 비싼 상품 × 배수)) × 감쇠^들른 곳 수
+        bool WantsMore(Visitor v)
+        {
+            if (v.energy <= 0f || v.happy < GS.leaveBelowHappy || v.visited >= GS.maxStops) return false;
+            float refPrice = 100f;
+            foreach (var b in g.S.buildings)
+                if (b.type == BuildingType.Restaurant || b.type == BuildingType.Souvenir)
+                {
+                    var top = BestItem(b, int.MaxValue);
+                    if (top != null) refPrice = Mathf.Max(refPrice, top.sellPrice);
+                }
+            float money = Mathf.Clamp01(v.wallet / (refPrice * Mathf.Max(0.1f, GS.moneyRefMultiple)));
+            float p = (GS.continueBase + GS.continueMoneyBonus * money) * Mathf.Pow(GS.continueDecay, v.visited);
+            return Random.value < p;
+        }
+
+        // 한 곳을 마치면(들어오자마자 포함) 다음 방문지를 고르거나 집에 간다
         void NextStop(Visitor v)
         {
             v.job = null;
-            while (v.stops.Count > 0)
+            if (v.currentStop != 0) { v.visited++; v.energy -= GS.energyPerStop; }
+            v.currentStop = 0;
+            v.happy = Mathf.Clamp(v.happy, 0f, 100f);
+
+            var next = v.visited == 0 || WantsMore(v) ? PickVenue(v) : null;
+            if (next == null)
             {
-                var b = g.BuildingByUid(v.stops.Dequeue());
-                if (b == null) continue;
-                v.currentStop = b.uid;
-                v.state = VisitorState.Walking;
-                int row = b.floor + Random.Range(0, b.ch);
-                v.GoTo(new Vector2(Game.SimX(b.x) + Random.Range(0.3f, b.cw - 0.3f), row));
+                if (v.happy < GS.leaveBelowHappy) visitorsLeftUnhappy++;
+                v.state = VisitorState.Leaving;
+                v.GoTo(Entrance);
                 return;
             }
-            v.currentStop = 0;
-            v.state = VisitorState.Leaving;
-            v.GoTo(Entrance);
+            v.seen.Add(next.uid);
+            v.currentStop = next.uid;
+            v.state = VisitorState.Walking;
+            int row = next.floor + Random.Range(0, next.ch);
+            // 투기장: 용사는 왼쪽에 서서 오른쪽의 출전 괴물과 맞선다 (CastleView.ArenaFighter)
+            float x = next.type == BuildingType.Arena ? GameData.ArenaHeroX + Random.Range(-0.04f, 0.04f) : Random.Range(0.3f, next.cw - 0.3f);
+            v.GoTo(new Vector2(Game.SimX(next.x) + x, row));
         }
 
         void TickVisitor(Visitor v, float dt)
@@ -256,7 +346,12 @@ namespace Mawang
 
                 case VisitorState.Watching:
                     v.timer -= dt;
-                    if (v.timer <= 0) NextStop(v);
+                    if (v.timer <= 0) { v.happy += GS.happyWatch; TipTank(v, g.BuildingByUid(v.currentStop)); NextStop(v); }
+                    break;
+
+                case VisitorState.Sparring:
+                    v.timer -= dt;
+                    if (v.timer <= 0) { v.happy += GS.happySpar; Spar(v, g.BuildingByUid(v.currentStop)); NextStop(v); }
                     break;
 
                 case VisitorState.WaitingService:
@@ -265,27 +360,43 @@ namespace Mawang
                     if (v.timer <= 0)
                     {
                         jobs.Remove(v.job);
-                        visitorsLeftUnhappy++;
+                        v.happy -= GS.happyWaitTimeout; // 기다리다 지쳐 떠난다
                         NextStop(v);
                     }
                     break;
             }
         }
 
+        // 도착: 들어가서 즐기거나, 여러 이유로 그냥 지나친다
         void ArriveAt(Visitor v, BuildingState b)
         {
             if (b == null) { NextStop(v); return; }
-            if (b.type == BuildingType.Tank)
+            switch (b.type)
             {
-                v.state = VisitorState.Watching;
-                v.timer = Random.Range(2f, 4f);
-                return;
+                case BuildingType.Tank:
+                    if (b.contents.Count == 0) { NextStop(v); return; }
+                    v.state = VisitorState.Watching;
+                    v.timer = Random.Range(GS.watchMin, GS.watchMax);
+                    return;
+
+                case BuildingType.Arena:
+                    if (g.ArenaChampion() == null) { v.happy -= GS.happyNoFighter; NextStop(v); return; }
+                    // 최대 보유 골드면 대련하지 않는다. 대련 신청 확률에 못 들면 구경만 하고 지나친다.
+                    if (g.GoldFull || Random.value >= GS.sparChance) { NextStop(v); return; }
+                    v.state = VisitorState.Sparring;
+                    v.timer = GS.boutTime;
+                    return;
             }
-            // 원작: 비싼 상품부터 팔린다. 재고가 없으면 손님이 떠난다.
-            v.wantItem = BestItem(b, v.wallet);
-            if (v.wantItem == null) { visitorsLeftUnhappy++; NextStop(v); return; }
+
+            // 식당 · 기념품점
+            if (g.GoldFull) { NextStop(v); return; }                                                      // 최대 보유 골드: 팔지 않는다
+            if (WaitingCustomers(b) >= GS.shopQueueLimit) { v.happy -= GS.happyQueueFull; NextStop(v); return; } // 줄이 꽉 참
+            v.wantItem = BestItem(b, v.wallet);                                                            // 원작: 살 수 있는 가장 비싼 상품
+            if (v.wantItem == null) { v.happy -= GS.happyNoMoney; NextStop(v); return; }                   // 돈 부족 · 재고 없음
+            float notInterested = Mathf.Max(GS.notInterestedMin, GS.notInterestedBase - GS.notInterestedPerLevel * b.level);
+            if (Random.value < notInterested) { NextStop(v); return; }                                     // 관심 없음
             v.state = VisitorState.WaitingService;
-            v.timer = v.patience = GameData.VisitorPatience + g.Mods.patienceAdd;
+            v.timer = v.patience = GS.patience + g.Mods.patienceAdd;
             v.job = new Job { type = JobType.Serve, building = b, visitor = v };
             jobs.Add(v.job);
         }
@@ -307,8 +418,8 @@ namespace Mawang
             foreach (var b in g.S.buildings)
             {
                 JobType? t = null;
-                if (b.type == BuildingType.Lab && b.labRp > 0) t = JobType.CollectLab;
-                else if (b.type == BuildingType.Tank && b.accumulated >= GameData.TankStaffCollectThreshold) t = JobType.CollectTank;
+                if (b.type == BuildingType.Lab && b.labRp > 0 && !g.GemFull) t = JobType.CollectLab;
+                else if (b.type == BuildingType.Tank && b.accumulated >= GameData.TankStaffCollectThreshold && !g.GoldFull) t = JobType.CollectTank;
                 if (t == null || jobs.Exists(j => j.building == b && j.type == t)) continue;
                 jobs.Add(new Job { type = t.Value, building = b });
             }
@@ -363,22 +474,60 @@ namespace Mawang
         }
 
         // 판매 1건: 가격 = 판매가 × (1 + 직원 보너스 + 상술)
+        // 최대 보유 골드에 닿았으면 팔지 않는다(재고도 줄지 않는다)
         int Sell(BuildingState shop, Visitor v, float staffBonus)
         {
+            if (g.GoldFull) return 0;
             var item = BestItem(shop, v.wallet);
             if (item == null) return 0;
             int price = Mathf.RoundToInt(item.sellPrice * (1f + staffBonus + g.Mods.salesAdd));
             CountList.Add(g.S.goods, item.id, -1);
-            g.S.gold += price;
+            price = g.EarnAutoGold(price);
             v.wallet -= item.sellPrice;
             visitorsServed++;
+            v.happy += GS.happyBuy;
+            g.S.stats.sales++;
             return price;
+        }
+
+        // 전시 우리 관람을 마친 용사: 확률적으로 분당 관람료의 일부를 더 낸다 (지갑 안에서, 수치는 GuestSettings)
+        void TipTank(Visitor v, BuildingState b)
+        {
+            if (b == null || b.type != BuildingType.Tank || g.GoldFull) return;
+            if (Random.value >= GS.tipChance) return;
+            int amt = Mathf.Min(v.wallet, Mathf.RoundToInt(g.TankRatePerMin(b) * Random.Range(GS.tipMin, GS.tipMax)));
+            amt = g.EarnAutoGold(amt);
+            if (amt <= 0) return;
+            v.wallet -= amt;
+            FloatingText.Emit(new Vector2(Center(b), b.floor + b.ch - 1), $"+{amt:N0}");
+            Sound.Play("sale");
+        }
+
+        static readonly Color[] BoutColors =
+        {
+            new Color(1f, 0.35f, 0.35f), new Color(0.75f, 0.72f, 0.8f), new Color(0.85f, 0.85f, 0.95f), UIKit.Gold, new Color(1f, 0.6f, 0.2f),
+        };
+
+        // 투기장 대련: 결과와 받은 골드를 바로 띄운다. 용사는 받은 만큼 지갑에서 낸다.
+        void Spar(Visitor v, BuildingState b)
+        {
+            if (b == null || b.type != BuildingType.Arena) return;
+            var bout = g.ArenaBout(b);
+            if (bout == null) return;
+            var (r, gold, m) = bout.Value;
+            v.wallet = Mathf.Max(0, v.wallet - gold);
+            var at = new Vector2(Center(b), b.floor + b.ch - 1);
+            string text = r == BoutResult.GreatFail ? L.T($"{GameData.BoutName(r)}! {m.Name} 사망", $"{GameData.BoutName(r)}! {m.Name} fell")
+                        : gold > 0 ? $"{GameData.BoutName(r)} +{gold:N0}" : GameData.BoutName(r);
+            FloatingText.Emit(at, text, BoutColors[(int)r]);
+            Sound.Play(r >= BoutResult.Win ? "coin" : r == BoutResult.GreatFail ? "error" : "click");
         }
 
         // 플레이어가 가게를 탭: 기다리는 손님 모두에게 바로 판다(직원이 가는 중인 손님 포함)
         public int ServeAll(BuildingState b)
         {
             int total = 0;
+            if (g.GoldFull) return 0;
             for (int i = jobs.Count - 1; i >= 0; i--)
             {
                 var j = jobs[i];
@@ -407,8 +556,7 @@ namespace Mawang
                 }
                 case JobType.CollectLab:
                 {
-                    int rp = j.building.labRp;
-                    g.CollectLab(j.building);
+                    int rp = g.CollectLab(j.building);
                     if (rp > 0) FloatingText.Emit(at, L.T($"+{rp} 보석", $"+{rp} Gems"));
                     break;
                 }

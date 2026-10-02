@@ -192,6 +192,7 @@ namespace Mawang
             var m = GameData.MonsterById[id];
             CountList.Add(S.monsters, id, -count);
             Earn(m.sellCurrency, m.sellPrice * count);
+            S.stats.monstersSold += count;
             Sound.Play("coin");
             MarkDirty();
             return true;
@@ -238,8 +239,9 @@ namespace Mawang
         {
             if (!S.trashItems.Remove(t)) return;
             var cur = t.can ? Currency.Gold : Currency.Material;
-            int amt = Mathf.RoundToInt(GameData.TrashReward * Mods.trashMul);
+            int amt = Mathf.RoundToInt(GameData.TrashReward * Mods.trashMul * (cur == Currency.Gold ? GameData.GoldIncomeMul : 1f)); // 캔(골드)은 반복 수입 배율
             Earn(cur, amt);
+            S.stats.trash++;
             TrashCollected?.Invoke(t, cur, amt);
             Sound.Play("coin");
         }
@@ -254,7 +256,7 @@ namespace Mawang
             S.collectionClaimed.Add(id);
             var m = GameData.MonsterById[id];
             int gold = GameData.CollectionGold(m), gems = GameData.CollectionGems(m);
-            S.gold += gold;
+            EarnGold(gold);
             S.rp += gems;
             Sound.Play("gem");
             Notify(L.T($"[도감 등록] {m.Name} (+{gold:N0}골드, 보석 +{gems})", $"[Collection] {m.Name} (+{gold:N0} Gold, +{gems} Gems)"), "ic_book");

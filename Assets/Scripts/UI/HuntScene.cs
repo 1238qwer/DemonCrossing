@@ -414,7 +414,7 @@ namespace Mawang
             Vector2 pos;
             if (m.def.isPlant)
             {
-                // 마초는 걸어오지 않고 땅에서 자라난다
+                // 마력초는 걸어오지 않고 땅에서 자라난다
                 pos = engage + new Vector2(4, 0);
                 float grow = Mathf.Clamp01(p / 0.35f);
                 m.rt.localScale = new Vector3(A, A * Mathf.Round(grow * 8f) / 8f, 1);

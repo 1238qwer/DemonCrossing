@@ -1,0 +1,359 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab1d3e53ed25f744d8957b7589bc961f, type: 3}
+  m_Name: GoalSettings
+  m_EditorClassIdentifier: Assembly-CSharp::Mawang.GoalSettings
+  steps:
+  - enabled: 1
+    kind: 0
+    building: 3
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uBE48 \uCE78\uC744 \uD0ED\uD574 \uD751\uB9C8\uBC95 \uC5F0\uAD6C\uC18C\uB97C
+      \uC9C0\uC73C\uC138\uC694.\n\uC5F0\uAD6C\uC5D0 \uC4F0\uB294 \uBCF4\uC11D\uC744
+      \uB9CC\uB4ED\uB2C8\uB2E4."
+    en: 'Tap an empty cell and build a Dark Magic Lab.
+
+      It makes Gems for research.'
+  - enabled: 0
+    kind: 15
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "\uC5F0\uAD6C\uC18C\uC5D0 \uBCF4\uC11D\uC774 \uC0DD\uAE30\uBA74 \uD0ED\uD574\uC11C
+      \uC218\uAC70\uD558\uC138\uC694."
+    en: When the Lab has a Gem, tap it to collect.
+  - enabled: 1
+    kind: 0
+    building: 1
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uBE48 \uCE78\uC5D0 \uC2DD\uB2F9\uC744 \uC9C0\uC73C\uC138\uC694.\n\uC6A9\uC0AC
+      \uC190\uB2D8\uC5D0\uAC8C \uC74C\uC2DD\uC744 \uD31D\uB2C8\uB2E4."
+    en: 'Build a Diner on an empty cell.
+
+      It sells food to hero guests.'
+  - enabled: 1
+    kind: 8
+    building: 1
+    amount: 10
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "[\uC0C1\uC810 > \uC74C\uC2DD \xB7 \uAE30\uB150\uD488]\uC5D0\uC11C \uC74C\uC2DD\uC744
+      10\uAC1C \uC774\uC0C1 \uC0AC \uB450\uC138\uC694. (\uC9C0\uAE08 {1}\uAC1C)\n\uC7AC\uACE0\uAC00
+      \uC5C6\uC73C\uBA74 \uD314 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4."
+    en: 'Buy 10+ food in [Shop > Food & Gifts]. (now {1})
+
+      No stock, no sales.'
+  - enabled: 1
+    kind: 18
+    building: 0
+    amount: 3
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uC190\uB2D8\uC774 \uC2DD\uB2F9\uC5D0\uC11C \uAE30\uB2E4\uB9AC\uBA74 \uC2DD\uB2F9\uC744
+      \uD0ED\uD574 \uC9C1\uC811 \uD314\uC544 \uBCF4\uC138\uC694. ({1}/{0})"
+    en: When guests wait at the Diner, tap it to sell. ({1}/{0})
+  - enabled: 1
+    kind: 7
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "[\uC9C1\uC6D0]\uC5D0\uC11C \uC131 \uAD00\uB9AC\uC790\uB97C \uD30C\uACAC\uD558\uC138\uC694.\n\uD310\uB9E4\uC640
+      \uC218\uAC70\uB97C \uB300\uC2E0 \uD574 \uC90D\uB2C8\uB2E4."
+    en: 'Dispatch castle staff in [Staff].
+
+      They sell and collect for you.'
+  - enabled: 1
+    kind: 9
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "[\uD3EC\uD68D\uC7A5]\uC5D0\uC11C \uD3EC\uD68D\uB300\uC6D0\uC744 \uD30C\uACAC\uD558\uC138\uC694.\n\uAD34\uBB3C\uC744
+      \uC7A1\uC544 \uC635\uB2C8\uB2E4."
+    en: 'Send a hunter from the [Hunt] tab.
+
+      They catch monsters.'
+  - enabled: 1
+    kind: 10
+    building: 0
+    amount: 10
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uAD34\uBB3C\uC744 10\uB9C8\uB9AC \uC7A1\uC73C\uC138\uC694. (\uC9C0\uAE08
+      {1}\uB9C8\uB9AC)"
+    en: Catch 10 monsters. (now {1})
+  - enabled: 1
+    kind: 0
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "[\uAC74\uC124]\uC5D0\uC11C \uC804\uC2DC \uC6B0\uB9AC\uB97C \uC9C0\uC5B4
+      \uBCF4\uC138\uC694.\n\uAD34\uBB3C\uC744 \uC804\uC2DC\uD558\uBA74 \uAD00\uB78C\uB8CC\uAC00
+      \uC313\uC785\uB2C8\uB2E4."
+    en: 'In [Build], make a Exhibit Cage.
+
+      Exhibited monsters earn admission.'
+  - enabled: 1
+    kind: 11
+    building: 0
+    amount: 3
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uAD34\uBB3C\uC744 3\uB9C8\uB9AC
+      \uB123\uC73C\uC138\uC694. (\uC9C0\uAE08 {1}\uB9C8\uB9AC)\n\uD56D\uB9C8\uB825\uC774
+      \uBAA8\uC790\uB77C\uBA74 \uB9C8\uB825\uCD08\uB97C \uD568\uAED8 \uB123\uC73C\uC138\uC694."
+    en: 'Tap the cage and put in 3 monsters. (now {1})
+
+      Add Mana Herbs if Ward
+      runs low.'
+  - enabled: 1
+    kind: 16
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uC804\uC2DC \uC6B0\uB9AC\uC5D0 \uAD00\uB78C\uB8CC\uAC00 \uC313\uC774\uBA74
+      \uD0ED\uD574\uC11C \uBC1B\uC73C\uC138\uC694."
+    en: When fees pile up in the cage, tap it to collect.
+  - enabled: 1
+    kind: 17
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 300
+    rewardGems: 0
+    ko: "[\uC0C1\uC810 > \uAD34\uBB3C \uD310\uB9E4]\uC5D0\uC11C \uB0A8\uB294 \uAD34\uBB3C\uC744
+      \uD314\uC544 \uBCF4\uC138\uC694.\n\uBC14\uB85C \uB3C8\uC774 \uB429\uB2C8\uB2E4."
+    en: 'Sell a spare monster in [Shop > Sell].
+
+      It pays right away.'
+  - enabled: 1
+    kind: 19
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 1
+    ko: "[\uC5F0\uAD6C]\uC5D0\uC11C \uBCF4\uC11D\uC73C\uB85C \uC5C5\uADF8\uB808\uC774\uB4DC\uB97C
+      \uD558\uB098 \uD574 \uBCF4\uC138\uC694."
+    en: Spend Gems on any upgrade in [Research].
+  - enabled: 1
+    kind: 2
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 2
+    ko: "[\uC5F0\uAD6C > \uC6B4\uC601] \uAC74\uBB3C \uC5F0\uAD6C 1\uB2E8\uACC4\uB97C
+      \uC644\uB8CC\uD558\uC138\uC694.\n\uAC74\uBB3C\uC744 Lv.2\uB85C \uC62C\uB9B4
+      \uC218 \uC788\uAC8C \uB429\uB2C8\uB2E4."
+    en: 'Complete Architecture Lv.1 in [Research > Ops].
+
+      Buildings can then
+      reach Lv.2.'
+  - enabled: 1
+    kind: 20
+    building: 0
+    amount: 2
+    research: build
+    side: 0
+    rewardGold: 1000
+    rewardGems: 0
+    ko: "\uAC74\uBB3C\uC744 \uAE38\uAC8C \uB20C\uB7EC(\uC6B0\uD074\uB9AD) Lv.2\uB85C
+      \uC5C5\uADF8\uB808\uC774\uB4DC\uD558\uC138\uC694.\n\uC2DD\uB2F9\uC740 \uB808\uBCA8\uC774
+      \uC624\uB97C\uC218\uB85D \uBE44\uC2FC \uBA54\uB274\uB97C \uD31D\uB2C8\uB2E4."
+    en: 'Hold (right-click) a building and upgrade it to Lv.2.
+
+      Higher-level
+      Diners sell pricier dishes.'
+  - enabled: 1
+    kind: 0
+    building: 2
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uAE30\uB150\uD488\uC810\uC744 \uC9C0\uC73C\uC138\uC694.\n\uC74C\uC2DD\uACFC
+      \uB2E4\uB978 \uC0C1\uD488\uC73C\uB85C \uC190\uB2D8 \uC9C0\uAC11\uC744 \uC5FD\uB2C8\uB2E4."
+    en: 'Build a Gift Shop.
+
+      Another way to open guests'' wallets.'
+  - enabled: 1
+    kind: 4
+    building: 0
+    amount: 1
+    research: build
+    side: 1
+    rewardGold: 1000
+    rewardGems: 0
+    ko: "\uC7A0\uAE34 \uC624\uB978\uCABD 1\uCE35\uC744 \uD0ED\uD574 \uC131\uC744
+      \uC99D\uCD95\uD558\uC138\uC694.\n\uC9C0\uC744 \uC790\uB9AC\uAC00 \uB298\uC5B4\uB0A9\uB2C8\uB2E4."
+    en: 'Tap the locked right-wing floor to expand.
+
+      More room to build.'
+  - enabled: 1
+    kind: 0
+    building: 4
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 500
+    rewardGems: 0
+    ko: "\uC9C1\uC6D0 \uC219\uC18C\uB97C \uC9C0\uC73C\uC138\uC694.\n\uC9C1\uC6D0\uC744
+      \uB354 \uACE0\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: 'Build a Staff Dorm.
+
+      It lets you hire more staff.'
+  - enabled: 1
+    kind: 13
+    building: 0
+    amount: 3
+    research: build
+    side: 0
+    rewardGold: 1000
+    rewardGems: 0
+    ko: "\uC9C1\uC6D0 \uC219\uC18C\uB97C Lv.2\uB85C \uC62C\uB9AC\uACE0 [\uC9C1\uC6D0]\uC5D0\uC11C
+      \uC9C1\uC6D0\uC744 \uD55C \uBA85 \uB354 \uACE0\uC6A9\uD558\uC138\uC694."
+    en: Upgrade the Staff Dorm to Lv.2, then hire one more in [Staff].
+  - enabled: 1
+    kind: 3
+    building: 0
+    amount: 2
+    research: build
+    side: 0
+    rewardGold: 1000
+    rewardGems: 2
+    ko: "[\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C \uC6A9\uC554
+      \uB3D9\uAD74\uC744 \uD0D0\uC0AC\uD558\uC138\uC694.\n\uC0C8\uB85C\uC6B4 \uAD34\uBB3C\uC774
+      \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+    en: 'Explore the Lava Cave in [Research > Expand].
+
+      New monsters appear
+      there.'
+  - enabled: 1
+    kind: 2
+    building: 0
+    amount: 1
+    research: storage
+    side: 0
+    rewardGold: 1000
+    rewardGems: 0
+    ko: "[\uC5F0\uAD6C > \uC6B4\uC601] \uC790\uC6D0 \uCC3D\uACE0 \uC5F0\uAD6C\uB85C
+      \uCD5C\uB300 \uBCF4\uC720\uB7C9\uC744 \uB298\uB9AC\uC138\uC694.\n\uBCF4\uC720\uB7C9\uC774
+      \uAC00\uB4DD \uCC28\uBA74 \uC218\uC785\uC774 \uBA48\uCDA5\uB2C8\uB2E4."
+    en: 'Raise your storage in [Research > Ops] Storehouse.
+
+      Income stops when
+      you''re full.'
+  - enabled: 1
+    kind: 14
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 1500
+    rewardGems: 0
+    ko: "\uAC19\uC740 \uAD34\uBB3C\uC744 30\uB9C8\uB9AC \uC7A1\uC544 [\uB3C4\uAC10]\uC5D0
+      \uB4F1\uB85D\uD558\uC138\uC694.\n\uBCF4\uC11D\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
+    en: 'Catch 30 of one monster and register it in the [Book].
+
+      It rewards
+      Gems.'
+  - enabled: 1
+    kind: 2
+    building: 0
+    amount: 3
+    research: build
+    side: 0
+    rewardGold: 1500
+    rewardGems: 0
+    ko: "\uAC74\uBB3C \uC5F0\uAD6C\uB97C 3\uB2E8\uACC4\uAE4C\uC9C0 \uC62C\uB9AC\uC138\uC694.
+      (\uC9C0\uAE08 {1}\uB2E8\uACC4)\n\uD22C\uAE30\uC7A5\uC744 \uC9C0\uC744 \uC218
+      \uC788\uAC8C \uB429\uB2C8\uB2E4."
+    en: 'Raise Architecture to Lv.3. (now {1})
+
+      It unlocks the Arena.'
+  - enabled: 1
+    kind: 0
+    building: 6
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 2000
+    rewardGems: 0
+    ko: "\uD22C\uAE30\uC7A5\uC744 \uC9C0\uC73C\uC138\uC694.\n\uC6A9\uC0AC\uAC00 \uAD34\uBB3C\uACFC
+      \uB300\uB828\uD558\uACE0 \uB3C8\uC744 \uB0C5\uB2C8\uB2E4."
+    en: 'Build the Arena.
+
+      Heroes spar with your monsters and pay for it.'
+  - enabled: 1
+    kind: 12
+    building: 0
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 1500
+    rewardGems: 0
+    ko: "\uD22C\uAE30\uC7A5\uC744 \uAE38\uAC8C \uB20C\uB7EC \uCD9C\uC804 \uAD34\uBB3C\uC744
+      \uB123\uC73C\uC138\uC694.\n\uC804\uD22C\uB825\uC774 \uB192\uC740 \uAD34\uBB3C\uBD80\uD130
+      \uB098\uC12D\uB2C8\uB2E4."
+    en: 'Hold the Arena and add fighters.
+
+      The strongest fights first.'
+  - enabled: 1
+    kind: 0
+    building: 5
+    amount: 1
+    research: build
+    side: 0
+    rewardGold: 1500
+    rewardGems: 0
+    ko: "\uD734\uAC8C\uC2E4\uC744 \uC9C0\uC73C\uC138\uC694.\n\uB9E4\uC77C 06\uC2DC\uC5D0
+      \uC9C0\uC6D0\uAE08\uC744 \uC90D\uB2C8\uB2E4. \uC774\uC81C \uB9C8\uC655\uC131\uC740
+      \uB2F9\uC2E0 \uB73B\uB300\uB85C!"
+    en: 'Build a Lounge.
+
+      It pays a bonus every day at 06:00. The castle is
+      yours now!'

@@ -15,7 +15,7 @@ namespace Mawang
 
         // ── 공용 조각 ──────────────────────────────────────────
         // 방 그림 미리보기 (160×96 도트 → 2배)
-        static RectTransform Thumb(Transform parent, BuildingDef d, float scale = 2f)
+        static RectTransform Thumb(Transform parent, BuildingDef d, float scale = 2f, int level = 1)
         {
             var box = UIKit.Panel(parent, "ui_inset", "Thumb");
             float w = 160 * scale + UIKit.P * 2, h = 96 * scale + UIKit.P * 2;
@@ -27,7 +27,7 @@ namespace Mawang
                 img.raycastTarget = false;
                 UIKit.Stretch(img.rectTransform, UIKit.P, UIKit.P, UIKit.P, UIKit.P);
             }
-            Layer(d.icon);
+            Layer(level > 1 ? $"{d.icon}_{level}" : d.icon); // 레벨마다 바뀌는 인테리어
             if (d.type == BuildingType.Tank) Layer("room_tank_front");
             return box.rectTransform;
         }
@@ -46,22 +46,27 @@ namespace Mawang
             vl.childForceExpandWidth = vl.childForceExpandHeight = false;
             var icon = UIKit.Icon(content, sprite, 64);
             if (silhouette) UIKit.Tint(icon, new Color(0.08f, 0.05f, 0.12f));
+            // 긴 이름(영어)은 칸 밖으로 넘치지 않게 두 줄로 접는다
             var t = UIKit.Label(content, title, UIKit.TS, TextAnchor.MiddleCenter);
-            t.horizontalOverflow = HorizontalWrapMode.Overflow;
-            t.GetComponent<LayoutElement>().flexibleWidth = 0;
+            t.lineSpacing = 0.9f;
+            var tle = t.GetComponent<LayoutElement>();
+            tle.flexibleWidth = 0;
+            tle.preferredWidth = 116;
             if (sub != null)
             {
                 var s = UIKit.Label(content, "", UIKit.TS, TextAnchor.MiddleCenter, UIKit.Gold).Bind(sub);
                 s.GetComponent<LayoutElement>().flexibleWidth = 0;
             }
             if (action != null) b.Hold(action);
+            UIKit.InfoButton(b.transform, Mobile ? 36 : 30); // 오른쪽 위 (i): 꾹 누르기(빠른 사고팔기)와 따로 정보 보기
             return b;
         }
 
         static string MonsterTip(MonsterDef m)
         {
-            return L.T($"{Hi(m.Name)}  {Dim(m.isPlant ? "마초" : m.hidden ? "히든 괴물" : "괴물")}\n공간 {m.space} · 마기 {(m.maki > 0 ? "+" : "")}{m.maki}\n관람료 {m.admission:N0}/분\n판매가 {m.sellPrice:N0} {L.Cur(m.sellCurrency)}",
-                       $"{Hi(m.Name)}  {Dim(m.isPlant ? "Plant" : m.hidden ? "Hidden" : "Monster")}\nSpace {m.space} · Miasma {(m.maki > 0 ? "+" : "")}{m.maki}\nAdmission {m.admission:N0}/min\nSells for {m.sellPrice:N0} {L.Cur(m.sellCurrency)}");
+            string power = m.isPlant ? "" : L.T($"\n전투력 {m.power:N0}", $"\nPower {m.power:N0}");
+            return L.T($"{Hi(m.Name)}  {Dim(m.isPlant ? "마력초" : m.hidden ? "히든 괴물" : "괴물")}\n공간 {m.space} · 항마력 {(m.maki > 0 ? "+" : "")}{m.maki}\n관람료 {m.admission:N0}/분\n판매가 {m.sellPrice:N0} {L.Cur(m.sellCurrency)}",
+                       $"{Hi(m.Name)}  {Dim(m.isPlant ? "Mana Herb" : m.hidden ? "Hidden" : "Monster")}\nSpace {m.space} · Ward {(m.maki > 0 ? "+" : "")}{m.maki}\nAdmission {m.admission:N0}/min\nSells for {m.sellPrice:N0} {L.Cur(m.sellCurrency)}") + power;
         }
 
         static void Tabs(Transform parent, string[] names, string[] icons, int current, Action<int> pick, Func<int, int> badge = null)
@@ -86,9 +91,11 @@ namespace Mawang
             BuildingCards(c, (d, card) =>
             {
                 bool Full() => d.maxCount > 0 && g.CountOf(d.type) >= d.maxCount;
-                var btn = UIKit.Button(card, L.T("건설", "Build"), () => StartPlacing(d.type), 332, 50, Btn.Good, UIKit.TM, "ic_build", 32)
-                    .BindEnabled(() => g.CanAfford(d.costGold, d.costMat) && !Full());
-                btn.Tip(() => Full() ? L.T($"최대 {d.maxCount}개까지 지을 수 있습니다.", $"Limit: {d.maxCount}") : !g.CanAfford(d.costGold, d.costMat) ? L.T("재화가 부족합니다.", "Not enough resources.") : L.T("눌러서 배치할 칸을 고르세요.", "Then choose where to build."));
+                bool Locked() => d.type == BuildingType.Arena && !g.Mods.arenaUnlocked;
+                var btn = UIKit.Button(card, L.T("건설", "Build"), () => StartPlacing(d.type), 332, 50, Btn.Good, UIKit.TM, Locked() ? "ic_lock" : "ic_build", 32)
+                    .BindEnabled(() => g.CanAfford(d.costGold, d.costMat) && !Full() && !Locked());
+                btn.Tip(() => Locked() ? L.T($"[연구 > 건물 연구] {GameData.ArenaResearchLevel}단계를 완료해야 지을 수 있습니다.", $"Requires [Research > Architecture] Lv.{GameData.ArenaResearchLevel}.")
+                    : Full() ? L.T($"최대 {d.maxCount}개까지 지을 수 있습니다.", $"Limit: {d.maxCount}") : !g.CanAfford(d.costGold, d.costMat) ? L.T("재화가 부족합니다.", "Not enough resources.") : L.T("눌러서 배치할 칸을 고르세요.", "Then choose where to build."));
             });
         }
 
@@ -144,8 +151,8 @@ namespace Mawang
         {
             OpenModal(L.T("성 증축", "Castle Expansion"), c =>
             {
-                UIKit.Note(c, L.T("엘리베이터 왼쪽·오른쪽 날개를 따로 한 층씩 올립니다. 최대 10층. 층이 늘면 손님도 많고 부유해집니다.",
-                                  "Raise the left and right wings one floor at a time, up to 10. More floors bring more (and richer) guests."));
+                UIKit.Note(c, L.T("엘리베이터 왼쪽·오른쪽 날개를 따로 한 층씩 올립니다. 최대 10층. 층이 늘면 지을 자리가 늘고 손님이 조금 더 부유해집니다.",
+                                  "Raise the left and right wings one floor at a time, up to 10. More floors mean more room to build and slightly richer guests."));
                 ExpandRow(c, 0, wing == 0);
                 ExpandRow(c, 1, wing == 1);
             }, "up_floor");
@@ -155,7 +162,7 @@ namespace Mawang
         {
             int n = g.NextFloor(wing);
             bool max = n > GameData.MaxFloors;
-            var row = UIKit.Row(c, 100, 16, true);
+            var row = UIKit.Row(c, 100, 16, true).Grow();
             if (highlight) row.GetComponent<Image>().color = new Color(1f, 0.92f, 0.7f);
             var box = UIKit.Panel(row, "ui_inset", "IconBox");
             UIKit.Size(box, 76, 76);
@@ -165,13 +172,14 @@ namespace Mawang
             mid.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
             string wingName = wing == 0 ? L.T("왼쪽 날개", "Left wing") : L.T("오른쪽 날개", "Right wing");
             var title = UIKit.Row(mid, 34, 10);
-            UIKit.Label(title, wingName, UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, 200);
-            UIKit.Pips(title, g.FloorsOpen(wing), GameData.MaxFloors);
+            // 폰: 눈금을 줄여 날개 이름이 꺾이지 않게
+            UIKit.Label(title, wingName, UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, Mobile ? -1 : 200).horizontalOverflow = HorizontalWrapMode.Overflow;
+            UIKit.Pips(title, g.FloorsOpen(wing), GameData.MaxFloors, Mobile ? 10 : 18, Mobile ? 18 : 24);
             UIKit.Label(mid, max ? L.T("모든 층을 열었습니다.", "All floors open.") : L.T($"{n}층 개방 (현재 {g.FloorsOpen(wing)}층)", $"Open floor {n} (now {g.FloorsOpen(wing)})"), UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim);
             if (max) return;
             var right = UIKit.Column(row, 6);
             UIKit.Size(right, 300);
-            UIKit.Size(UIKit.Cost(right, GameData.ExpandGold(n), GameData.ExpandMat(n), GameData.ExpandGems(n)), 300, 28);
+            UIKit.Size(UIKit.Cost(right, GameData.ExpandGold(n), GameData.ExpandMat(n)), 300, 28);
             var btn = UIKit.Button(right, L.T($"{n}층 증축", $"Build floor {n}"), () => g.Expand(wing), 300, 54, Btn.Good, UIKit.TM, "up_floor", 32);
             btn.BindEnabled(() => g.ExpandBlock(wing) == null);
             btn.Tip(() => g.ExpandBlock(wing) ?? wingName);
@@ -191,6 +199,7 @@ namespace Mawang
             BuildingType.Souvenir => "gift_2",
             BuildingType.Lab => "up_lab",
             BuildingType.Dorm => "castle_skel",
+            BuildingType.Arena => "ic_sword",
             _ => "up_rest",
         };
 
@@ -201,8 +210,8 @@ namespace Mawang
             string size = b.Cells > 1 ? $"  {b.cw}×{b.ch}" : "";
             modalTitle.text = $"{def.Name}  Lv.{b.level}{size}";
 
-            var top = UIKit.Row(c, 210, 18);
-            Thumb(top, def, 2f);
+            var top = UIKit.Row(c, 210, 18).Grow();
+            Thumb(top, def, 2f, b.level);
             var info = UIKit.Column(top, 8);
             info.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
             var lvRow = UIKit.Row(info, 34, 10);
@@ -211,7 +220,7 @@ namespace Mawang
             string wing = Game.WingOf(b.x) == 0 ? L.T("왼쪽", "Left") : L.T("오른쪽", "Right");
             UIKit.Label(lvRow, b.ch > 1 ? $"{wing} {b.floor + 1}~{b.floor + b.ch}F" : $"{wing} {b.floor + 1}F", UIKit.TS, TextAnchor.MiddleRight, UIKit.TextDim);
             var desc = UIKit.Label(info, def.Desc, UIKit.TS, TextAnchor.UpperLeft, UIKit.TextDim);
-            UIKit.Size(desc, -1, 56);
+            UIKit.Size(desc, -1, 56).preferredHeight = -1; // 최소 56, 긴 설명(영어)은 줄 수만큼
 
             var actions = UIKit.Row(info, 60, 12);
             if (b.level < def.maxLevel)
@@ -220,10 +229,12 @@ namespace Mawang
                 string label = b.type == BuildingType.Tank ? L.T("확장", "Enlarge") : Mobile ? L.T("강화", "Up") : L.T("업그레이드", "Upgrade");
                 var up = UIKit.Button(actions, label, () => g.Upgrade(b), Mobile ? 300 : 400, 56, Btn.Good, UIKit.TM);
                 UIKit.Cost(up.Content(), ug, um);
-                up.BindEnabled(() => g.CanAfford(ug, um));
-                up.Tip(b.type == BuildingType.Tank ? L.T("우리를 넓혀 공간·마기·누적 한도를 늘립니다. (칸 수만큼 비용)", "Enlarges space, miasma and fee storage. (Cost × cells)")
+                up.BindEnabled(() => g.CanUpgrade(b, out _, out _, out _));
+                string upInfo = b.type == BuildingType.Tank ? L.T("우리를 넓혀 공간·항마력·누적 한도를 늘립니다. (칸 수만큼 비용)", "Enlarges space, Ward and fee storage. (Cost × cells)")
                     : b.type == BuildingType.Lab ? L.T($"보석 생산 간격 {GameData.LabInterval[Mathf.Min(b.level, GameData.LabInterval.Length - 1)]:0}초", $"Gem interval {GameData.LabInterval[Mathf.Min(b.level, GameData.LabInterval.Length - 1)]:0}s")
-                    : L.T("레벨이 오르면 더 비싼 상품을 팔거나 효율이 좋아집니다.", "Higher levels sell pricier goods or work better."));
+                    : b.type == BuildingType.Arena ? L.T($"대련 보상 ×{g.ArenaLevelMul(b):0.##} → ×{g.ArenaLevelMul(b) + GameData.ArenaLevelBonus:0.##}", $"Bout rewards ×{g.ArenaLevelMul(b):0.##} → ×{g.ArenaLevelMul(b) + GameData.ArenaLevelBonus:0.##}")
+                    : L.T("레벨이 오르면 더 비싼 상품을 팔거나 효율이 좋아집니다.", "Higher levels sell pricier goods or work better.");
+                up.Tip(() => g.CanUpgrade(b, out _, out _, out string why) ? upInfo : why);
             }
             else UIKit.Label(actions, L.T("최대 레벨", "Max level"), UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, 200);
             UIKit.Flex(actions);
@@ -242,7 +253,7 @@ namespace Mawang
                     var row = UIKit.Row(c, 60, 12, true);
                     UIKit.Icon(row, "ic_rp", 40);
                     UIKit.Bar(row, () => (float)b.labRp / g.LabRpCap, new Color(0.4f, 0.85f, 1f), -1, 32, () => $"{b.labRp} / {g.LabRpCap}");
-                    UIKit.Button(row, L.T("수거", "Collect"), () => { int n = b.labRp; g.CollectLab(b); if (n > 0) Sound.Play("gem"); }, 150, 48, Btn.Good, UIKit.TS, "ic_rp", 24).BindEnabled(() => b.labRp > 0);
+                    UIKit.Button(row, L.T("수거", "Collect"), () => { if (g.CollectLab(b) > 0) Sound.Play("gem"); }, 150, 48, Btn.Good, UIKit.TS, "ic_rp", 24).BindEnabled(() => b.labRp > 0 && !g.GemFull);
                     UIKit.Label(UIKit.Row(c, 36).transform, "", UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim)
                         .Bind(() => L.T($"{g.LabInterval(b):0}초마다 보석 1개 · 다음까지 {g.LabInterval(b) - b.labTimer:0}초 · 마녀 연구원이 수거를 잘합니다.",
                                         $"1 Gem every {g.LabInterval(b):0}s · next in {g.LabInterval(b) - b.labTimer:0}s · Witch Researchers are lab specialists."));
@@ -250,12 +261,13 @@ namespace Mawang
                 }
                 case BuildingType.Dorm:
                     UIKit.Header(c, L.T("직원 숙소", "Staff Dorm"), "castle_skel");
-                    UIKit.Note(c, L.T($"직원 한도 {g.StaffCapacity()}명 (기본 {GameData.BaseStaffCap} + 숙소 레벨 합). 고용은 [직원] 메뉴에서.", $"Staff capacity {g.StaffCapacity()} (base {GameData.BaseStaffCap} + dorm levels). Hire in [Staff]."));
+                    UIKit.Note(c, L.T($"직원 한도 {g.StaffCapacity()}명 (기본 {GameData.BaseStaffCap} + 숙소 Lv.2부터 레벨마다 1). 고용은 [직원] 메뉴에서.", $"Staff capacity {g.StaffCapacity()} (base {GameData.BaseStaffCap} + 1 per dorm level from Lv.2). Hire in [Staff]."));
                     break;
                 case BuildingType.Rest:
                     UIKit.Header(c, L.T("휴게실", "Lounge"), "ic_time");
-                    UIKit.Note(c, L.T($"매일 06시 이후 처음 접속한 시점에 휴게실 개수 × {GameData.RestDailyGold:N0}골드를 지급합니다.", $"Pays lounges × {GameData.RestDailyGold:N0} Gold on your first visit after 06:00 each day."));
+                    UIKit.Note(c, L.T($"매일 06시 이후 처음 접속한 시점에 휴게실 개수 × {GameData.RestDailyGold(g.TotalFloorsOpen):N0}골드를 지급합니다. (열린 층이 늘면 증가)", $"Pays lounges × {GameData.RestDailyGold(g.TotalFloorsOpen):N0} Gold on your first visit after 06:00 each day. (Grows with floors)"));
                     break;
+                case BuildingType.Arena: BuildArenaSection(c, b); break;
             }
         }
 
@@ -263,14 +275,15 @@ namespace Mawang
         {
             var stats = UIKit.Row(c, 64, 26, true);
             UIKit.Amount(stats, "ic_space", () => L.T($"공간 {g.TankSpaceUsed(b)}/{g.TankSpaceMax(b)}", $"Space {g.TankSpaceUsed(b)}/{g.TankSpaceMax(b)}"), null, UIKit.TS, 32).Tip(L.T("괴물마다 차지하는 공간이 다릅니다.", "Each monster takes a different amount of space."));
-            UIKit.Amount(stats, "up_maki", () => L.T($"마기 {g.TankMaki(b)}", $"Miasma {g.TankMaki(b)}"), () => g.TankMaki(b) >= 0, UIKit.TS, 32)
-                .Tip(() => L.T($"남은 마기 {g.TankMaki(b)} (기본 {g.TankMakiBase(b)})\n괴물은 마기를 소모하고, 마초는 회복합니다.\n마기가 0 미만이 되는 괴물은 넣을 수 없습니다.",
-                               $"Miasma left {g.TankMaki(b)} (base {g.TankMakiBase(b)})\nMonsters use miasma, plants restore it.\nYou can't add a monster that drops it below 0."));
+            UIKit.Amount(stats, "up_maki", () => L.T($"항마력 {g.TankMaki(b)}", $"Ward {g.TankMaki(b)}"), () => g.TankMaki(b) >= 0, UIKit.TS, 32)
+                .Tip(() => L.T($"남은 항마력 {g.TankMaki(b)} (기본 {g.TankMakiBase(b)})\n괴물은 항마력을 소모하고, 마력초는 회복합니다.\n항마력이 0 미만이 되는 괴물은 넣을 수 없습니다.",
+                               $"Ward left {g.TankMaki(b)} (base {g.TankMakiBase(b)})\nMonsters use Ward, Mana Herbs restore it.\nYou can't add a monster that drops it below 0."));
             UIKit.Amount(stats, "ic_gold", () => L.T($"{g.TankRatePerMin(b):N0}/분", $"{g.TankRatePerMin(b):N0}/min"), null, UIKit.TS, 32).Tip(L.T("분당 관람료", "Admission per minute"));
+            if (Mobile) stats = UIKit.Row(c, 64, 26, true); // 폰: 좁아서 누적 바·수령 버튼은 다음 줄
             UIKit.Bar(stats, () => b.accumulated / g.TankCap(b), UIKit.Gold, -1, 32, () => $"{Mathf.FloorToInt(b.accumulated):N0} / {g.TankCap(b):N0}")
                 .Tip(L.T("쌓인 관람료. 한도에 닿으면 더 쌓이지 않습니다.", "Stored fees. Stops at the cap."));
             UIKit.Button(stats, L.T("수령", "Collect"), () => { if (g.CollectTank(b, 0f) > 0) Sound.Play("coin"); }, 130, 48, Btn.Good, UIKit.TS, "ic_gold", 24)
-                .BindEnabled(() => b.accumulated >= 1f);
+                .BindEnabled(() => b.accumulated >= 1f && !g.GoldFull);
 
             UIKit.Header(c, L.T("전시 중  (탭: 빼기)", "On display  (tap: remove)"), "ic_space");
             var shown = UIKit.Grid(c, 130, 150, 10);
@@ -295,6 +308,70 @@ namespace Mawang
                 slot.Tip(() => { var err = g.CanAddToTank(b, mm.id); return MonsterTip(mm) + (err != null ? $"\n\n{UIKit.Col(err, new Color(0.7f, 0.1f, 0.1f))}" : L.T("\n\n탭하면 우리에 넣습니다.\n", "\n\nTap to put in the cage.\n") + HoldHint); });
             }
             if (!any) UIKit.Note(c, L.T("보관함이 비었습니다. [포획장]에서 포획대원을 파견하세요.", "Storage is empty. Send hunters from the [Hunt] tab."));
+        }
+
+        // 투기장: 출전 괴물은 모든 투기장이 함께 쓰는 재고. 가장 강한 괴물부터 대련한다.
+        void BuildArenaSection(RectTransform c, BuildingState b)
+        {
+            var stats = UIKit.Row(c, 64, 26, true);
+            UIKit.Amount(stats, "ic_sword", () =>
+            {
+                var m = g.ArenaChampion();
+                return m == null ? L.T("출전 괴물 없음", "No fighters") : L.T($"다음 출전: {m.Name} (전투력 {m.power:N0})", $"Next up: {m.Name} (Power {m.power:N0})");
+            }, () => g.ArenaChampion() != null, UIKit.TS, 32);
+            if (Mobile) stats = UIKit.Row(c, 64, 26, true); // 폰: 좁아서 용사 힘·보상 배율은 다음 줄
+            else UIKit.Flex(stats);
+            UIKit.Amount(stats, "hero_warrior", () => L.T($"용사 힘 {g.HeroPower:N0}", $"Hero power {g.HeroPower:N0}"), null, UIKit.TS, 32)
+                .Tip(L.T("용사는 열린 가장 높은 스테이지만큼 강해집니다.", "Heroes grow as strong as your highest open stage."));
+            UIKit.Amount(stats, "ic_gold", () => L.T($"보상 ×{g.ArenaLevelMul(b):0.##}", $"Reward ×{g.ArenaLevelMul(b):0.##}"), null, UIKit.TS, 32);
+
+            UIKit.Note(c, L.T("용사가 오면 가장 강한 괴물이 대련합니다. 대실패하면 그 괴물은 죽습니다.", "When a hero arrives, your strongest monster fights. On a disaster it dies."));
+            UIKit.Label(c, "", UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextMain).Bind(() => // 줄 수만큼 높이가 늘어난다(폰에서 두 줄)
+            {
+                var m = g.ArenaChampion();
+                return m == null ? "" : OddsText(m, b);
+            });
+
+            UIKit.Header(c, L.T("출전 대기  (탭: 빼기)", "Fighters  (tap: remove)"), "ic_sword");
+            var shown = UIKit.Grid(c, 130, 150, 10);
+            if (g.S.arena.Count == 0) UIKit.Note(c, L.T("비어 있습니다. 아래 보관함에서 괴물을 넣으세요.", "Empty. Add monsters from storage below."));
+            var roster = new System.Collections.Generic.List<CountEntry>(g.S.arena);
+            roster.Sort((x, y) => GameData.MonsterById[y.id].power.CompareTo(GameData.MonsterById[x.id].power));
+            foreach (var e in roster)
+            {
+                var m = GameData.MonsterById[e.id];
+                Slot(shown, m.id, m.Name, () => $"×{CountList.Get(g.S.arena, m.id)}", () => g.RemoveFromArena(m.id)).Tip(() => MonsterTip(m) + "\n" + OddsText(m, b) + L.T("\n\n탭하면 보관함으로 뺍니다.\n", "\n\nTap to move back to storage.\n") + HoldHint);
+            }
+
+            UIKit.Header(c, L.T("보관함에서 넣기  (탭: 넣기)", "Add from storage  (tap: add)"), "ic_bag");
+            var inv = UIKit.Grid(c, 130, 150, 10);
+            bool any = false;
+            foreach (var m in GameData.Monsters)
+            {
+                if (m.isPlant || CountList.Get(g.S.monsters, m.id) <= 0) continue;
+                any = true;
+                var mm = m;
+                var slot = Slot(inv, m.id, m.Name, () => $"×{CountList.Get(g.S.monsters, mm.id)}", () => g.AddToArena(mm.id), Btn.Primary);
+                slot.BindEnabled(() => g.CanAddToArena(mm.id) == null);
+                slot.Tip(() => MonsterTip(mm) + "\n" + OddsText(mm, b) + L.T("\n\n탭하면 투기장에 넣습니다.\n", "\n\nTap to send to the arena.\n") + HoldHint);
+            }
+            if (!any) UIKit.Note(c, L.T("넣을 괴물이 없습니다. [포획장]에서 포획대원을 파견하세요.", "No monsters to add. Send hunters from the [Hunt] tab."));
+        }
+
+        // 대련 결과 확률 + 받는 골드
+        string OddsText(MonsterDef m, BuildingState b)
+        {
+            var odds = GameData.BoutOdds(m.power, g.HeroPower);
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i < odds.Length; i++)
+            {
+                var r = (BoutResult)i;
+                int gold = g.ArenaReward(b, m, r);
+                if (i > 0) sb.Append(" · ");
+                sb.Append($"{GameData.BoutName(r)} {odds[i] * 100f:0}%");
+                if (gold > 0) sb.Append($" ({gold:N0}G)");
+            }
+            return sb.ToString();
         }
 
         // 가게 건물: 이 가게가 파는 상품
@@ -354,7 +431,7 @@ namespace Mawang
             UIKit.Icon(cap, "castle_skel", 36);
             UIKit.Label(cap, "", UIKit.TM, TextAnchor.MiddleLeft, null, 200).Bind(() => L.T($"직원 {g.StaffCount}/{g.StaffCapacity()}명", $"Staff {g.StaffCount}/{g.StaffCapacity()}"));
             UIKit.Bar(cap, () => (float)g.StaffCount / g.StaffCapacity(), new Color(0.7f, 0.5f, 0.9f), -1, 24);
-            if (!Mobile) UIKit.Label(cap, L.T("숙소를 짓거나 업그레이드하면 한도가 늘어납니다.", "Build or upgrade dorms for more."), UIKit.TS, TextAnchor.MiddleRight, UIKit.TextDim, 460);
+            if (!Mobile) UIKit.Label(cap, L.T("직원 숙소를 Lv.2 이상으로 올리면 한도가 늘어납니다.", "Upgrade the Staff Dorm to Lv.2+ for more."), UIKit.TS, TextAnchor.MiddleRight, UIKit.TextDim, 460);
 
             UIKit.Header(c, L.T("성 관리자 — 담당 구역·층을 정하면 그 안의 일만 합니다", "Castle staff — they only work in their assigned area"), "castle_skel");
             UIKit.Note(c, L.T("특화 건물로 갈 때 더 빠르고 일도 빨리 끝냅니다. (스켈레톤=전시 우리 · 서큐버스=식당 · 가고일=기념품점 · 마녀=연구소)",
@@ -539,7 +616,7 @@ namespace Mawang
         // ── 보관함 ─────────────────────────────────────────────
         void BuildInventoryPanel(RectTransform c)
         {
-            UIKit.Header(c, L.T("괴물 · 마초", "Monsters · Plants"), "ic_space");
+            UIKit.Header(c, L.T("괴물 · 마력초", "Monsters · Herbs"), "ic_space");
             var mg = UIKit.Grid(c, 130, 150, 10);
             bool any = false;
             foreach (var m in GameData.Monsters)
@@ -577,7 +654,7 @@ namespace Mawang
             var icons = new string[names.Length];
             names[0] = L.T("증축 · 탐사", "Expand"); icons[0] = "up_floor";
             string[] catIcons = { "ic_hunt", "ic_space", "hero_warrior", "up_lab" };
-            for (int i = 0; i < GameData.CategoryCount; i++) { names[i + 1] = GameData.CategoryName(i); icons[i + 1] = catIcons[i]; }
+            for (int i = 0; i < GameData.CategoryCount; i++) { names[i + 1] = GameData.CategoryName(i, Mobile); icons[i + 1] = catIcons[i]; }
             Tabs(c, names, icons, researchTab, t => { researchTab = t; RebuildModal(); modalScroll.verticalNormalizedPosition = 1; }, TabAffordable);
 
             var rp = UIKit.Row(c, 44, 16);
@@ -615,7 +692,7 @@ namespace Mawang
         {
             int lv = g.UpgradeLevel(u);
             bool max = lv >= u.maxLevel;
-            var row = UIKit.Row(c, 124, 16, true);
+            var row = UIKit.Row(c, 124, 16, true).Grow();
 
             var box = UIKit.Panel(row, "ui_inset", "IconBox");
             UIKit.Size(box, 92, 92);
@@ -625,10 +702,12 @@ namespace Mawang
             var mid = UIKit.Column(row, 6);
             mid.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
             var title = UIKit.Row(mid, 34, 12);
-            UIKit.Label(title, u.Name, UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, 190);
-            UIKit.Pips(title, lv, u.maxLevel);
+            // 폰은 폭이 좁아 단계 눈금을 빼고 이름 + 숫자만 (이름이 글자 단위로 꺾이지 않게)
+            var uname = UIKit.Label(title, u.Name, UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, Mobile ? -1 : 240);
+            if (Mobile) uname.horizontalOverflow = HorizontalWrapMode.Overflow;
+            else UIKit.Pips(title, lv, u.maxLevel);
             UIKit.Label(title, max ? "MAX" : $"{lv}/{u.maxLevel}", UIKit.TS, TextAnchor.MiddleLeft, max ? UIKit.Gold : UIKit.TextDim);
-            string now = lv > 0 ? u.effect(lv) : L.T("효과 없음", "No effect");
+            string now = u.effect(lv); // 0단계는 연구 전 기본값을 설명한다
             UIKit.Label(mid, L.T($"현재: {now}", $"Now: {now}"), UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextMain);
             UIKit.Label(mid, max ? L.T("모든 단계를 완료했습니다.", "All levels complete.") : L.T($"다음: {UIKit.Col(u.effect(lv + 1), UIKit.GoodText)}", $"Next: {UIKit.Col(u.effect(lv + 1), UIKit.GoodText)}"), UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim);
 
@@ -644,7 +723,7 @@ namespace Mawang
             var right = UIKit.Column(row, 6);
             UIKit.Size(right, 260);
             right.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
-            UIKit.Size(UIKit.Cost(right, u.Gold(lv + 1), 0, u.Rp(lv + 1)), 260, 28);
+            UIKit.Size(UIKit.Cost(right, 0, 0, u.Rp(lv + 1)), 260, 28);
             var btn = UIKit.Button(right, L.T($"{lv + 1}단계 강화", $"Level {lv + 1}"), () => g.DoUpgrade(u), 260, 54, Btn.Good, UIKit.TM);
             btn.BindEnabled(() => g.UpgradeBlock(u) == null);
             btn.Tip(() => g.UpgradeBlock(u) ?? $"{u.Name} {lv + 1}\n{u.effect(lv + 1)}");
@@ -654,7 +733,7 @@ namespace Mawang
         {
             var rd = r;
             bool done = g.S.research.Contains(r.id);
-            var row = UIKit.Row(c, 100, 16, true);
+            var row = UIKit.Row(c, 100, 16, true).Grow();
             var box = UIKit.Panel(row, "ui_inset", "IconBox");
             UIKit.Size(box, 76, 76);
             var ic = UIKit.Icon(box.transform, r.icon, 64);
@@ -677,7 +756,7 @@ namespace Mawang
             }
             var right = UIKit.Column(row, 6);
             UIKit.Size(right, 260);
-            UIKit.Size(UIKit.Cost(right, r.gold, 0, r.rp), 260, 28);
+            UIKit.Size(UIKit.Cost(right, 0, 0, r.rp), 260, 28);
             bool needsPrev = !string.IsNullOrEmpty(r.requires) && !g.S.research.Contains(r.requires);
             var btn = UIKit.Button(right, needsPrev ? L.T("선행 연구 필요", "Needs previous") : L.T("탐사", "Explore"), () => g.DoResearch(rd), 260, 54, Btn.Good, UIKit.TM, needsPrev ? "ic_lock" : null, 24);
             btn.BindEnabled(() => g.ResearchBlock(rd) == null);
@@ -710,6 +789,7 @@ namespace Mawang
                     bool known = caught > 0;
                     bool claimed = g.S.collectionClaimed.Contains(id);
                     var card = UIKit.Card(grid, claimed ? "ui_panel" : "ui_row", 12, 6);
+                    UIKit.InfoButton(card, Mobile ? 36 : 30);
                     var box = UIKit.Panel(card, "ui_inset", "IconBox");
                     UIKit.Size(box, 96, 96);
                     var ic = UIKit.Icon(box.transform, m.id, 80);
@@ -736,6 +816,50 @@ namespace Mawang
                     var rr = r;
                     card.Tip(() => known ? MonsterTip(mm) : mm.hidden ? L.T("특별한 미끼와 힘 조합에서만 나타난다고 한다...", "Said to appear only with a special bait and power...") : HintFor(rr, mm));
                 }
+            }
+        }
+
+        // ── 업적 ───────────────────────────────────────────────
+        void BuildAchievementPanel(RectTransform c)
+        {
+            int done = 0;
+            foreach (var a in GameData.Achievements) if (g.AchievementDone(a)) done++;
+            var head = UIKit.Row(c, 46, 12);
+            UIKit.Icon(head, "ic_trophy", 32);
+            UIKit.Label(head, L.T($"달성 {done}/{GameData.Achievements.Length}", $"Completed {done}/{GameData.Achievements.Length}"), UIKit.TM, TextAnchor.MiddleLeft, UIKit.Gold, 280);
+            int d = done;
+            UIKit.Bar(head, () => (float)d / GameData.Achievements.Length, UIKit.Gold, -1, 26);
+            UIKit.Note(c, L.T("달성하면 골드를 자동으로 받습니다.", "Gold is paid automatically on completion."));
+
+            foreach (var a in GameData.Achievements)
+            {
+                var aa = a;
+                bool ok = g.AchievementDone(a);
+                var row = UIKit.Row(c, 84, 16, true).Grow();
+                var box = UIKit.Panel(row, "ui_inset", "IconBox");
+                UIKit.Size(box, 64, 64);
+                var ic = UIKit.Icon(box.transform, ok ? "ic_trophy" : "ic_lock", 48);
+                UIKit.Stretch(ic.rectTransform, 8, 8, 8, 8);
+                var mid = UIKit.Column(row, 2);
+                mid.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1;
+                UIKit.Label(mid, a.Name, UIKit.TM, TextAnchor.MiddleLeft, ok ? UIKit.Gold : UIKit.TextMain);
+                UIKit.Label(mid, a.Desc, UIKit.TS, TextAnchor.MiddleLeft, UIKit.TextDim);
+                if (ok)
+                {
+                    var check = UIKit.Row(row, 40, 6);
+                    UIKit.Size(check, Mobile ? 200 : 260);
+                    check.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+                    UIKit.Icon(check, "ic_check", 24);
+                    var got = UIKit.Label(check, $"+{a.gold:N0}G", UIKit.TS, TextAnchor.MiddleLeft, UIKit.GoodText);
+                    got.GetComponent<LayoutElement>().flexibleWidth = 0;
+                    got.horizontalOverflow = HorizontalWrapMode.Overflow;
+                    continue;
+                }
+                var right = UIKit.Column(row, 4);
+                UIKit.Size(right, Mobile ? 200 : 260);
+                UIKit.Bar(right, () => Mathf.Clamp01((float)aa.progress(g) / aa.target), UIKit.GoodText, Mobile ? 200 : 260, 26,
+                    () => $"{System.Math.Min(aa.progress(g), aa.target):N0}/{aa.target:N0}");
+                UIKit.Size(UIKit.Amount(right, "ic_gold", $"+{a.gold:N0}", UIKit.TS, 24, UIKit.Gold), Mobile ? 200 : 260, 28);
             }
         }
 

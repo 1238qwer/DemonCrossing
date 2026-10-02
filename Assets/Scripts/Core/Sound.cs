@@ -97,80 +97,98 @@ namespace Mawang
 
         static float Midi(int n) => 440f * Mathf.Pow(2f, (n - 69) / 12f);
 
-        // 8마디 루프: 가단조의 으스스하지만 귀여운 멜로디 (Am F G E | Am Dm E Am)
+        // 16마디 루프 (144 BPM): 가단조의 으스스하지만 귀여운 분위기는 그대로, 통통 튀는 스타카토 멜로디 + 8분음표 베이스 + 드럼
+        // A: Am F G E | Am Dm E Am   B: F G Em Am | Dm Am E E
         static AudioClip MakeBgm()
         {
-            const float bpm = 108f;
+            const float bpm = 144f;
             float eighth = 60f / bpm / 2f;
-            // (음, 8분음표 길이). 0 = 쉼표
+            // (음, 8분음표 길이). 0 = 쉼표. 마디당 8칸
             int[,] mel =
             {
-                {69,2},{72,1},{76,1},{74,2},{72,2},   {69,2},{65,2},{69,1},{72,1},{71,2},
-                {67,2},{71,1},{74,1},{72,2},{71,2},   {68,3},{71,1},{76,4},
-                {76,2},{74,1},{72,1},{71,2},{69,2},   {77,2},{76,1},{74,1},{69,2},{74,2},
-                {76,1},{74,1},{72,1},{71,1},{68,2},{71,2}, {69,6},{0,2},
+                {76,1},{69,1},{72,1},{76,1},{74,1},{72,1},{71,1},{72,1},
+                {69,2},{65,1},{69,1},{72,2},{69,1},{72,1},
+                {71,1},{74,1},{79,2},{77,1},{76,1},{74,2},
+                {76,2},{68,1},{71,1},{76,3},{0,1},
+                {81,1},{79,1},{76,1},{72,1},{76,2},{69,2},
+                {77,1},{76,1},{74,1},{69,1},{74,2},{77,2},
+                {76,1},{74,1},{72,1},{71,1},{68,2},{71,2},
+                {69,2},{76,2},{81,2},{0,2},
+                {72,1},{77,1},{81,1},{77,1},{72,1},{77,1},{81,2},
+                {71,1},{74,1},{79,1},{74,1},{71,1},{74,1},{79,2},
+                {71,1},{76,1},{79,1},{83,1},{81,1},{79,1},{76,2},
+                {81,2},{76,1},{72,1},{69,2},{72,2},
+                {74,1},{77,1},{81,2},{79,1},{77,1},{76,1},{74,1},
+                {72,1},{76,1},{81,2},{79,1},{76,1},{72,2},
+                {71,1},{72,1},{74,1},{76,1},{77,1},{76,1},{74,1},{71,1},
+                {68,2},{71,2},{76,2},{0,2},
             };
-            int[] roots = { 45, 41, 43, 40, 45, 38, 40, 45 };
-            int[] fifths = { 52, 48, 50, 47, 52, 45, 47, 52 };
-            float total = 8 * 8 * eighth;
+            int[] roots = { 45, 41, 43, 40, 45, 38, 40, 45, 41, 43, 40, 45, 38, 45, 40, 40 };
+            bool[] minor = { true, false, false, false, true, true, false, true, false, false, true, true, true, true, false, false };
+            const int bars = 16;
+            float total = bars * 8 * eighth;
             int n = Mathf.CeilToInt(total * Rate);
             var data = new float[n];
 
-            // 멜로디
-            float start = 0;
+            void Add(float start, float len, Func<float, float> f)
+            {
+                int i0 = (int)(start * Rate), i1 = Mathf.Min(n, (int)((start + len) * Rate));
+                for (int i = i0; i < i1; i++) data[i] += f((i - i0) / (float)Rate);
+            }
+
+            // 멜로디: 짧게 끊어 치는 사각파 (음 길이의 75%만 울린다)
+            float t0 = 0;
             for (int k = 0; k < mel.GetLength(0); k++)
             {
                 int note = mel[k, 0];
                 float len = mel[k, 1] * eighth;
                 if (note > 0)
                 {
-                    float f = Midi(note);
-                    int i0 = (int)(start * Rate), i1 = Mathf.Min(n, (int)((start + len) * Rate));
-                    for (int i = i0; i < i1; i++)
+                    float f = Midi(note), on = len * 0.75f;
+                    Add(t0, on, t =>
                     {
-                        float t = (i - i0) / (float)Rate;
-                        float vib = 1f + 0.004f * Mathf.Sin(t * 30f) * Mathf.Clamp01(t * 4f);
-                        float env = Mathf.Min(1f, t / 0.01f) * Mathf.Lerp(1f, 0.55f, t / len) * Mathf.Clamp01((len - t) / 0.03f);
-                        data[i] += Sq(f * vib, t, 0.25f) * env * 0.09f + Sq(f * 2f, t, 0.5f) * env * 0.015f;
-                    }
+                        float env = Mathf.Min(1f, t / 0.005f) * Mathf.Lerp(1f, 0.6f, t / on) * Mathf.Clamp01((on - t) / 0.02f);
+                        return Sq(f, t, 0.25f) * env * 0.085f + Sq(f * 2f, t, 0.5f) * env * 0.012f;
+                    });
                 }
-                start += len;
+                t0 += len;
             }
 
-            // 베이스: 박마다 근음-5음
             float beat = eighth * 2f;
-            for (int bar = 0; bar < 8; bar++)
+            for (int bar = 0; bar < bars; bar++)
+            {
+                float b0 = bar * 4 * beat;
+                // 베이스: 8분음표로 근음-옥타브를 번갈아 퉁긴다
+                for (int e = 0; e < 8; e++)
+                {
+                    float f = Midi(roots[bar] + (e % 2 == 1 ? 12 : 0));
+                    float len = eighth * 0.7f;
+                    Add(b0 + e * eighth, len, t => Tri(f, t) * Mathf.Clamp01(1f - t / len) * 0.17f);
+                }
                 for (int b = 0; b < 4; b++)
                 {
-                    float f = Midi(b % 2 == 0 ? roots[bar] : fifths[bar]);
-                    float s0 = (bar * 4 + b) * beat;
-                    int i0 = (int)(s0 * Rate), i1 = Mathf.Min(n, (int)((s0 + beat * 0.9f) * Rate));
-                    for (int i = i0; i < i1; i++)
+                    float s0 = b0 + b * beat;
+                    // 킥: 1·3박 (+ 마디 끝 당김음)
+                    if (b % 2 == 0 || (b == 3 && bar % 2 == 1))
                     {
-                        float t = (i - i0) / (float)Rate;
-                        data[i] += Tri(f, t) * Mathf.Clamp01(1f - t / (beat * 0.9f)) * 0.16f;
+                        float ks = b == 3 ? s0 + eighth : s0;
+                        Add(ks, 0.12f, t => Mathf.Sin(2f * Mathf.PI * Lerp(150f, 45f, t / 0.08f) * t) * (1f - t / 0.12f) * 0.32f);
                     }
-                    // 뒷박 하이햇
-                    int h0 = (int)((s0 + eighth) * Rate), h1 = Mathf.Min(n, h0 + (int)(0.03f * Rate));
-                    for (int i = h0; i < h1; i++) data[i] += Noise() * (1f - (i - h0) / (float)(h1 - h0)) * 0.035f;
+                    // 스네어: 2·4박
+                    if (b % 2 == 1)
+                        Add(s0, 0.1f, t => (Noise() * 0.7f + Tri(190f, t) * 0.3f) * (1f - t / 0.1f) * 0.12f);
+                    // 하이햇: 8분음표마다 (뒷박은 조금 크게)
+                    Add(s0, 0.02f, t => Noise() * (1f - t / 0.02f) * 0.025f);
+                    Add(s0 + eighth, 0.03f, t => Noise() * (1f - t / 0.03f) * 0.04f);
                 }
-
-            // 아르페지오 패드 (16분음표, 아주 작게)
-            for (int bar = 0; bar < 8; bar++)
-            {
+                // 아르페지오: 16분음표로 반짝이게 (아주 작게)
                 int r = roots[bar] + 24;
-                bool minor = bar != 1 && bar != 2 && bar != 3 && bar != 6; // F, G, E 는 장3화음
-                int[] chord = { r, r + (minor ? 3 : 4), r + 7, r + 12 };
+                int[] chord = { r, r + (minor[bar] ? 3 : 4), r + 7, r + 12 };
                 for (int s = 0; s < 16; s++)
                 {
-                    float f = Midi(chord[s % 4]);
-                    float s0 = bar * 8 * eighth + s * eighth / 2f;
-                    int i0 = (int)(s0 * Rate), i1 = Mathf.Min(n, i0 + (int)(eighth / 2f * Rate));
-                    for (int i = i0; i < i1; i++)
-                    {
-                        float t = (i - i0) / (float)Rate;
-                        data[i] += Tri(f, t) * (1f - t / (eighth / 2f)) * 0.025f;
-                    }
+                    float f = Midi(chord[(s % 8) < 4 ? s % 4 : 3 - s % 4]);
+                    float len = eighth / 2f;
+                    Add(b0 + s * len, len, t => Tri(f, t) * (1f - t / len) * 0.022f);
                 }
             }
 
