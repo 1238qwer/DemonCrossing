@@ -185,7 +185,7 @@ namespace Mawang
         }
 
         // ── 쇼케이스 상태: 중반(스테이지 7, 좌 7층·우 6층) ────────
-        static SaveData Showcase()
+        internal static SaveData Showcase() // 홍보 영상(PromoRecorder)도 같은 상태를 쓴다
         {
             var r = new Random(7);
             var s = new SaveData

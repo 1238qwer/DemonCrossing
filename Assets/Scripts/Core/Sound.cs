@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Mawang
 {
-    // 배경음과 효과음. 음원 파일 없이 실행할 때 칩튠으로 합성한다.
+    // 배경음과 효과음. 배경음은 구워 둔 음원(Resources/Audio/bgm)을 쓰고, 효과음은 실행할 때 칩튠으로 합성한다.
     // 음량은 설정 창에서 조절하고 PlayerPrefs 에 저장한다.
     public class Sound : MonoBehaviour
     {
@@ -41,7 +41,9 @@ namespace Mawang
             bgm.loop = true;
             bgm.playOnAwake = false;
             bgm.volume = BgmVolume * 0.55f;
-            bgm.clip = MakeBgm();
+            // 배경음: Resources/Audio/bgm (몬스터 서커스, 에디터 BgmLab 으로 합성해 구움). 없으면 예전 칩튠을 합성한다
+            var baked = Resources.Load<AudioClip>("Audio/bgm");
+            bgm.clip = baked != null ? baked : MakeBgm();
             bgm.Play();
             sfx = gameObject.AddComponent<AudioSource>();
             sfx.playOnAwake = false;
