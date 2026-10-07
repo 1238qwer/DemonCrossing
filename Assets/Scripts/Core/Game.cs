@@ -32,6 +32,7 @@ namespace Mawang
             CharacterSettings.I.ApplyNames(); // 인스펙터에서 고친 괴물·직원 이름
             Sim = new CastleSim(this);
             Sound.Init();
+            Premium.Init();
         }
 
         void Update()
@@ -198,13 +199,29 @@ namespace Mawang
         }
 
         // 원작: 골드와 건설 자재는 1:1 교환
-        public void Exchange(Currency from, int amount)
+        public bool Exchange(Currency from, int amount)
         {
             if (from == Currency.Gold && S.gold >= amount) { S.gold -= amount; S.material += amount; }
             else if (from == Currency.Material && S.material >= amount) { S.material -= amount; S.gold += amount; }
-            else { Fail(L.T("교환할 재화가 부족합니다.", "Not enough to exchange.")); return; }
+            else { Fail(L.T("교환할 재화가 부족합니다.", "Not enough to exchange.")); return false; }
             Sound.Play("coin");
             MarkDirty();
+            return true;
+        }
+
+        public bool GemExchangeOpen => MaxStageOpen >= GameData.GemExchangeStage;
+
+        // 골드 → 보석 (스테이지 7부터)
+        public bool ExchangeGems(int gems)
+        {
+            if (!GemExchangeOpen) { Fail(L.T($"스테이지 {GameData.GemExchangeStage}를 열면 보석으로 교환할 수 있습니다.", $"Open stage {GameData.GemExchangeStage} to exchange for Gems.")); return false; }
+            long cost = (long)GameData.GemExchangeGold * gems;
+            if (S.gold < cost) { Fail(L.T("교환할 골드가 부족합니다.", "Not enough Gold to exchange.")); return false; }
+            S.gold -= (int)cost;
+            S.rp += gems;
+            Sound.Play("coin");
+            MarkDirty();
+            return true;
         }
 
         // ── 휴게실 일일 지원금 ─────────────────────────────────

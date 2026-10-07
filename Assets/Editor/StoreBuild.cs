@@ -87,15 +87,17 @@ namespace Mawang.EditorTools
         [MenuItem("Mawang/Store/Build AAB")]
         public static void BuildAab() => Build(true);
 
-        // 한 번에 세 가지: Builds/PlayStore/*.aab, Builds/Android/*.apk, Builds/Windows/DemonCrossing.exe
-        // (유니티는 빌드를 하나씩만 돌리므로 차례로 만든다. 안드로이드 두 개를 먼저 만들고 윈도우로 바꾼다.)
-        [MenuItem("Mawang/Store/Build All (AAB + APK + EXE)")]
+        // 한 번에 전부: Builds/PlayStore/*.aab (구글 플레이), Builds/OneStore/*_onestore.aab (원스토어), Builds/Android/*.apk,
+        // Builds/Windows/DemonCrossing.exe, 윈도우 설치 파일.
+        // (유니티는 빌드를 하나씩만 돌리므로 차례로 만든다. 안드로이드를 먼저 만들고 윈도우로 바꾼다.)
+        [MenuItem("Mawang/Store/Build All (AAB + ONE store + APK + EXE)")]
         public static void BuildAllMenu() => Debug.Log("[StoreBuild] 전체 빌드\n" + BuildAll());
 
         public static string BuildAll()
         {
             var log = new System.Text.StringBuilder();
-            log.AppendLine(Build(true));   // 버전 코드 +1 (AAB 와 APK 는 같은 코드)
+            log.AppendLine(Build(true));   // 버전 코드 +1 (구글 AAB · 원스토어 AAB · APK 는 같은 코드)
+            log.AppendLine(BuildOneStoreAab());
             log.AppendLine(BuildApk());
             log.AppendLine(BuildExe());
             log.AppendLine(BuildInstaller());
@@ -135,6 +137,46 @@ namespace Mawang.EditorTools
             return Report(BuildTarget.Android, path);
         }
 
+        // ── 원스토어: ONESTORE 심볼(원스토어 결제 코드) + 원스토어 결제 SDK 를 넣은 AAB → Builds/OneStore/ ──
+        // 구글 결제 라이브러리는 빼고 원스토어 SDK 를 넣는다 (OneStoreGradle). 구글 플레이 빌드는 그대로다.
+        public const string OneStoreDefine = "ONESTORE";
+        public const string OneStoreIapSdk = "com.onestorecorp.sdk:sdk-iap:21.04.00";
+        public static bool BuildingOneStore { get; private set; }
+
+        [MenuItem("Mawang/Store/Build ONE store AAB")]
+        public static void BuildOneStoreMenu() => Debug.Log("[StoreBuild] " + BuildOneStoreAab());
+
+        public static string BuildOneStoreAab()
+        {
+            Apply();
+            EditorUserBuildSettings.buildAppBundle = true;
+            EditorUserBuildSettings.development = false;
+            EditorUserBuildSettings.allowDebugging = false;
+            UserBuildSettings.DebugSymbols.level = Unity.Android.Types.DebugSymbolLevel.SymbolTable;
+            UserBuildSettings.DebugSymbols.format = Unity.Android.Types.DebugSymbolFormat.Zip;
+            string path = Out("OneStore", $"DemonCrossing_{Version}_{PlayerSettings.Android.bundleVersionCode}_onestore.aab");
+            BuildingOneStore = true;
+            try { return Report(BuildTarget.Android, path, OneStoreDefine); }
+            finally { BuildingOneStore = false; }
+        }
+
+        // 원스토어 샌드박스 결제 테스트용: 폰에 바로 설치하는 원스토어 APK → Builds/OneStore/ (버전 코드는 올리지 않는다)
+        [MenuItem("Mawang/Store/Build ONE store APK (sandbox test)")]
+        public static void BuildOneStoreApkMenu() => Debug.Log("[StoreBuild] " + BuildOneStoreApk());
+
+        public static string BuildOneStoreApk()
+        {
+            Apply();
+            EditorUserBuildSettings.buildAppBundle = false;
+            EditorUserBuildSettings.development = false;
+            EditorUserBuildSettings.allowDebugging = false;
+            UserBuildSettings.DebugSymbols.level = Unity.Android.Types.DebugSymbolLevel.None;
+            string path = Out("OneStore", $"DemonCrossing_{Version}_{PlayerSettings.Android.bundleVersionCode}_onestore.apk");
+            BuildingOneStore = true;
+            try { return Report(BuildTarget.Android, path, OneStoreDefine); }
+            finally { BuildingOneStore = false; }
+        }
+
         public static string BuildExe()
         {
             PlayerSettings.companyName = Company;
@@ -152,7 +194,7 @@ namespace Mawang.EditorTools
             return Path.Combine(dir, file);
         }
 
-        static string Report(BuildTarget target, string path)
+        static string Report(BuildTarget target, string path, params string[] defines)
         {
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
@@ -160,6 +202,7 @@ namespace Mawang.EditorTools
                 locationPathName = path,
                 target = target,
                 options = BuildOptions.None,
+                extraScriptingDefines = defines,
             });
             var s = report.summary;
             Debug.Log($"[StoreBuild] {s.result} · {s.totalSize / 1024f / 1024f:0.0}MB · {s.totalTime} → {path}");
@@ -196,6 +239,48 @@ namespace Mawang.EditorTools
             }
             Debug.Log($"[StoreBuild] {s.result} · v{Version} ({PlayerSettings.Android.bundleVersionCode}) · {s.totalSize / 1024f / 1024f:0.0}MB · {s.totalTime} → {path}");
             return $"{s.result} {path} errors={s.totalErrors}";
+        }
+    }
+
+    // 원스토어 빌드에서만: unityLibrary/build.gradle 의 구글 결제 라이브러리(Unity IAP 가 넣는 줄)를 빼고 원스토어 결제 SDK 를 넣는다.
+    // Unity IAP 의 의존성 주입(callbackOrder 1) 뒤에 돈다.
+    class OneStoreGradle : IPostGenerateGradleAndroidProject
+    {
+        public int callbackOrder => 100;
+
+        public void OnPostGenerateGradleAndroidProject(string path)
+        {
+            if (!StoreBuild.BuildingOneStore) return;
+            string gradle = Path.Combine(path, "build.gradle");
+            var text = File.ReadAllText(gradle);
+            var lines = new List<string>(text.Split('\n'));
+            int removed = lines.RemoveAll(l => l.Contains("com.android.billingclient:billing"));
+            text = string.Join("\n", lines) + $"\ndependencies {{\n    implementation '{StoreBuild.OneStoreIapSdk}'\n}}\n";
+            File.WriteAllText(gradle, text);
+            Debug.Log($"[StoreBuild] 원스토어 gradle: 구글 결제 {removed}줄 제거, {StoreBuild.OneStoreIapSdk} 추가");
+            AddQueries(Path.Combine(path, "src/main/AndroidManifest.xml"));
+        }
+
+        // 원스토어 심사: 결제 서비스와 onestore:// 링크(리뷰 버튼)를 찾을 수 있게 <queries> 를 선언해야 바이너리 등록이 된다
+        const string Queries =
+            "  <queries>\n" +
+            "    <intent>\n" +
+            "      <action android:name=\"com.onestore.ipc.iap.IapService.ACTION\" />\n" +
+            "    </intent>\n" +
+            "    <intent>\n" +
+            "      <action android:name=\"android.intent.action.VIEW\" />\n" +
+            "      <data android:scheme=\"onestore\" />\n" +
+            "    </intent>\n" +
+            "  </queries>\n";
+
+        static void AddQueries(string manifest)
+        {
+            var text = File.ReadAllText(manifest);
+            if (text.Contains("com.onestore.ipc.iap.IapService.ACTION")) return;
+            int i = text.IndexOf("<application", System.StringComparison.Ordinal);
+            if (i < 0) { Debug.LogError($"[StoreBuild] 원스토어 <queries> 를 넣을 <application> 이 없습니다: {manifest}"); return; }
+            File.WriteAllText(manifest, text.Insert(i, Queries.TrimStart()));
+            Debug.Log("[StoreBuild] 원스토어 <queries> 추가");
         }
     }
 }

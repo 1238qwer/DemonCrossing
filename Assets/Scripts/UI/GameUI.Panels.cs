@@ -567,10 +567,11 @@ namespace Mawang
                     break;
                 case 3:
                 {
-                    UIKit.Note(c, L.T("골드와 건설 자재는 1:1로 교환됩니다.", "Gold and Materials exchange 1:1."));
+                    UIKit.Note(c, L.T("골드와 건설 자재는 1:1로 교환됩니다. ", "Gold and Materials exchange 1:1. ") + HoldHint);
                     var row = UIKit.Row(c, 330, 16);
                     ExchangeCard(row, Currency.Gold, "ic_gold", "ic_mat", L.T("골드 → 자재", "Gold → Materials"));
                     ExchangeCard(row, Currency.Material, "ic_mat", "ic_gold", L.T("자재 → 골드", "Materials → Gold"));
+                    GemExchangeCard(c);
                     break;
                 }
             }
@@ -589,9 +590,30 @@ namespace Mawang
             foreach (int amt in new[] { 100, 1000, 10000 })
             {
                 int a = amt;
-                var b = UIKit.Button(card, $"{a:N0}", () => g.Exchange(from, a), Mobile ? 300 : 360, 50, Btn.Primary, UIKit.TM, fromIcon, 24);
+                var b = UIKit.Button(card, $"{a:N0}", null, Mobile ? 300 : 360, 50, Btn.Primary, UIKit.TM, fromIcon, 24).Hold(() => g.Exchange(from, a));
                 b.BindEnabled(() => (from == Currency.Gold ? g.S.gold : g.S.material) >= a);
             }
+        }
+
+        // 골드 → 보석: 스테이지 7 전에는 잠긴 채로 조건만 보여 준다
+        void GemExchangeCard(RectTransform c)
+        {
+            bool open = g.GemExchangeOpen;
+            var card = UIKit.Card(c, "ui_row", 16, 10);
+            var head = UIKit.Row(card, 64, 12);
+            head.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            UIKit.Icon(head, "ic_gold", 48);
+            UIKit.Label(head, "→", UIKit.TL, TextAnchor.MiddleCenter, UIKit.TextDim, 50);
+            UIKit.Icon(head, "ic_rp", 48);
+            UIKit.Label(card, L.T($"골드 → 보석 ({GameData.GemExchangeGold:N0}골드 = 보석 1개)", $"Gold → Gems ({GameData.GemExchangeGold:N0} Gold = 1 Gem)"), UIKit.TM, TextAnchor.MiddleCenter, UIKit.Gold).GetComponent<LayoutElement>().flexibleWidth = 0;
+            if (!open)
+            {
+                UIKit.Label(card, L.T($"스테이지 {GameData.GemExchangeStage}를 탐사하면 열립니다.", $"Unlocks when you explore stage {GameData.GemExchangeStage}."), UIKit.TS, TextAnchor.MiddleCenter, UIKit.TextDim).GetComponent<LayoutElement>().flexibleWidth = 0;
+                return;
+            }
+            var b = UIKit.Button(card, L.T("보석 1개", "1 Gem"), null, Mobile ? 300 : 360, 50, Btn.Primary, UIKit.TM, "ic_rp", 24).Hold(() => g.ExchangeGems(1));
+            b.BindEnabled(() => g.S.gold >= GameData.GemExchangeGold);
+            b.Tip(L.T($"{GameData.GemExchangeGold:N0}골드 → 보석 1개", $"{GameData.GemExchangeGold:N0} Gold → 1 Gem"));
         }
 
         void BuildSellGrid(RectTransform c)
@@ -732,6 +754,7 @@ namespace Mawang
         void ResearchRow(RectTransform c, ResearchDef r)
         {
             var rd = r;
+            const float W = 340; // 보석·골드·자재 세 가지 비용이 한 줄에 들어가게
             bool done = g.S.research.Contains(r.id);
             var row = UIKit.Row(c, 100, 16, true).Grow();
             var box = UIKit.Panel(row, "ui_inset", "IconBox");
@@ -748,17 +771,17 @@ namespace Mawang
             if (done)
             {
                 var d = UIKit.Row(row, 60, 6);
-                UIKit.Size(d, 260);
+                UIKit.Size(d, W);
                 d.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
                 UIKit.Icon(d, "ic_check", 32);
                 UIKit.Label(d, L.T("완료", "Done"), UIKit.TM, TextAnchor.MiddleLeft, UIKit.GoodText).GetComponent<LayoutElement>().flexibleWidth = 0;
                 return;
             }
             var right = UIKit.Column(row, 6);
-            UIKit.Size(right, 260);
-            UIKit.Size(UIKit.Cost(right, 0, 0, r.rp), 260, 28);
+            UIKit.Size(right, W);
+            UIKit.Size(UIKit.Cost(right, r.gold, r.mat, r.rp), W, 28);
             bool needsPrev = !string.IsNullOrEmpty(r.requires) && !g.S.research.Contains(r.requires);
-            var btn = UIKit.Button(right, needsPrev ? L.T("선행 연구 필요", "Needs previous") : L.T("탐사", "Explore"), () => g.DoResearch(rd), 260, 54, Btn.Good, UIKit.TM, needsPrev ? "ic_lock" : null, 24);
+            var btn = UIKit.Button(right, needsPrev ? L.T("선행 연구 필요", "Needs previous") : L.T("탐사", "Explore"), () => g.DoResearch(rd), W, 54, Btn.Good, UIKit.TM, needsPrev ? "ic_lock" : null, 24);
             btn.BindEnabled(() => g.ResearchBlock(rd) == null);
             btn.Tip(() => g.ResearchBlock(rd) ?? rd.Desc);
         }

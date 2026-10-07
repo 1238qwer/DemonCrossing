@@ -258,21 +258,6 @@ MonoBehaviour:
       \uC9C1\uC6D0\uC744 \uD55C \uBA85 \uB354 \uACE0\uC6A9\uD558\uC138\uC694."
     en: Upgrade the Staff Dorm to Lv.2, then hire one more in [Staff].
   - enabled: 1
-    kind: 3
-    building: 0
-    amount: 2
-    research: build
-    side: 0
-    rewardGold: 1000
-    rewardGems: 2
-    ko: "[\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C \uC6A9\uC554
-      \uB3D9\uAD74\uC744 \uD0D0\uC0AC\uD558\uC138\uC694.\n\uC0C8\uB85C\uC6B4 \uAD34\uBB3C\uC774
-      \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
-    en: 'Explore the Lava Cave in [Research > Expand].
-
-      New monsters appear
-      there.'
-  - enabled: 1
     kind: 2
     building: 0
     amount: 1
@@ -287,6 +272,21 @@ MonoBehaviour:
 
       Income stops when
       you''re full.'
+  - enabled: 1
+    kind: 3
+    building: 0
+    amount: 2
+    research: build
+    side: 0
+    rewardGold: 1000
+    rewardGems: 2
+    ko: "[\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C \uC6A9\uC554
+      \uB3D9\uAD74\uC744 \uD0D0\uC0AC\uD558\uC138\uC694.\n\uC0C8\uB85C\uC6B4 \uAD34\uBB3C\uC774
+      \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
+    en: 'Explore the Lava Cave in [Research > Expand].
+
+      New monsters appear
+      there.'
   - enabled: 1
     kind: 14
     building: 0

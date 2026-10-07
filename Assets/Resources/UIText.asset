@@ -15,39 +15,53 @@ MonoBehaviour:
   entries:
   - ko: "\uC0C8 \uAC8C\uC784\uC744 \uC2DC\uC791\uD588\uC2B5\uB2C8\uB2E4."
     en: Started a new game.
-    where: Game.cs:123
+    where: Game.cs:124
     args: 
     origKo: "\uC0C8 \uAC8C\uC784\uC744 \uC2DC\uC791\uD588\uC2B5\uB2C8\uB2E4."
     origEn: Started a new game.
   - ko: "\uBCF4\uC11D\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
     en: Not enough Gems.
-    where: Game.cs:157
+    where: Game.cs:158
     args: 
     origKo: "\uBCF4\uC11D\uC774 \uBD80\uC871\uD569\uB2C8\uB2E4."
     origEn: Not enough Gems.
   - ko: "\uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
     en: Not enough resources.
-    where: "Game.cs:157 \uC678 3\uACF3"
+    where: "Game.cs:158 \uC678 3\uACF3"
     args: 
     origKo: "\uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
     origEn: Not enough resources.
   - ko: "\uAD50\uD658\uD560 \uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
     en: Not enough to exchange.
-    where: Game.cs:205
+    where: Game.cs:206
     args: 
     origKo: "\uAD50\uD658\uD560 \uC7AC\uD654\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
     origEn: Not enough to exchange.
+  - ko: "\uC2A4\uD14C\uC774\uC9C0 {0}\uB97C \uC5F4\uBA74 \uBCF4\uC11D\uC73C\uB85C
+      \uAD50\uD658\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: Open stage {0} to exchange for Gems.
+    where: Game.cs:217
+    args: '{0} = GameData.GemExchangeStage'
+    origKo: "\uC2A4\uD14C\uC774\uC9C0 {0}\uB97C \uC5F4\uBA74 \uBCF4\uC11D\uC73C\uB85C
+      \uAD50\uD658\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: Open stage {0} to exchange for Gems.
+  - ko: "\uAD50\uD658\uD560 \uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    en: Not enough Gold to exchange.
+    where: Game.cs:219
+    args: 
+    origKo: "\uAD50\uD658\uD560 \uACE8\uB4DC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4."
+    origEn: Not enough Gold to exchange.
   - ko: "[\uD734\uAC8C\uC2E4] \uC77C\uC77C \uC9C0\uC6D0\uAE08 {0}\uACE8\uB4DC\uB97C
       \uBC1B\uC558\uC2B5\uB2C8\uB2E4."
     en: '[Lounge] Received a daily bonus of {0} Gold.'
-    where: Game.cs:232
+    where: Game.cs:249
     args: '{0} = gold:N0'
     origKo: "[\uD734\uAC8C\uC2E4] \uC77C\uC77C \uC9C0\uC6D0\uAE08 {0}\uACE8\uB4DC\uB97C
       \uBC1B\uC558\uC2B5\uB2C8\uB2E4."
     origEn: '[Lounge] Received a daily bonus of {0} Gold.'
   - ko: "[\uC5C5\uC801 \uB2EC\uC131] {0} (+{1}\uACE8\uB4DC)"
     en: '[Achievement] {0} (+{1} Gold)'
-    where: Game.cs:253
+    where: Game.cs:270
     args: "{0} = a.Name  \xB7  {1} = a.gold:N0"
     origKo: "[\uC5C5\uC801 \uB2EC\uC131] {0} (+{1}\uACE8\uB4DC)"
     origEn: '[Achievement] {0} (+{1} Gold)'
@@ -69,81 +83,111 @@ MonoBehaviour:
     args: 
     origKo: "\uBCF4\uC11D"
     origEn: Gems
+  - ko: "\uAD6C\uB9E4 \uBCF5\uC6D0\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+    en: Restore failed.
+    where: Premium.cs:112
+    args: 
+    origKo: "\uAD6C\uB9E4 \uBCF5\uC6D0\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+    origEn: Restore failed.
+  - ko: "\uAD6C\uB9E4\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+    en: Purchase failed.
+    where: "Premium.cs:139 \uC678 1\uACF3"
+    args: 
+    origKo: "\uAD6C\uB9E4\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4."
+    origEn: Purchase failed.
+  - ko: "\uC2A4\uD1A0\uC5B4\uC5D0 \uC5F0\uACB0\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.
+      \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD558\uC138\uC694."
+    en: Can't reach the store. Please try again later.
+    where: Premium.cs:150
+    args: 
+    origKo: "\uC2A4\uD1A0\uC5B4\uC5D0 \uC5F0\uACB0\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.
+      \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD558\uC138\uC694."
+    origEn: Can't reach the store. Please try again later.
+  - ko: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC774 \uC801\uC6A9\uB418\uC5C8\uC2B5\uB2C8\uB2E4!
+      \uBC30\uC18D \uBC84\uD2BC\uC73C\uB85C \uCD5C\uB300 3\uBC30\uC18D\uAE4C\uC9C0
+      \uC4F8 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: Premium unlocked! Use the speed button for up to 3x.
+    where: Premium.cs:162
+    args: 
+    origKo: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC774 \uC801\uC6A9\uB418\uC5C8\uC2B5\uB2C8\uB2E4!
+      \uBC30\uC18D \uBC84\uD2BC\uC73C\uB85C \uCD5C\uB300 3\uBC30\uC18D\uAE4C\uC9C0
+      \uC4F8 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: Premium unlocked! Use the speed button for up to 3x.
   - ko: "\uD3EC\uD68D \uC8FC\uAE30 \uAE30\uBCF8 (\uD3EC\uD68D\uB300\uC6D0\uB9C8\uB2E4
       8~14\uCD08)"
     en: "Base hunt cycle (8\u201314s per hunter)"
-    where: GameData.cs:401
+    where: GameData.cs:422
     args: 
     origKo: "\uD3EC\uD68D \uC8FC\uAE30 \uAE30\uBCF8 (\uD3EC\uD68D\uB300\uC6D0\uB9C8\uB2E4
       8~14\uCD08)"
     origEn: "Base hunt cycle (8\u201314s per hunter)"
   - ko: "\uD3EC\uD68D \uC8FC\uAE30 -{0}%"
     en: Hunt cycle -{0}%
-    where: GameData.cs:402
+    where: GameData.cs:423
     args: '{0} = n * 4'
     origKo: "\uD3EC\uD68D \uC8FC\uAE30 -{0}%"
     origEn: Hunt cycle -{0}%
   - ko: "\uD3EC\uD68D\uB300\uC6D0 \uAE30\uBCF8 \uCCB4\uB825 (15~30, \uD3EC\uD68D
       1\uD68C\uC5D0 1 \uC18C\uBAA8)"
     en: "Base hunter stamina (15\u201330, -1 per catch)"
-    where: GameData.cs:404
+    where: GameData.cs:425
     args: 
     origKo: "\uD3EC\uD68D\uB300\uC6D0 \uAE30\uBCF8 \uCCB4\uB825 (15~30, \uD3EC\uD68D
       1\uD68C\uC5D0 1 \uC18C\uBAA8)"
     origEn: "Base hunter stamina (15\u201330, -1 per catch)"
   - ko: "\uD3EC\uD68D\uB300\uC6D0 \uCCB4\uB825 +{0}"
     en: Hunter stamina +{0}
-    where: GameData.cs:405
+    where: GameData.cs:426
     args: '{0} = n * 3'
     origKo: "\uD3EC\uD68D\uB300\uC6D0 \uCCB4\uB825 +{0}"
     origEn: Hunter stamina +{0}
   - ko: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08"
     en: Recovery {0}s
-    where: GameData.cs:407
+    where: GameData.cs:428
     args: '{0} = HunterRestTime:0'
     origKo: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08"
     origEn: Recovery {0}s
   - ko: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08 (\uAE30\uBCF8 {1}\uCD08)"
     en: Recovery {0}s (base {1}s)
-    where: GameData.cs:408
+    where: GameData.cs:429
     args: "{0} = RestTimeAt(n):0  \xB7  {1} = HunterRestTime:0"
     origKo: "\uCCB4\uB825 \uD68C\uBCF5 {0}\uCD08 (\uAE30\uBCF8 {1}\uCD08)"
     origEn: Recovery {0}s (base {1}s)
   - ko: "\uAD00\uB78C\uB8CC \uAE30\uBCF8 (\uAD34\uBB3C\uB9C8\uB2E4 \uB2E4\uB984)"
     en: Base admission (varies by monster)
-    where: GameData.cs:410
+    where: GameData.cs:431
     args: 
     origKo: "\uAD00\uB78C\uB8CC \uAE30\uBCF8 (\uAD34\uBB3C\uB9C8\uB2E4 \uB2E4\uB984)"
     origEn: Base admission (varies by monster)
   - ko: "\uAD00\uB78C\uB8CC +{0}%"
     en: Admission +{0}%
-    where: GameData.cs:411
+    where: GameData.cs:432
     args: '{0} = n * 10'
     origKo: "\uAD00\uB78C\uB8CC +{0}%"
     origEn: Admission +{0}%
   - ko: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 \uAE30\uBCF8 (\uC6B0\uB9AC
       \uD06C\uAE30\uB2F9 {0} \uB610\uB294 {1}\uBD84\uCE58)"
     en: Base fee storage ({0} per cage size or {1} min)
-    where: GameData.cs:413
+    where: GameData.cs:434
     args: "{0} = TankCapPerSize:N0  \xB7  {1} = TankCapMinutes:0"
     origKo: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 \uAE30\uBCF8 (\uC6B0\uB9AC
       \uD06C\uAE30\uB2F9 {0} \uB610\uB294 {1}\uBD84\uCE58)"
     origEn: Base fee storage ({0} per cage size or {1} min)
   - ko: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 +{0}%"
     en: Fee storage +{0}%
-    where: GameData.cs:414
+    where: GameData.cs:435
     args: '{0} = n * 15'
     origKo: "\uAD00\uB78C\uB8CC \uB204\uC801 \uD55C\uB3C4 +{0}%"
     origEn: Fee storage +{0}%
   - ko: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uD56D\uB9C8\uB825 {0}"
     en: Ward {0} per cage size
-    where: GameData.cs:416
+    where: GameData.cs:437
     args: '{0} = TankMakiPerSize'
     origKo: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uD56D\uB9C8\uB825 {0}"
     origEn: Ward {0} per cage size
   - ko: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uD56D\uB9C8\uB825 {0} (+{1})"
     en: Ward {0} per cage size (+{1})
-    where: GameData.cs:417
+    where: GameData.cs:438
     args: "{0} = TankMakiPerSize + n  \xB7  {1} = n"
     origKo: "\uC804\uC2DC \uC6B0\uB9AC \uD06C\uAE30\uB2F9 \uD56D\uB9C8\uB825 {0}
       (+{1})"
@@ -151,7 +195,7 @@ MonoBehaviour:
   - ko: "\uAE30\uBCF8 \uCD5C\uB300 \uC190\uB2D8 {0}\uBA85 + \uBC29\uBB38 \uAC00\uB2A5
       \uCE78\uB2F9 {1}\uBA85"
     en: Base max guests {0} + {1} per visitable cell
-    where: GameData.cs:419
+    where: GameData.cs:440
     args: "{0} = GuestSettings.I.maxBase:0  \xB7  {1} = GuestSettings.I.maxPerVisitableCell:0.#"
     origKo: "\uAE30\uBCF8 \uCD5C\uB300 \uC190\uB2D8 {0}\uBA85 + \uBC29\uBB38 \uAC00\uB2A5
       \uCE78\uB2F9 {1}\uBA85"
@@ -159,7 +203,7 @@ MonoBehaviour:
   - ko: "\uC190\uB2D8 \uBC29\uBB38 \uBE48\uB3C4 +{0}% \xB7 \uCD5C\uB300 \uC190\uB2D8
       +{1}\uBA85"
     en: "Guest rate +{0}% \xB7 Max guests +{1}"
-    where: GameData.cs:420
+    where: GameData.cs:441
     args: "{0} = n * 12  \xB7  {1} = n * GuestSettings.I.maxPerResearchLevel"
     origKo: "\uC190\uB2D8 \uBC29\uBB38 \uBE48\uB3C4 +{0}% \xB7 \uCD5C\uB300 \uC190\uB2D8
       +{1}\uBA85"
@@ -167,7 +211,7 @@ MonoBehaviour:
   - ko: "\uC6A9\uC0AC \uAE30\uBCF8 \uC18C\uC9C0\uAE08 {0}~{1}\uACE8\uB4DC (\uC5F4\uB9B0
       \uCE35\uB9C8\uB2E4 \xD7{2})"
     en: "Base hero wallet {0}\u2013{1} Gold (\xD7{2} per floor)"
-    where: GameData.cs:422
+    where: GameData.cs:443
     args: "{0} = GuestSettings.I.walletMin  \xB7  {1} = GuestSettings.I.walletMax 
       \xB7  {2} = GuestSettings.I.walletPerFloor:0.##"
     origKo: "\uC6A9\uC0AC \uAE30\uBCF8 \uC18C\uC9C0\uAE08 {0}~{1}\uACE8\uB4DC (\uC5F4\uB9B0
@@ -175,67 +219,67 @@ MonoBehaviour:
     origEn: "Base hero wallet {0}\u2013{1} Gold (\xD7{2} per floor)"
   - ko: "\uC6A9\uC0AC \uC18C\uC9C0\uAE08 +{0}%"
     en: Hero wallets +{0}%
-    where: GameData.cs:423
+    where: GameData.cs:444
     args: '{0} = n * 20'
     origKo: "\uC6A9\uC0AC \uC18C\uC9C0\uAE08 +{0}%"
     origEn: Hero wallets +{0}%
   - ko: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 {0}\uCD08"
     en: Guest patience {0}s
-    where: GameData.cs:425
+    where: GameData.cs:446
     args: '{0} = GuestSettings.I.patience:0.#'
     origKo: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 {0}\uCD08"
     origEn: Guest patience {0}s
   - ko: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 {0}\uCD08 (+{1}\uCD08)"
     en: Guest patience {0}s (+{1}s)
-    where: GameData.cs:426
+    where: GameData.cs:447
     args: "{0} = GuestSettings.I.patience + n * 1.5f:0.#  \xB7  {1} = n * 1.5f:0.#"
     origKo: "\uC190\uB2D8 \uB300\uAE30 \uC2DC\uAC04 {0}\uCD08 (+{1}\uCD08)"
     origEn: Guest patience {0}s (+{1}s)
   - ko: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uAE30\uBCF8 \uD310\uB9E4\uAC00 (\uC0C1\uD488
       \uBAA9\uB85D \uAC00\uACA9)"
     en: Base food & gift prices (as listed)
-    where: GameData.cs:428
+    where: GameData.cs:449
     args: 
     origKo: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uAE30\uBCF8 \uD310\uB9E4\uAC00 (\uC0C1\uD488
       \uBAA9\uB85D \uAC00\uACA9)"
     origEn: Base food & gift prices (as listed)
   - ko: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uD310\uB9E4\uAC00 +{0}%"
     en: Food & gift prices +{0}%
-    where: GameData.cs:429
+    where: GameData.cs:450
     args: '{0} = n * 5'
     origKo: "\uC74C\uC2DD\xB7\uAE30\uB150\uD488 \uD310\uB9E4\uAC00 +{0}%"
     origEn: Food & gift prices +{0}%
   - ko: "\uBCF4\uC11D \uC0DD\uC0B0 \uAE30\uBCF8 \uC18D\uB3C4 (\uC5F0\uAD6C\uC18C
       Lv.1: {0}\uBD84\uC5D0 1\uAC1C)"
     en: 'Base Gem output (Lab Lv.1: 1 per {0} min)'
-    where: GameData.cs:431
+    where: GameData.cs:452
     args: '{0} = LabInterval[0] / 60f:0'
     origKo: "\uBCF4\uC11D \uC0DD\uC0B0 \uAE30\uBCF8 \uC18D\uB3C4 (\uC5F0\uAD6C\uC18C
       Lv.1: {0}\uBD84\uC5D0 1\uAC1C)"
     origEn: 'Base Gem output (Lab Lv.1: 1 per {0} min)'
   - ko: "\uBCF4\uC11D \uC0DD\uC0B0 \uC18D\uB3C4 +{0}%"
     en: Gem output +{0}%
-    where: GameData.cs:432
+    where: GameData.cs:453
     args: '{0} = n * 8'
     origKo: "\uBCF4\uC11D \uC0DD\uC0B0 \uC18D\uB3C4 +{0}%"
     origEn: Gem output +{0}%
   - ko: "\uC4F0\uB808\uAE30 \uD558\uB098\uC5D0 \uCE94 {0}\uACE8\uB4DC \xB7 \uBCD1
       \uC790\uC7AC {1}"
     en: "Per trash: can {0} Gold \xB7 bottle {1} Mat"
-    where: GameData.cs:434
+    where: GameData.cs:455
     args: "{0} = TrashReward * GoldIncomeMul:0  \xB7  {1} = TrashReward"
     origKo: "\uC4F0\uB808\uAE30 \uD558\uB098\uC5D0 \uCE94 {0}\uACE8\uB4DC \xB7 \uBCD1
       \uC790\uC7AC {1}"
     origEn: "Per trash: can {0} Gold \xB7 bottle {1} Mat"
   - ko: "\uC4F0\uB808\uAE30 \uC218\uAC70 \uBCF4\uC0C1 +{0}%"
     en: Trash rewards +{0}%
-    where: GameData.cs:435
+    where: GameData.cs:456
     args: '{0} = n * 50'
     origKo: "\uC4F0\uB808\uAE30 \uC218\uAC70 \uBCF4\uC0C1 +{0}%"
     origEn: Trash rewards +{0}%
   - ko: "\uAC74\uBB3C Lv.{0}\uAE4C\uC9C0 \uC5C5\uADF8\uB808\uC774\uB4DC{1}"
     en: Buildings up to Lv.{0}{2}
-    where: GameData.cs:436
+    where: GameData.cs:457
     args: "{0} = n + 1  \xB7  {1} = (n >= ArenaResearchLevel ? \" \xB7 \uD22C\uAE30\uC7A5
       \uAC1C\uBC29\" : \"\")  \xB7  {2} = (n >= ArenaResearchLevel ? \" \xB7 Arena
       unlocked\" : \"\")"
@@ -244,38 +288,38 @@ MonoBehaviour:
   - ko: "\uCD5C\uB300 \uBCF4\uC720 \uACE8\uB4DC\xB7\uC790\uC7AC {0} \xB7 \uBCF4\uC11D
       {1}"
     en: "Max Gold & Mat {0} \xB7 Gems {1}"
-    where: GameData.cs:437
+    where: GameData.cs:458
     args: "{0} = GoldCapAt(n):N0  \xB7  {1} = GemCapAt(n)"
     origKo: "\uCD5C\uB300 \uBCF4\uC720 \uACE8\uB4DC\xB7\uC790\uC7AC {0} \xB7 \uBCF4\uC11D
       {1}"
     origEn: "Max Gold & Mat {0} \xB7 Gems {1}"
   - ko: "\uB300\uC2E4\uD328"
     en: Disaster
-    where: GameData.cs:586
+    where: GameData.cs:607
     args: 
     origKo: "\uB300\uC2E4\uD328"
     origEn: Disaster
   - ko: "\uC2E4\uD328"
     en: Defeat
-    where: GameData.cs:587
+    where: GameData.cs:608
     args: 
     origKo: "\uC2E4\uD328"
     origEn: Defeat
   - ko: "\uBB34\uC2B9\uBD80"
     en: Draw
-    where: GameData.cs:588
+    where: GameData.cs:609
     args: 
     origKo: "\uBB34\uC2B9\uBD80"
     origEn: Draw
   - ko: "\uC131\uACF5"
     en: Victory
-    where: GameData.cs:589
+    where: GameData.cs:610
     args: 
     origKo: "\uC131\uACF5"
     origEn: Victory
   - ko: "\uB300\uC131\uACF5"
     en: Triumph
-    where: GameData.cs:590
+    where: GameData.cs:611
     args: 
     origKo: "\uB300\uC131\uACF5"
     origEn: Triumph
@@ -530,47 +574,53 @@ MonoBehaviour:
     args: 
     origKo: "\uBCF4\uC11D \uBD80\uC871"
     origEn: Not enough Gems
+  - ko: "\uACE8\uB4DC \uBD80\uC871"
+    en: Not enough Gold
+    where: "Game.Progress.cs:16 \uC678 1\uACF3"
+    args: 
+    origKo: "\uACE8\uB4DC \uBD80\uC871"
+    origEn: Not enough Gold
+  - ko: "\uC790\uC7AC \uBD80\uC871"
+    en: Not enough Materials
+    where: Game.Progress.cs:17
+    args: 
+    origKo: "\uC790\uC7AC \uBD80\uC871"
+    origEn: Not enough Materials
   - ko: "[\uC5F0\uAD6C \uC644\uB8CC] {0}: {1}"
     en: '[Research] {0}: {1}'
-    where: Game.Progress.cs:27
+    where: Game.Progress.cs:29
     args: "{0} = r.Name  \xB7  {1} = r.Desc"
     origKo: "[\uC5F0\uAD6C \uC644\uB8CC] {0}: {1}"
     origEn: '[Research] {0}: {1}'
   - ko: "\uCD5C\uB300 \uB2E8\uACC4"
     en: Maxed
-    where: "Game.Progress.cs:37 \uC678 1\uACF3"
+    where: "Game.Progress.cs:39 \uC678 1\uACF3"
     args: 
     origKo: "\uCD5C\uB300 \uB2E8\uACC4"
     origEn: Maxed
   - ko: "[\uC5C5\uADF8\uB808\uC774\uB4DC] {0} {1}\uB2E8\uACC4: {2}"
     en: '[Upgrade] {0} Lv.{1}: {2}'
-    where: Game.Progress.cs:51
+    where: Game.Progress.cs:53
     args: "{0} = u.Name  \xB7  {1} = next  \xB7  {2} = u.effect(next)"
     origKo: "[\uC5C5\uADF8\uB808\uC774\uB4DC] {0} {1}\uB2E8\uACC4: {2}"
     origEn: '[Upgrade] {0} Lv.{1}: {2}'
   - ko: "\uC9C1\uC6D0 \uC219\uC18C\uB97C \uC9D3\uACE0 Lv.2 \uC774\uC0C1\uC73C\uB85C
       \uC62C\uB824\uC57C \uB354 \uACE0\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     en: Build a Staff Dorm and upgrade it to Lv.2+ to hire more.
-    where: Game.Progress.cs:79
+    where: Game.Progress.cs:81
     args: 
     origKo: "\uC9C1\uC6D0 \uC219\uC18C\uB97C \uC9D3\uACE0 Lv.2 \uC774\uC0C1\uC73C\uB85C
       \uC62C\uB824\uC57C \uB354 \uACE0\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     origEn: Build a Staff Dorm and upgrade it to Lv.2+ to hire more.
-  - ko: "\uACE8\uB4DC \uBD80\uC871"
-    en: Not enough Gold
-    where: Game.Progress.cs:80
-    args: 
-    origKo: "\uACE8\uB4DC \uBD80\uC871"
-    origEn: Not enough Gold
   - ko: "{0} \uACE0\uC6A9!"
     en: Hired {0}!
-    where: Game.Progress.cs:91
+    where: Game.Progress.cs:93
     args: '{0} = d.Name'
     origKo: "{0} \uACE0\uC6A9!"
     origEn: Hired {0}!
   - ko: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     en: Requires a {0} Lv.{1}+.
-    where: Game.Progress.cs:136
+    where: Game.Progress.cs:138
     args: "{0} = GameData.Buildings[item.shop].Name  \xB7  {1} = item.tier"
     origKo: "{0} Lv.{1} \uC774\uC0C1\uC774 \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     origEn: Requires a {0} Lv.{1}+.
@@ -874,117 +924,184 @@ MonoBehaviour:
     args: 
     origKo: "\uC800\uC7A5 (30\uCD08\uB9C8\uB2E4 \uC790\uB3D9 \uC800\uC7A5)"
     origEn: Save (auto-saves every 30s)
+  - ko: "\uAC8C\uC784 \uC18D\uB3C4 x{0} (\uD0ED: 1\u21922\u21923\uBC30\uC18D)"
+    en: "Game speed x{0} (tap: 1\u21922\u21923x)"
+    where: GameUI.cs:225
+    args: '{0} = Premium.Speed'
+    origKo: "\uAC8C\uC784 \uC18D\uB3C4 x{0} (\uD0ED: 1\u21922\u21923\uBC30\uC18D)"
+    origEn: "Game speed x{0} (tap: 1\u21922\u21923x)"
+  - ko: "\uAC8C\uC784 \uC18D\uB3C4 \u2014 \uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC5D0\uC11C
+      \uCD5C\uB300 3\uBC30\uC18D"
+    en: "Game speed \u2014 up to 3x with Premium"
+    where: GameUI.cs:226
+    args: 
+    origKo: "\uAC8C\uC784 \uC18D\uB3C4 \u2014 \uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC5D0\uC11C
+      \uCD5C\uB300 3\uBC30\uC18D"
+    origEn: "Game speed \u2014 up to 3x with Premium"
   - ko: "\uC124\uC815 \u2014 \uC18C\uB9AC \xB7 \uC5B8\uC5B4 \xB7 \uC0C8\uB85C \uC2DC\uC791"
     en: "Settings \u2014 sound, language, new game"
-    where: GameUI.cs:223
+    where: GameUI.cs:227
     args: 
     origKo: "\uC124\uC815 \u2014 \uC18C\uB9AC \xB7 \uC5B8\uC5B4 \xB7 \uC0C8\uB85C
       \uC2DC\uC791"
     origEn: "Settings \u2014 sound, language, new game"
   - ko: "\uBB34\uC81C\uD55C"
     en: unlimited
-    where: GameUI.cs:226
+    where: GameUI.cs:230
     args: 
     origKo: "\uBB34\uC81C\uD55C"
     origEn: unlimited
+  - ko: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804"
+    en: Premium
+    where: GameUI.cs:250
+    args: 
+    origKo: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804"
+    origEn: Premium
+  - ko: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC744 \uAD6C\uB9E4\uD558\uBA74 \uAC8C\uC784\uC744
+      \uCD5C\uB300 3\uBC30\uC18D\uC73C\uB85C \uC9C4\uD589\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    en: Premium lets you run the game at up to 3x speed.
+    where: GameUI.cs:256
+    args: 
+    origKo: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804\uC744 \uAD6C\uB9E4\uD558\uBA74
+      \uAC8C\uC784\uC744 \uCD5C\uB300 3\uBC30\uC18D\uC73C\uB85C \uC9C4\uD589\uD560
+      \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+    origEn: Premium lets you run the game at up to 3x speed.
+  - ko: "\uD55C \uBC88 \uAD6C\uB9E4\uD558\uBA74 \uC601\uAD6C \uC801\uC6A9 \xB7 \uC0C8\uB85C
+      \uC2DC\uC791\uD574\uB3C4 \uC720\uC9C0\uB429\uB2C8\uB2E4."
+    en: "One-time purchase \xB7 kept even if you start a new game."
+    where: GameUI.cs:257
+    args: 
+    origKo: "\uD55C \uBC88 \uAD6C\uB9E4\uD558\uBA74 \uC601\uAD6C \uC801\uC6A9 \xB7
+      \uC0C8\uB85C \uC2DC\uC791\uD574\uB3C4 \uC720\uC9C0\uB429\uB2C8\uB2E4."
+    origEn: "One-time purchase \xB7 kept even if you start a new game."
+  - ko: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804 \uAD6C\uB9E4"
+    en: Buy Premium
+    where: "GameUI.cs:261 \uC678 1\uACF3"
+    args: 
+    origKo: "\uD504\uB9AC\uBBF8\uC5C4 \uBC84\uC804 \uAD6C\uB9E4"
+    origEn: Buy Premium
+  - ko: "\uAD6C\uB9E4 \uC644\uB8CC"
+    en: Purchased
+    where: GameUI.cs:262
+    args: 
+    origKo: "\uAD6C\uB9E4 \uC644\uB8CC"
+    origEn: Purchased
+  - ko: "\uACB0\uC81C \uC911..."
+    en: Purchasing...
+    where: GameUI.cs:263
+    args: 
+    origKo: "\uACB0\uC81C \uC911..."
+    origEn: Purchasing...
+  - ko: "\uAD6C\uB9E4 \uBCF5\uC6D0"
+    en: Restore
+    where: GameUI.cs:266
+    args: 
+    origKo: "\uAD6C\uB9E4 \uBCF5\uC6D0"
+    origEn: Restore
   - ko: "\uC124\uC815"
     en: Settings
-    where: GameUI.cs:245
+    where: GameUI.cs:273
     args: 
     origKo: "\uC124\uC815"
     origEn: Settings
   - ko: "\uC18C\uB9AC"
     en: Sound
-    where: GameUI.cs:250
+    where: GameUI.cs:278
     args: 
     origKo: "\uC18C\uB9AC"
     origEn: Sound
   - ko: "\uBC30\uACBD\uC74C"
     en: Music
-    where: GameUI.cs:251
+    where: GameUI.cs:279
     args: 
     origKo: "\uBC30\uACBD\uC74C"
     origEn: Music
   - ko: "\uD6A8\uACFC\uC74C"
     en: Effects
-    where: GameUI.cs:252
+    where: GameUI.cs:280
     args: 
     origKo: "\uD6A8\uACFC\uC74C"
     origEn: Effects
   - ko: "\uC5B8\uC5B4 \xB7 Language"
     en: "Language \xB7 \uC5B8\uC5B4"
-    where: GameUI.cs:254
+    where: GameUI.cs:282
     args: 
     origKo: "\uC5B8\uC5B4 \xB7 Language"
     origEn: "Language \xB7 \uC5B8\uC5B4"
   - ko: "\uAC8C\uC784"
     en: Game
-    where: GameUI.cs:259
+    where: GameUI.cs:287
     args: 
     origKo: "\uAC8C\uC784"
     origEn: Game
   - ko: "\uD29C\uD1A0\uB9AC\uC5BC \uB2E4\uC2DC \uBCF4\uAE30"
     en: Replay tutorial
-    where: GameUI.cs:261
+    where: GameUI.cs:289
     args: 
     origKo: "\uD29C\uD1A0\uB9AC\uC5BC \uB2E4\uC2DC \uBCF4\uAE30"
     origEn: Replay tutorial
+  - ko: "\uB9AC\uBDF0 \uC4F0\uAE30"
+    en: Review
+    where: GameUI.cs:290
+    args: 
+    origKo: "\uB9AC\uBDF0 \uC4F0\uAE30"
+    origEn: Review
   - ko: "\uC0C8\uB85C \uC2DC\uC791"
     en: New game
-    where: GameUI.cs:263
+    where: GameUI.cs:292
     args: 
     origKo: "\uC0C8\uB85C \uC2DC\uC791"
     origEn: New game
   - ko: "\uC9C4\uD589 \uC0C1\uD669\uC740 30\uCD08\uB9C8\uB2E4, \uADF8\uB9AC\uACE0
       \uC571\uC744 \uB0B4\uB9B4 \uB54C \uC790\uB3D9\uC73C\uB85C \uC800\uC7A5\uB429\uB2C8\uB2E4."
     en: Progress auto-saves every 30 seconds and when the app is closed.
-    where: GameUI.cs:264
+    where: GameUI.cs:293
     args: 
     origKo: "\uC9C4\uD589 \uC0C1\uD669\uC740 30\uCD08\uB9C8\uB2E4, \uADF8\uB9AC\uACE0
       \uC571\uC744 \uB0B4\uB9B4 \uB54C \uC790\uB3D9\uC73C\uB85C \uC800\uC7A5\uB429\uB2C8\uB2E4."
     origEn: Progress auto-saves every 30 seconds and when the app is closed.
   - ko: "\uC0C8 \uAC8C\uC784"
     en: New game
-    where: GameUI.cs:287
+    where: GameUI.cs:316
     args: 
     origKo: "\uC0C8 \uAC8C\uC784"
     origEn: New game
   - ko: "\uBAA8\uB4E0 \uC9C4\uD589 \uC0C1\uD669\uC774 \uC0AD\uC81C\uB429\uB2C8\uB2E4.
       \uC815\uB9D0 \uC0C8\uB85C \uC2DC\uC791\uD560\uAE4C\uC694?"
     en: All progress will be deleted. Start over?
-    where: GameUI.cs:290
+    where: GameUI.cs:319
     args: 
     origKo: "\uBAA8\uB4E0 \uC9C4\uD589 \uC0C1\uD669\uC774 \uC0AD\uC81C\uB429\uB2C8\uB2E4.
       \uC815\uB9D0 \uC0C8\uB85C \uC2DC\uC791\uD560\uAE4C\uC694?"
     origEn: All progress will be deleted. Start over?
   - ko: "\uC0C8\uB85C \uC2DC\uC791"
     en: Start over
-    where: GameUI.cs:294
+    where: GameUI.cs:323
     args: 
     origKo: "\uC0C8\uB85C \uC2DC\uC791"
     origEn: Start over
   - ko: "\uCDE8\uC18C"
     en: Cancel
-    where: GameUI.cs:295
+    where: GameUI.cs:324
     args: 
     origKo: "\uCDE8\uC18C"
     origEn: Cancel
   - ko: "\uBAA8\uB450 \uC218\uB839"
     en: Collect all
-    where: GameUI.cs:341
+    where: GameUI.cs:370
     args: 
     origKo: "\uBAA8\uB450 \uC218\uB839"
     origEn: Collect all
   - ko: "\uC218\uB839"
     en: Collect
-    where: "GameUI.cs:350 \uC678 1\uACF3"
+    where: "GameUI.cs:379 \uC678 1\uACF3"
     args: 
     origKo: "\uC218\uB839"
     origEn: Collect
   - ko: "\uBAA8\uB4E0 \uC804\uC2DC \uC6B0\uB9AC\uC758 \uAD00\uB78C\uB8CC\uC640 \uC5F0\uAD6C\uC18C\uC758
       \uBCF4\uC11D\uC744 \uD55C \uBC88\uC5D0 \uBC1B\uC2B5\uB2C8\uB2E4."
     en: Collect all cage fees and lab Gems at once.
-    where: GameUI.cs:356
+    where: GameUI.cs:385
     args: 
     origKo: "\uBAA8\uB4E0 \uC804\uC2DC \uC6B0\uB9AC\uC758 \uAD00\uB78C\uB8CC\uC640
       \uC5F0\uAD6C\uC18C\uC758 \uBCF4\uC11D\uC744 \uD55C \uBC88\uC5D0 \uBC1B\uC2B5\uB2C8\uB2E4."
@@ -993,7 +1110,7 @@ MonoBehaviour:
     en: 'tap/drag: build
 
       hold: cancel'
-    where: GameUI.cs:366
+    where: GameUI.cs:395
     args: 
     origKo: "\uD0ED\xB7\uB04C\uAE30: \uC9D3\uAE30\n\uAE38\uAC8C: \uCDE8\uC18C"
     origEn: 'tap/drag: build
@@ -1002,7 +1119,7 @@ MonoBehaviour:
   - ko: "\uBC30\uCE58 \uC911\n\uBE48 \uCE78 \uD074\uB9AD\xB7\uB04C\uAE30: \uC9D3\uAE30
       \xB7 \uC6B0\uD074\uB9AD/ESC: \uCDE8\uC18C"
     en: "placing\nClick/drag empty cells \xB7 Right-click/ESC: cancel"
-    where: GameUI.cs:366
+    where: GameUI.cs:395
     args: 
     origKo: "\uBC30\uCE58 \uC911\n\uBE48 \uCE78 \uD074\uB9AD\xB7\uB04C\uAE30: \uC9D3\uAE30
       \xB7 \uC6B0\uD074\uB9AD/ESC: \uCDE8\uC18C"
@@ -1011,7 +1128,7 @@ MonoBehaviour:
     en: 'Tap: collect/sell
 
       Hold: manage'
-    where: GameUI.cs:367
+    where: GameUI.cs:396
     args: 
     origKo: "\uD0ED: \uC218\uB839\xB7\uD310\uB9E4\n\uAE38\uAC8C: \uAD00\uB9AC"
     origEn: 'Tap: collect/sell
@@ -1022,7 +1139,7 @@ MonoBehaviour:
       1~7 \xB7 Tab \xB7 ESC"
     en: "Left-click: collect/sell \xB7 Right-click: manage\nClick empty cell: build
       \xB7 Keys 1-7 \xB7 Tab \xB7 ESC"
-    where: GameUI.cs:368
+    where: GameUI.cs:397
     args: 
     origKo: "\uAC74\uBB3C \uC88C\uD074\uB9AD: \uC218\uB839\xB7\uD310\uB9E4 \xB7 \uC6B0\uD074\uB9AD:
       \uAD00\uB9AC\n\uBE48 \uCE78 \uD074\uB9AD: \uAC74\uC124 \xB7 \uC22B\uC790\uD0A4
@@ -1031,44 +1148,44 @@ MonoBehaviour:
       build \xB7 Keys 1-7 \xB7 Tab \xB7 ESC"
   - ko: "+{0} \uACE8\uB4DC \xB7 \uBCF4\uC11D +{1}"
     en: "+{0} Gold \xB7 +{1} Gems"
-    where: GameUI.cs:375
+    where: GameUI.cs:404
     args: "{0} = gold:N0  \xB7  {1} = gems"
     origKo: "+{0} \uACE8\uB4DC \xB7 \uBCF4\uC11D +{1}"
     origEn: "+{0} Gold \xB7 +{1} Gems"
   - ko: "+{0} \uACE8\uB4DC"
     en: +{0} Gold
-    where: GameUI.cs:375
+    where: GameUI.cs:404
     args: '{0} = gold:N0'
     origKo: "+{0} \uACE8\uB4DC"
     origEn: +{0} Gold
   - ko: "\uD604\uD669 \xB7 \uC54C\uB9BC \uC5F4\uAE30/\uB2EB\uAE30"
     en: "Status \xB7 notifications"
-    where: GameUI.cs:394
+    where: GameUI.cs:423
     args: 
     origKo: "\uD604\uD669 \xB7 \uC54C\uB9BC \uC5F4\uAE30/\uB2EB\uAE30"
     origEn: "Status \xB7 notifications"
   - ko: "\uC54C\uB9BC"
     en: Log
-    where: GameUI.cs:419
+    where: GameUI.cs:448
     args: 
     origKo: "\uC54C\uB9BC"
     origEn: Log
   - ko: "\uCD94\uCC9C \uD589\uB3D9"
     en: suggest action
-    where: GameUI.cs:475
+    where: GameUI.cs:504
     args: 
     origKo: "\uB2E4\uC74C \uBAA9\uD45C"
     origEn: Next goal
   - ko: "\uD3EC\uD68D\uB300 \uD604\uD669"
     en: Hunters
-    where: GameUI.cs:480
+    where: GameUI.cs:509
     args: 
     origKo: "\uD3EC\uD68D\uB300 \uD604\uD669"
     origEn: Hunters
   - ko: "{0}\n{1}\n\uBBF8\uB07C: {2} \xB7 \uD798 {3}\n\n\uD074\uB9AD\uD558\uBA74
       \uD3EC\uD68D\uC5D0\uC11C \uC9C0\uCF1C\uBD05\uB2C8\uB2E4."
     en: "{0}\n{1}\nBait: {2} \xB7 Power {3}\n\nClick to watch in the hunting grounds."
-    where: GameUI.cs:492
+    where: GameUI.cs:521
     args: "{0} = g.Def(hs).Name  \xB7  {1} = g.HunterStatus(hs)  \xB7  {2} = GameData.Baits[hs.bait].Name 
       \xB7  {3} = GameData.PowerName((int)hs.power)"
     origKo: "{0}\n{1}\n\uBBF8\uB07C: {2} \xB7 \uD798 {3}\n\n\uD074\uB9AD\uD558\uBA74
@@ -1077,27 +1194,27 @@ MonoBehaviour:
       grounds."
   - ko: "\uB2EB\uAE30 (ESC)"
     en: Close (ESC)
-    where: GameUI.cs:613
+    where: GameUI.cs:642
     args: 
     origKo: "\uB2EB\uAE30 (ESC)"
     origEn: Close (ESC)
   - ko: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098, \uB04C\uC5B4\uC11C \uC5EC\uB7EC
       \uCE78\uC744 \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9C0\uC73C\uC138\uC694."
     en: Tap an empty cell, or drag to make one big cage.
-    where: GameUI.cs:757
+    where: GameUI.cs:787
     args: 
     origKo: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098, \uB04C\uC5B4\uC11C \uC5EC\uB7EC
       \uCE78\uC744 \uD558\uB098\uC758 \uC6B0\uB9AC\uB85C \uC9C0\uC73C\uC138\uC694."
     origEn: Tap an empty cell, or drag to make one big cage.
   - ko: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4."
     en: Tap or drag over empty cells to build.
-    where: GameUI.cs:758
+    where: GameUI.cs:788
     args: 
     origKo: "\uBE48 \uCE78\uC744 \uD0ED\uD558\uAC70\uB098 \uB04C\uC5B4\uC11C \uC9D3\uC2B5\uB2C8\uB2E4."
     origEn: Tap or drag over empty cells to build.
   - ko: "\uBA3C\uC800 {0} {1}\uCE35\uC744 \uC99D\uCD95\uD558\uC138\uC694."
     en: Expand {2} floor {1} first.
-    where: GameUI.cs:766
+    where: GameUI.cs:796
     args: "{0} = (wing == 0 ? \"\uC67C\uCABD\" : \"\uC624\uB978\uCABD\")  \xB7  {1}
       = g.NextFloor(wing)  \xB7  {2} = (wing == 0 ? \"left\" : \"right\")"
     origKo: "\uBA3C\uC800 {0} {1}\uCE35\uC744 \uC99D\uCD95\uD558\uC138\uC694."
@@ -2314,12 +2431,12 @@ MonoBehaviour:
     origKo: "\uADF8 \uC0C1\uD488\uC744 \uD30C\uB294 \uAC00\uAC8C(\uB808\uBCA8 \uCDA9\uC871)\uAC00
       \uC788\uC5B4\uC57C \uC0B4 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
     origEn: 'You can only buy goods that one of your shops can sell. '
-  - ko: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4."
-    en: Gold and Materials exchange 1:1.
+  - ko: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4. "
+    en: 'Gold and Materials exchange 1:1. '
     where: GameUI.Panels.cs:570
     args: 
-    origKo: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4."
-    origEn: Gold and Materials exchange 1:1.
+    origKo: "\uACE8\uB4DC\uC640 \uAC74\uC124 \uC790\uC7AC\uB294 1:1\uB85C \uAD50\uD658\uB429\uB2C8\uB2E4. "
+    origEn: 'Gold and Materials exchange 1:1. '
   - ko: "\uACE8\uB4DC \u2192 \uC790\uC7AC"
     en: "Gold \u2192 Materials"
     where: GameUI.Panels.cs:572
@@ -2332,11 +2449,35 @@ MonoBehaviour:
     args: 
     origKo: "\uC790\uC7AC \u2192 \uACE8\uB4DC"
     origEn: "Materials \u2192 Gold"
+  - ko: "\uACE8\uB4DC \u2192 \uBCF4\uC11D ({0}\uACE8\uB4DC = \uBCF4\uC11D 1\uAC1C)"
+    en: "Gold \u2192 Gems ({0} Gold = 1 Gem)"
+    where: GameUI.Panels.cs:608
+    args: '{0} = GameData.GemExchangeGold:N0'
+    origKo: "\uACE8\uB4DC \u2192 \uBCF4\uC11D ({0}\uACE8\uB4DC = \uBCF4\uC11D 1\uAC1C)"
+    origEn: "Gold \u2192 Gems ({0} Gold = 1 Gem)"
+  - ko: "\uC2A4\uD14C\uC774\uC9C0 {0}\uB97C \uD0D0\uC0AC\uD558\uBA74 \uC5F4\uB9BD\uB2C8\uB2E4."
+    en: Unlocks when you explore stage {0}.
+    where: GameUI.Panels.cs:611
+    args: '{0} = GameData.GemExchangeStage'
+    origKo: "\uC2A4\uD14C\uC774\uC9C0 {0}\uB97C \uD0D0\uC0AC\uD558\uBA74 \uC5F4\uB9BD\uB2C8\uB2E4."
+    origEn: Unlocks when you explore stage {0}.
+  - ko: "\uBCF4\uC11D 1\uAC1C"
+    en: 1 Gem
+    where: GameUI.Panels.cs:614
+    args: 
+    origKo: "\uBCF4\uC11D 1\uAC1C"
+    origEn: 1 Gem
+  - ko: "{0}\uACE8\uB4DC \u2192 \uBCF4\uC11D 1\uAC1C"
+    en: "{0} Gold \u2192 1 Gem"
+    where: GameUI.Panels.cs:616
+    args: '{0} = GameData.GemExchangeGold:N0'
+    origKo: "{0}\uACE8\uB4DC \u2192 \uBCF4\uC11D 1\uAC1C"
+    origEn: "{0} Gold \u2192 1 Gem"
   - ko: "\uD310\uB9E4\uB294 \uC989\uC2DC \uC218\uC775, \uC804\uC2DC\uB294 \uB290\uB9AC\uC9C0\uB9CC
       \uACC4\uC18D \uB4E4\uC5B4\uC624\uB294 \uC218\uC775\uC785\uB2C8\uB2E4. \uD0ED:
       1\uB9C8\uB9AC \xB7 "
     en: "Selling pays now; exhibiting pays over time. Tap: sell 1 \xB7 "
-    where: GameUI.Panels.cs:599
+    where: GameUI.Panels.cs:621
     args: 
     origKo: "\uD310\uB9E4\uB294 \uC989\uC2DC \uC218\uC775, \uC804\uC2DC\uB294 \uB290\uB9AC\uC9C0\uB9CC
       \uACC4\uC18D \uB4E4\uC5B4\uC624\uB294 \uC218\uC775\uC785\uB2C8\uB2E4. \uD0ED:
@@ -2346,7 +2487,7 @@ MonoBehaviour:
     en: 'Tap: sell 1
 
 '
-    where: GameUI.Panels.cs:611
+    where: GameUI.Panels.cs:633
     args: 
     origKo: "\uD0ED: 1\uB9C8\uB9AC \uD310\uB9E4\n"
     origEn: 'Tap: sell 1
@@ -2354,13 +2495,13 @@ MonoBehaviour:
 '
   - ko: "\uD310\uB9E4\uD560 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
     en: No monsters to sell.
-    where: GameUI.Panels.cs:613
+    where: GameUI.Panels.cs:635
     args: 
     origKo: "\uD310\uB9E4\uD560 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
     origEn: No monsters to sell.
   - ko: "\uAD34\uBB3C \xB7 \uB9C8\uB825\uCD08"
     en: "Monsters \xB7 Herbs"
-    where: GameUI.Panels.cs:619
+    where: GameUI.Panels.cs:641
     args: 
     origKo: "\uAD34\uBB3C \xB7 \uB9C8\uB825\uCD08"
     origEn: "Monsters \xB7 Herbs"
@@ -2370,7 +2511,7 @@ MonoBehaviour:
 
 
       Tap a cage to exhibit, or sell in the [Shop].'
-    where: GameUI.Panels.cs:628
+    where: GameUI.Panels.cs:650
     args: 
     origKo: "\n\n\uC804\uC2DC \uC6B0\uB9AC\uB97C \uD0ED\uD574 \uB123\uAC70\uB098
       [\uC0C1\uC810]\uC5D0\uC11C \uD31D\uB2C8\uB2E4."
@@ -2380,7 +2521,7 @@ MonoBehaviour:
       Tap a cage to exhibit, or sell in the [Shop].'
   - ko: "\uC7A1\uC740 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
     en: No monsters yet.
-    where: GameUI.Panels.cs:630
+    where: GameUI.Panels.cs:652
     args: 
     origKo: "\uC7A1\uC740 \uAD34\uBB3C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."
     origEn: No monsters yet.
@@ -2388,7 +2529,7 @@ MonoBehaviour:
     en: '{0}
 
       {1} Gold each'
-    where: GameUI.Panels.cs:637
+    where: GameUI.Panels.cs:659
     args: "{0} = bd.Name  \xB7  {1} = bd.price"
     origKo: "{0}\n\uAC1C\uB2F9 {1}\uACE8\uB4DC"
     origEn: '{0}
@@ -2396,7 +2537,7 @@ MonoBehaviour:
       {1} Gold each'
   - ko: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488 \uC7AC\uACE0"
     en: Food & gift stock
-    where: GameUI.Panels.cs:640
+    where: GameUI.Panels.cs:662
     args: 
     origKo: "\uC74C\uC2DD \xB7 \uAE30\uB150\uD488 \uC7AC\uACE0"
     origEn: Food & gift stock
@@ -2406,7 +2547,7 @@ MonoBehaviour:
       {1} Lv.{2}
 
       Sells for {3} Gold'
-    where: GameUI.Panels.cs:646
+    where: GameUI.Panels.cs:668
     args: "{0} = it.Name  \xB7  {1} = GameData.Buildings[it.shop].Name  \xB7  {2}
       = it.tier  \xB7  {3} = it.sellPrice:N0"
     origKo: "{0}\n{1} Lv.{2} \uC0C1\uD488\n\uD310\uB9E4\uAC00 {3}\uACE8\uB4DC"
@@ -2417,69 +2558,69 @@ MonoBehaviour:
       Sells for {3} Gold'
   - ko: "\uC99D\uCD95 \xB7 \uD0D0\uC0AC"
     en: Expand
-    where: GameUI.Panels.cs:655
+    where: GameUI.Panels.cs:677
     args: 
     origKo: "\uC99D\uCD95 \xB7 \uD0D0\uC0AC"
     origEn: Expand
   - ko: "\uBCF4\uC11D {0}"
     en: Gems {0}
-    where: GameUI.Panels.cs:661
+    where: GameUI.Panels.cs:683
     args: '{0} = g.S.rp:N0'
     origKo: "\uBCF4\uC11D {0}"
     origEn: Gems {0}
   - ko: "\uBCF4\uC11D\uC740 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC\uC785\uB2C8\uB2E4.
       \uC544\uAEF4 \uC4F0\uC138\uC694!"
     en: "Gems are precious \u2014 spend them wisely!"
-    where: GameUI.Panels.cs:663
+    where: GameUI.Panels.cs:685
     args: 
     origKo: "\uBCF4\uC11D\uC740 \uAC00\uC7A5 \uADC0\uD55C \uC7AC\uB8CC\uC785\uB2C8\uB2E4.
       \uC544\uAEF4 \uC4F0\uC138\uC694!"
     origEn: "Gems are precious \u2014 spend them wisely!"
   - ko: "\uC131 \uC99D\uCD95"
     en: Castle expansion
-    where: GameUI.Panels.cs:667
+    where: GameUI.Panels.cs:689
     args: 
     origKo: "\uC131 \uC99D\uCD95"
     origEn: Castle expansion
   - ko: "\uC2A4\uD14C\uC774\uC9C0 \uD0D0\uC0AC"
     en: Explore stages
-    where: GameUI.Panels.cs:670
+    where: GameUI.Panels.cs:692
     args: 
     origKo: "\uC2A4\uD14C\uC774\uC9C0 \uD0D0\uC0AC"
     origEn: Explore stages
   - ko: "\uD604\uC7AC: {0}"
     en: 'Now: {0}'
-    where: GameUI.Panels.cs:711
+    where: GameUI.Panels.cs:733
     args: '{0} = now'
     origKo: "\uD604\uC7AC: {0}"
     origEn: 'Now: {0}'
   - ko: "\uBAA8\uB4E0 \uB2E8\uACC4\uB97C \uC644\uB8CC\uD588\uC2B5\uB2C8\uB2E4."
     en: All levels complete.
-    where: GameUI.Panels.cs:712
+    where: GameUI.Panels.cs:734
     args: 
     origKo: "\uBAA8\uB4E0 \uB2E8\uACC4\uB97C \uC644\uB8CC\uD588\uC2B5\uB2C8\uB2E4."
     origEn: All levels complete.
   - ko: "\uB2E4\uC74C: {0}"
     en: 'Next: {0}'
-    where: GameUI.Panels.cs:712
+    where: GameUI.Panels.cs:734
     args: '{0} = UIKit.Col(u.effect(lv + 1), UIKit.GoodText)'
     origKo: "\uB2E4\uC74C: {0}"
     origEn: 'Next: {0}'
   - ko: "{0}\uB2E8\uACC4 \uAC15\uD654"
     en: Level {0}
-    where: GameUI.Panels.cs:727
+    where: GameUI.Panels.cs:749
     args: '{0} = lv + 1'
     origKo: "{0}\uB2E8\uACC4 \uAC15\uD654"
     origEn: Level {0}
   - ko: "\uC120\uD589 \uC5F0\uAD6C \uD544\uC694"
     en: Needs previous
-    where: GameUI.Panels.cs:761
+    where: GameUI.Panels.cs:784
     args: 
     origKo: "\uC120\uD589 \uC5F0\uAD6C \uD544\uC694"
     origEn: Needs previous
   - ko: "\uD0D0\uC0AC"
     en: Explore
-    where: GameUI.Panels.cs:761
+    where: GameUI.Panels.cs:784
     args: 
     origKo: "\uD0D0\uC0AC"
     origEn: Explore
@@ -2487,7 +2628,7 @@ MonoBehaviour:
       \uB3C4\uAC10\uC5D0 \uB4F1\uB85D\uD558\uACE0 \uACE8\uB4DC\uC640 \uBCF4\uC11D(\uD788\uB4E0\uC740
       5\uAC1C)\uC744 \uBC1B\uC2B5\uB2C8\uB2E4."
     en: Catch {0} of a monster to register it for Gold and Gems (5 for hidden ones).
-    where: GameUI.Panels.cs:769
+    where: GameUI.Panels.cs:792
     args: '{0} = GameData.CollectionRegisterCount'
     origKo: "\uAC19\uC740 \uAD34\uBB3C\uC744 {0}\uB9C8\uB9AC \uD3EC\uD68D\uD558\uBA74
       \uB3C4\uAC10\uC5D0 \uB4F1\uB85D\uD558\uACE0 \uACE8\uB4DC\uC640 \uBCF4\uC11D(\uD788\uB4E0\uC740
@@ -2496,63 +2637,95 @@ MonoBehaviour:
       ones).
   - ko: "\uBC1C\uACAC {0}/{1}"
     en: Found {0}/{1}
-    where: GameUI.Panels.cs:780
+    where: GameUI.Panels.cs:803
     args: "{0} = f  \xB7  {1} = tt"
     origKo: "\uBC1C\uACAC {0}/{1}"
     origEn: Found {0}/{1}
   - ko: "\uC2A4\uD14C\uC774\uC9C0 {0} \u2014 [\uC5F0\uAD6C > \uC99D\uCD95 \xB7 \uD0D0\uC0AC]\uC5D0\uC11C
       \uD0D0\uC0AC\uD558\uBA74 \uAD34\uBB3C\uC774 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
     en: "Stage {0} \u2014 explore it in [Research > Expand]."
-    where: GameUI.Panels.cs:782
+    where: GameUI.Panels.cs:805
     args: '{0} = r.stage'
     origKo: "\uC2A4\uD14C\uC774\uC9C0 {0} \u2014 [\uC5F0\uAD6C > \uC99D\uCD95 \xB7
       \uD0D0\uC0AC]\uC5D0\uC11C \uD0D0\uC0AC\uD558\uBA74 \uAD34\uBB3C\uC774 \uB098\uD0C0\uB0A9\uB2C8\uB2E4."
     origEn: "Stage {0} \u2014 explore it in [Research > Expand]."
   - ko: "??? (\uD788\uB4E0)"
     en: ??? (hidden)
-    where: GameUI.Panels.cs:798
+    where: GameUI.Panels.cs:821
     args: 
     origKo: "??? (\uD788\uB4E0)"
     origEn: ??? (hidden)
   - ko: "\uB4F1\uB85D \uC644\uB8CC"
     en: Registered
-    where: GameUI.Panels.cs:808
+    where: GameUI.Panels.cs:831
     args: 
     origKo: "\uB4F1\uB85D \uC644\uB8CC"
     origEn: Registered
   - ko: "\uB4F1\uB85D (\uBCF4\uC11D +{0})"
     en: Register (+{0} Gems)
-    where: GameUI.Panels.cs:812
+    where: GameUI.Panels.cs:835
     args: '{0} = GameData.CollectionGems(m)'
     origKo: "\uB4F1\uB85D (\uBCF4\uC11D +{0})"
     origEn: Register (+{0} Gems)
   - ko: "\uD2B9\uBCC4\uD55C \uBBF8\uB07C\uC640 \uD798 \uC870\uD569\uC5D0\uC11C\uB9CC
       \uB098\uD0C0\uB09C\uB2E4\uACE0 \uD55C\uB2E4..."
     en: Said to appear only with a special bait and power...
-    where: GameUI.Panels.cs:817
+    where: GameUI.Panels.cs:840
     args: 
     origKo: "\uD2B9\uBCC4\uD55C \uBBF8\uB07C\uC640 \uD798 \uC870\uD569\uC5D0\uC11C\uB9CC
       \uB098\uD0C0\uB09C\uB2E4\uACE0 \uD55C\uB2E4..."
     origEn: Said to appear only with a special bait and power...
   - ko: "\uB2EC\uC131 {0}/{1}"
     en: Completed {0}/{1}
-    where: GameUI.Panels.cs:829
+    where: GameUI.Panels.cs:852
     args: "{0} = done  \xB7  {1} = GameData.Achievements.Length"
     origKo: "\uB2EC\uC131 {0}/{1}"
     origEn: Completed {0}/{1}
   - ko: "\uB2EC\uC131\uD558\uBA74 \uACE8\uB4DC\uB97C \uC790\uB3D9\uC73C\uB85C \uBC1B\uC2B5\uB2C8\uB2E4."
     en: Gold is paid automatically on completion.
-    where: GameUI.Panels.cs:832
+    where: GameUI.Panels.cs:855
     args: 
     origKo: "\uB2EC\uC131\uD558\uBA74 \uACE8\uB4DC\uB97C \uC790\uB3D9\uC73C\uB85C
       \uBC1B\uC2B5\uB2C8\uB2E4."
     origEn: Gold is paid automatically on completion.
   - ko: "\uD78C\uD2B8: {0} + \uD798 {1}"
     en: 'Hint: {0} + {1} power'
-    where: GameUI.Panels.cs:872
+    where: GameUI.Panels.cs:895
     args: "{0} = GameData.Baits[b].Name  \xB7  {1} = GameData.PowerName(p)"
     origKo: "\uD78C\uD2B8: {0} + \uD798 {1}"
     origEn: 'Hint: {0} + {1} power'
+  - ko: "\uB9AC\uBDF0 \uBD80\uD0C1\uB4DC\uB824\uC694"
+    en: Enjoying the game?
+    where: GameUI.Review.cs:28
+    args: 
+    origKo: "\uB9AC\uBDF0 \uBD80\uD0C1\uB4DC\uB824\uC694"
+    origEn: Enjoying the game?
+  - ko: "\uB9C8\uC655\uC131 \uACBD\uC601\uC740 \uC990\uAC70\uC6B0\uC2E0\uAC00\uC694?"
+    en: Enjoying running the Demon Castle?
+    where: GameUI.Review.cs:34
+    args: 
+    origKo: "\uB9C8\uC655\uC131 \uACBD\uC601\uC740 \uC990\uAC70\uC6B0\uC2E0\uAC00\uC694?"
+    origEn: Enjoying running the Demon Castle?
+  - ko: "\uC2A4\uD1A0\uC5B4\uC5D0 \uB9AC\uBDF0\uB97C \uB0A8\uACA8 \uC8FC\uC2DC\uBA74
+      \uAC1C\uBC1C\uC5D0 \uD070 \uD798\uC774 \uB429\uB2C8\uB2E4."
+    en: A store review would really help us keep making the game.
+    where: GameUI.Review.cs:35
+    args: 
+    origKo: "\uC2A4\uD1A0\uC5B4\uC5D0 \uB9AC\uBDF0\uB97C \uB0A8\uACA8 \uC8FC\uC2DC\uBA74
+      \uAC1C\uBC1C\uC5D0 \uD070 \uD798\uC774 \uB429\uB2C8\uB2E4."
+    origEn: A store review would really help us keep making the game.
+  - ko: "\uB9AC\uBDF0 \uC4F0\uAE30"
+    en: Write a review
+    where: GameUI.Review.cs:39
+    args: 
+    origKo: "\uB9AC\uBDF0 \uC4F0\uAE30"
+    origEn: Write a review
+  - ko: "\uB098\uC911\uC5D0"
+    en: Later
+    where: GameUI.Review.cs:40
+    args: 
+    origKo: "\uB098\uC911\uC5D0"
+    origEn: Later
   - ko: "\uB9C8\uC655\uC131\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!"
     en: Welcome to the Demon Castle!
     where: GameUI.Tutorial.cs:18

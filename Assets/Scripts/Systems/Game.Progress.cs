@@ -13,6 +13,8 @@ namespace Mawang
             if (!string.IsNullOrEmpty(r.requires) && !S.research.Contains(r.requires))
                 return L.T($"선행: {GameData.ResearchById(r.requires).Name}", $"Requires: {GameData.ResearchById(r.requires).Name}");
             if (S.rp < r.rp) return L.T("보석 부족", "Not enough Gems");
+            if (S.gold < r.gold) return L.T("골드 부족", "Not enough Gold");
+            if (S.material < r.mat) return L.T("자재 부족", "Not enough Materials");
             return null;
         }
 
@@ -20,7 +22,7 @@ namespace Mawang
         {
             var block = ResearchBlock(r);
             if (block != null) { Fail(block); return; }
-            S.rp -= r.rp;
+            if (!Spend(r.gold, r.mat, r.rp)) return;
             S.research.Add(r.id);
             Mods.Recalculate(S);
             Sound.Play("upgrade");

@@ -188,7 +188,7 @@ namespace Mawang
             UIKit.Stretch(row, 0, 0, 0, 6);
             row.GetComponent<HorizontalLayoutGroup>().padding = Mobile ? new RectOffset(14, 14, 6, 6) : new RectOffset(26, 26, 10, 10);
             if (Mobile) row.GetComponent<HorizontalLayoutGroup>().spacing = 6;
-            float tabW = Mobile ? 112 : 176;
+            float tabW = Mobile ? 100 : 176; // 폰(16:9 = 880폭)에서도 배속·설정 버튼까지 한 줄에 들어가게
 
             // 화면 전환 탭: 마왕성 / 포획장 (Tab 키)
             castleTab = UIKit.Button(row, L.T("마왕성", "Castle"), HideHunt, tabW, 52, Btn.Accent, Mobile ? UIKit.TS : UIKit.TM, "up_floor", Mobile ? 24 : 32);
@@ -198,12 +198,12 @@ namespace Mawang
             UIKit.Badge(huntTab.transform, () => g.S.hunters.FindAll(h => !h.dispatched && h.restTimer <= 0).Count, new Vector2(-6, -6));
             if (!Mobile) UIKit.Size(UIKit.Box(row, new Color(0.3f, 0.24f, 0.36f), "Divider"), 3, 44);
 
-            Pill(row, "ic_gold", () => g.S.gold, () => g.GoldFull, UIKit.Gold, Mobile ? 160 : 230, () => L.T($"골드 (최대 {CapText(g.GoldCap)})\n건설·구매·고용에 씁니다.\n최대 보유량에 닿으면 가게·전시 우리·투기장 수입이 멈춥니다.", $"Gold (max {CapText(g.GoldCap)})\nFor building, buying and hiring.\nAt the max, shop, cage and arena income stops."));
-            Pill(row, "ic_mat", () => g.S.material, () => g.S.material >= g.MatCap, UIKit.MatText, Mobile ? 140 : 200, () => L.T($"건설 자재 (최대 {CapText(g.MatCap)})\n건설·업그레이드에 씁니다.\n상점에서 골드와 1:1 교환", $"Materials (max {CapText(g.MatCap)})\nFor building and upgrades.\nExchange 1:1 with Gold in the Shop."));
+            Pill(row, "ic_gold", () => g.S.gold, () => g.GoldFull, UIKit.Gold, Mobile ? 150 : 230, () => L.T($"골드 (최대 {CapText(g.GoldCap)})\n건설·구매·고용에 씁니다.\n최대 보유량에 닿으면 가게·전시 우리·투기장 수입이 멈춥니다.", $"Gold (max {CapText(g.GoldCap)})\nFor building, buying and hiring.\nAt the max, shop, cage and arena income stops."));
+            Pill(row, "ic_mat", () => g.S.material, () => g.S.material >= g.MatCap, UIKit.MatText, Mobile ? 130 : 200, () => L.T($"건설 자재 (최대 {CapText(g.MatCap)})\n건설·업그레이드에 씁니다.\n상점에서 골드와 1:1 교환", $"Materials (max {CapText(g.MatCap)})\nFor building and upgrades.\nExchange 1:1 with Gold in the Shop."));
             Pill(row, "ic_rp", () => g.S.rp, () => g.GemFull, UIKit.RpText, Mobile ? 100 : 150, () => L.T($"보석 — 가장 귀한 재료 (최대 {CapText(g.GemCap)})\n흑마법 연구소에서 아주 천천히 나옵니다.\n연구에만 씁니다.", $"Gems — the rarest resource (max {CapText(g.GemCap)})\nSlowly made by the Dark Magic Lab.\nUsed only for research."));
 
             var visitors = UIKit.Panel(row, "ui_inset", "Visitors");
-            UIKit.Size(visitors, Mobile ? 120 : 230, 50);
+            UIKit.Size(visitors, Mobile ? 100 : 230, 50);
             var vr = UIKit.Row(visitors.transform, 50, 8);
             UIKit.Stretch(vr, 8, 0, 8, 0);
             UIKit.Icon(vr, "hero_warrior", Mobile ? 28 : 36);
@@ -220,6 +220,10 @@ namespace Mawang
                 UIKit.Label(row, "", UIKit.TS, TextAnchor.MiddleRight, UIKit.TextDim, 150).Bind(() => DateTime.Now.ToString("HH:mm"))
                     .Tip(L.T("현재 시각\n휴게실 지원금은 매일 06시에 지급됩니다.", "Current time\nLounge bonus is paid daily at 06:00."));
             if (!Mobile) UIKit.Button(row, "", () => { g.Save(); Toast(L.T("저장했습니다.", "Saved."), "ic_save"); }, 56, 52, Btn.Alt, UIKit.TS, "ic_save").Tip(L.T("저장 (30초마다 자동 저장)", "Save (auto-saves every 30s)"));
+            var speed = UIKit.Button(row, "x1", OnSpeedButton, Mobile ? 52 : 64, 52, Btn.Alt, UIKit.TM);
+            speed.Content().GetComponentInChildren<Text>().Bind(() => $"x{Premium.Speed}");
+            speed.Tip(() => Premium.Owned ? L.T($"게임 속도 x{Premium.Speed} (탭: 1→2→3배속)", $"Game speed x{Premium.Speed} (tap: 1→2→3x)")
+                                           : L.T("게임 속도 — 프리미엄 버전에서 최대 3배속", "Game speed — up to 3x with Premium"));
             UIKit.Button(row, "", OpenSettings, 56, 52, Btn.Alt, UIKit.TS, "ic_gear").Tip(L.T("설정 — 소리 · 언어 · 새로 시작", "Settings — sound, language, new game"));
         }
 
@@ -236,6 +240,30 @@ namespace Mawang
             num.horizontalOverflow = HorizontalWrapMode.Overflow; // 큰 숫자가 두 줄로 꺾이지 않게
             num.BindCounter(value, "N0", Mobile, full); // 폰: 2.93M 처럼 줄여 쓴다. 최대 보유량이면 빨간색
             box.Tip(tip);
+        }
+
+        // ── 배속: 프리미엄이면 1→2→3배, 아니면 구매 창 ─────────
+        void OnSpeedButton()
+        {
+            if (Premium.Owned) { Premium.CycleSpeed(); Sound.Play("click"); return; }
+            Sound.Play("open");
+            OpenModal(L.T("프리미엄 버전", "Premium"), BuildPremiumPanel, "ic_star");
+        }
+
+        void BuildPremiumPanel(RectTransform c)
+        {
+            UIKit.Spacer(c, 12);
+            UIKit.Label(UIKit.Row(c, 60).transform, L.T("프리미엄 버전을 구매하면 게임을 최대 3배속으로 진행할 수 있습니다.", "Premium lets you run the game at up to 3x speed."), UIKit.TM, TextAnchor.MiddleCenter);
+            UIKit.Label(UIKit.Row(c, 40).transform, L.T("한 번 구매하면 영구 적용 · 새로 시작해도 유지됩니다.", "One-time purchase · kept even if you start a new game."), UIKit.TS, TextAnchor.MiddleCenter, UIKit.TextDim);
+            UIKit.Spacer(c, 16);
+            var row = UIKit.Row(c, 60, 20);
+            row.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            var buy = UIKit.Button(row, L.T("프리미엄 버전 구매", "Buy Premium"), () => Premium.Buy(), 380, 56, Btn.Good, UIKit.TM, "ic_star");
+            buy.Content().GetComponentInChildren<Text>().Bind(() => Premium.Owned ? L.T("구매 완료", "Purchased")
+                : Premium.Purchasing ? L.T("결제 중...", "Purchasing...")
+                : L.T("프리미엄 버전 구매", "Buy Premium") + (string.IsNullOrEmpty(Premium.Price) ? "" : $" ({Premium.Price})")); // 스토어가 준 현지 통화 가격
+            buy.BindEnabled(() => !Premium.Owned && !Premium.Purchasing);
+            UIKit.Button(row, L.T("구매 복원", "Restore"), () => Premium.Restore(), 200, 56, Btn.Alt, UIKit.TM).BindEnabled(() => !Premium.Owned);
         }
 
         // ── 설정: 소리 · 언어 · 튜토리얼 · 새로 시작 ────────────
@@ -259,6 +287,7 @@ namespace Mawang
             UIKit.Header(c, L.T("게임", "Game"), "ic_star");
             var row = UIKit.Row(c, 64, 12, true);
             UIKit.Button(row, L.T("튜토리얼 다시 보기", "Replay tutorial"), () => { CloseModal(); ShowTutorial(); }, 300, 52, Btn.Primary, UIKit.TS, "ic_book", 24);
+            if (Review.Available) UIKit.Button(row, L.T("리뷰 쓰기", "Review"), Review.Open, 200, 52, Btn.Alt, UIKit.TS, "ic_star", 24);
             UIKit.Flex(row);
             UIKit.Button(row, L.T("새로 시작", "New game"), ConfirmReset, 220, 52, Btn.Danger, UIKit.TS, "ic_reset", 24);
             UIKit.Note(c, L.T("진행 상황은 30초마다, 그리고 앱을 내릴 때 자동으로 저장됩니다.", "Progress auto-saves every 30 seconds and when the app is closed."));
@@ -724,6 +753,7 @@ namespace Mawang
             }
 
             Tooltip.Tick();
+            TickReviewPrompt();
 
             rebuildCooldown -= Time.deltaTime;
             bool pressing = (Pointer.current != null && Pointer.current.press.isPressed) || (Mouse.current != null && Mouse.current.rightButton.isPressed);

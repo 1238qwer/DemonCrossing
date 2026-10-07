@@ -100,7 +100,8 @@ namespace Mawang
     public class ResearchDef
     {
         public string id, name, en, desc, descEn, icon;
-        public int rp;            // 연구 비용은 보석만
+        public int rp;
+        public int gold, mat;     // 스테이지 탐사는 골드·자재도 든다
         public string requires;
         public string Name => L.En ? en : name;
         public string Desc => L.En ? descEn : desc;
@@ -117,7 +118,7 @@ namespace Mawang
         public string Name => L.En ? en : name;
 
         public string TierId(int lv) => $"{id}_{lv}";
-        public int Rp(int lv) => Mathf.RoundToInt(rp0 * Mathf.Pow(GameData.UpgradeRpGrowth, lv - 1));
+        public int Rp(int lv) => Mathf.RoundToInt(rp0 * Mathf.Pow(GameData.UpgradeRpGrowth, lv - 1) * GameData.UpgradeRpMul);
     }
 
     // 업적: progress(게임) 가 target 이상이면 달성 → 골드 자동 지급
@@ -151,14 +152,24 @@ namespace Mawang
         public const float ElevatorCells = 0.2f;      // 엘리베이터 폭(칸 단위, 32/160 px)
 
         // 성 증축: n층을 여는 비용 (왼쪽·오른쪽 날개 따로). 보석은 연구에만 쓰므로 골드·자재만 (보석 대신 25% 비싸다)
-        public static int ExpandGold(int floor) => Mathf.RoundToInt(3750 * Mathf.Pow(1.75f, floor - 1) / 100f) * 100;
+        // 3층부터는 층마다 ×1.4 를 더 곱한다 (누적: 3층 ×1.4, 4층 ×1.96, ...)
+        public const int ExpandAccelFromFloor = 3;
+        public const float ExpandAccel = 1.4f;
+        public static int ExpandGold(int floor) => Mathf.RoundToInt(3750 * Mathf.Pow(1.75f, floor - 1) * Mathf.Pow(ExpandAccel, Mathf.Max(0, floor - ExpandAccelFromFloor + 1)) / 100f) * 100;
         public static int ExpandMat(int floor) => ExpandGold(floor) / 2;
 
         // 자원 최대 보유량 (연구 '자원 창고' n단계). 넘으면 자동 수입(가게 판매·전시 우리·투기장·연구소)이 멈춘다.
-        // 골드 90만 → 10단계 약 9,900만 (상점 Lv.10 업그레이드 ~137만을 감당), 자재도 같은 한도.
+        // 골드 3만에서 단계마다 ×2, 5단계부터는 단계마다 ×1.3 을 더 곱한다 (누적: 5단계 ×1.3, 6단계 ×1.69, ... 10단계 ×4.83 → 약 1억 4,800만).
+        // 후반 수입이 커서 ×2 만으로는 10단계도 금방 찬다. 자재도 같은 한도. 스테이지 탐사 비용(ExploreCost)도 이 값을 따른다.
         // 보석은 10개에서 단계마다 +10, 최대 50개 (가장 비싼 연구 = 스테이지 10 탐사 50개).
-        public static int GoldCapAt(int lv) => Mathf.RoundToInt(30000 * Mathf.Pow(2f, lv) / 1000f) * 1000; // 90만 → 10단계 약 9,900만
+        public const int StorageAccelFromLevel = 5;
+        public const float StorageAccel = 1.3f;
+        public static int GoldCapAt(int lv) => Mathf.RoundToInt(30000 * Mathf.Pow(2f, lv) * Mathf.Pow(StorageAccel, Mathf.Max(0, lv - StorageAccelFromLevel + 1)) / 1000f) * 1000;
         public const int GemCapBase = 10, GemCapPerLevel = 10, GemCapMax = 50;
+
+        // 교환소: 스테이지 GemExchangeStage 를 열면 골드 GemExchangeGold 당 보석 1개로 바꿀 수 있다 (보석 최대 보유량을 넘어도 받는다)
+        public const int GemExchangeStage = 7;
+        public const int GemExchangeGold = 10_000_000;
         public static int GemCapAt(int lv) => Mathf.Min(GemCapMax, GemCapBase + GemCapPerLevel * lv);
 
         // 건물 연구 n단계 → 모든 건물을 Lv.(n+1)까지 올릴 수 있다. 투기장은 3단계부터 짓는다.
@@ -273,10 +284,17 @@ namespace Mawang
         // 레벨업 비용표: base × growth^(레벨-1)
         // 업그레이드 비용 배율 (건설비는 그대로)
         public const int UpgradeCostMul = 5, DormUpgradeCostMul = 10;
+        // Lv.3→4 부터는 단계마다 비용에 ×1.5 를 더 곱한다 (누적: Lv.3→4 ×1.5, Lv.4→5 ×2.25, ...)
+        public const int UpgradeAccelFromLevel = 3;
+        public const float UpgradeAccel = 1.5f;
         static int[] Up(int[] a, int mul = UpgradeCostMul)
         {
             var r = new int[a.Length];
-            for (int i = 0; i < a.Length; i++) r[i] = a[i] * mul;
+            for (int i = 0; i < a.Length; i++)
+            {
+                int steps = Mathf.Max(0, i + 2 - UpgradeAccelFromLevel); // i = 현재 레벨-1
+                r[i] = Mathf.RoundToInt(a[i] * mul * Mathf.Pow(UpgradeAccel, steps) / 100f) * 100;
+            }
             return r;
         }
 
@@ -367,6 +385,10 @@ namespace Mawang
         public const float StaffHireGrowth = 1.8f;   // 성 관리자를 한 명 더 고용할 때마다 고용비 배율
 
         // ── 연구: 스테이지 탐사 (1회성) ─────────────────────────
+        // 스테이지 n 탐사 골드·자재 = 자원 창고 (n-1)단계 최대 보유량의 80% (각각)
+        public const float ExploreCapRatio = 0.8f;
+        public static int ExploreCost(int stage) => Mathf.RoundToInt(GoldCapAt(stage - 1) * ExploreCapRatio / 1000f) * 1000;
+
         static readonly int[] ExploreGems = { 0, 0, 3, 5, 8, 12, 17, 23, 30, 40, 50 };
 
         public static readonly ResearchDef[] Research =
@@ -382,11 +404,13 @@ namespace Mawang
             id = $"region_{stage}", name = $"{name} 탐사", en = $"Explore {en}",
             desc = $"포획 스테이지 {stage} '{name}' 개방", descEn = $"Unlocks hunting stage {stage}: {en}", icon = "up_region",
             rp = Mathf.Max(1, ExploreGems[stage]),
+            gold = ExploreCost(stage), mat = ExploreCost(stage),
             requires = stage > 2 ? $"region_{stage - 1}" : null,
         };
 
         // ── 연구: 10단계 업그레이드 ────────────────────────────
         public const float UpgradeRpGrowth = 1.25f;
+        public const float UpgradeRpMul = 1.5f; // 업그레이드 보석 요구량 배율
 
         // shortName: 폰 연구 탭처럼 좁은 곳 (영어만 줄인다)
         public static string CategoryName(int i, bool shortName = false) => L.En

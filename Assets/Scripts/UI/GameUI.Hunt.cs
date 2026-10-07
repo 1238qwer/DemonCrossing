@@ -283,15 +283,15 @@ namespace Mawang
             stageLock = cover.gameObject;
             cover.raycastTarget = true;
             UIKit.Stretch(cover.rectTransform, UIKit.P, UIKit.P, UIKit.P, UIKit.P);
-            var col = UIKit.Column(cover.transform, 12);
-            UIKit.Stretch(col, 0, 120, 0, 120);
+            var col = UIKit.Column(cover.transform, Mobile ? 4 : 12);
+            UIKit.Stretch(col, 0, Mobile ? 0 : 120, 0, Mobile ? 0 : 120); // 폰은 장면이 낮아 탐사 버튼이 잘리지 않게 붙인다
             col.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
             col.GetComponent<VerticalLayoutGroup>().childForceExpandWidth = false;
-            UIKit.Icon(col, "ic_lock", 64);
+            UIKit.Icon(col, "ic_lock", Mobile ? 40 : 64);
             UIKit.Label(col, L.T("아직 탐사하지 않은 스테이지", "Unexplored stage"), UIKit.TM, TextAnchor.MiddleCenter, UIKit.TextMain).GetComponent<LayoutElement>().flexibleWidth = 0;
             var res = GameData.ResearchById(r.unlockResearch);
             if (res == null) return;
-            UIKit.Cost(col, 0, 0, res.rp);
+            UIKit.Cost(col, res.gold, res.mat, res.rp);
             var btn = UIKit.Button(col, $"{res.Name}", () => { g.DoResearch(res); RebuildHunt(); huntScene.SetRegion(viewRegion); }, 320, 56, Btn.Good, UIKit.TM, "up_region", 32);
             var block = g.ResearchBlock(res);
             bool needPrev = !string.IsNullOrEmpty(res.requires) && !g.S.research.Contains(res.requires);
